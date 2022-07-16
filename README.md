@@ -1,2 +1,2 @@
 # dvplc
-CLI app to convert Dava SmartDLC .dvpl files. Credits for fileformat analysis to Maddoxkkm.
+CLI app to convert Dava SmartDLC .dvpl files. Credits to [Maddoxkkm](https://github.com/Maddoxkkm/dvpl_converter) for file format specs.
