@@ -24,13 +24,16 @@ logging.getLogger("asyncio").setLevel(logging.DEBUG)
 logger = logging.getLogger(__name__)
 
 # Constants & defaults
+MODES			= ['encode', 'decode', 'verify']
 COMPRESSION 	= 'lz4_hc'
 COMPRESSIONS 	= [ 'none', 'lz4', 'lz4_hc', 'rfc1951' ]
 COMPRESSION_TYPE= dict()
 for i in range(0, len(COMPRESSIONS)):
 	COMPRESSION_TYPE[COMPRESSIONS[i]] = i
-DVPL_MARKER = 'DVPL'
+DVPL_MARKER 	= 'DVPL'
 DVPL_FOOTER_LEN = 20
+CONVERSIONS		= [ 'keep', 'replace', 'dest_dir']
+QUEUE_LEN 		= 1000
 
 # main() -------------------------------------------------------------
 
@@ -41,7 +44,6 @@ async def main(argv):
 
 	# Default params
 	THREADS = 20
-
 
 	parser = argparse.ArgumentParser(description='Encoder/decoder for SmartDLC DVPL files')
 	arggroup_verbosity = parser.add_mutually_exclusive_group()
@@ -58,14 +60,29 @@ async def main(argv):
 						help='Set number of asynchronous threads. Default is automatic.')
 	parser.add_argument('--compression', type=str, choices=COMPRESSIONS, 
 						default=COMPRESSION, help='Select compression to use when encoding')
-	parser.add_argument('mode', type=str, choices=['encode', 'decode', 'verify'], metavar='encode | decode | verify', help="Choose encode/decode mode.")
+	parser.add_argument('mode', type=str, choices=MODES, metavar='encode | decode | verify', help="Choose encode/decode mode.")
+
+	arggroup_conversion = parser.add_mutually_exclusive_group()
+	arggroup_conversion.add_argument('--replace',dest='CONVERSION', action='store_const', const='replace', 
+			help='Save converted file(s) into the same dir as source file(s) and delete the source files(s)')
+	arggroup_conversion.add_argument('--keep',dest='CONVERSION', action='store_const', const='keep', 
+			help='Save converted file(s) into the same dir as source file(s)')
+	arggroup_conversion.add_argument('--destination',type=str, nargs=1, default=None, 
+			help='Save the converted files under destination directory')
+
+	parser.add_argument('--conversion', type=str, choices=CONVERSIONS, metavar='encode | decode | verify', help="Choose encode/decode mode.")
+	
 	parser.add_argument('files', metavar='FILE1 [FILE2 ...]', type=str, nargs=1, help='Files to read. Use \'-\' for STDIN')
 	
-	parser.set_defaults(LEVEL='WARNING')
+	parser.set_defaults(LEVEL='WARNING', CONVERSION='keep')
 	args = parser.parse_args()
 	logger.setLevel(args.LEVEL)
+	if args.destination != None:
+		args.CONVERSION = 'dest_dir'
 
 	logger.debug('Argumengs given: ' + str(args))
+
+	await process_files(args.mode, os.getcwd(), args)
 
 	if args.mode == 'encode':
 		await encode_dvpl_file(args.files[0], args.files[0] + '.dvpl', args.compression, force=args.force)
@@ -78,9 +95,71 @@ async def main(argv):
 		sys.exit(1)
 
 
-async def iterate_files(mode: str, cwd: str, files: list(), options: argparse.Namespace):
-	return
+async def process_files(mode: str, cwd: str, args: argparse.Namespace):
+	"""Process files"""
+	
+	assert mode != None, "Mode is None"
+	assert mode in MODES, f"Unknown mode given: {mode}"
+	assert cwd != None, "Working directory is None"
+	assert args != None, "Arguments given is None"
+	assert args.files != None and len(args.files) > 0, "No files given to process"
+	assert args.CONVERSION in CONVERSIONS, f"Unknown conversion mode: {args.CONVERSION}"
+	
+	try:
+		queue  = asyncio.Queue(QUEUE_LEN)
 
+
+
+	except Exception as err:
+		logger.error(str(err))
+
+
+async def mk_file_queue(queue : asyncio.Queue, arg_files: list, suffixes: list = None):
+	"""Create queue of files to process"""
+
+	assert suffixes == None or isinstance(suffixes, list), f"suffixes has to be None or list or strings"
+
+	try:
+		if arg_files[0] == '-':
+			logger.debug('Reading file list from STDIN')
+			stdin, _ = await aioconsole.get_standard_streams()
+			while True:
+				fn = os.path.normpath((await stdin.readline()).decode('utf-8').rstrip())
+				if not fn: 
+					break
+				else:
+					if suffixes != None (p_replayfile.match(line) != None):
+						await queue.put(line)
+		else:
+			for fn in files:
+				if fn.endswith('"'):
+					fn = fn[:-1]  
+				if os.path.isfile(fn) and (p_replayfile.match(fn) != None):
+					await queue.put(await mkQueueItem(fn, title))
+					bu.debug('File added to queue: ' + fn)
+				elif os.path.isdir(fn):
+					with os.scandir(fn) as dirEntry:
+						for entry in dirEntry:
+							try:
+								bu.debug('Found: ' + entry.name)
+								if entry.is_file() and (p_replayfile.match(entry.name) != None): 
+									bu.debug(entry.name)
+									await queue.put(await mkQueueItem(entry.path, title))
+									bu.debug('File added to queue: ' + entry.path)
+							except Exception as err:
+								bu.error(str(err))
+				else:
+					bu.error('File not found: ' + fn)
+				
+		bu.debug('Finished')
+		return None		
+	
+	except Exception as err:
+		logger.error(str(err))
+
+def match_suffix(filename: str, suffixes: list) -> bool:
+	""""Match file name with list of suffixes"""
+	return None
 
 async def decode_dvpl_file(dvpl_fn: str, output_fn: str, force: bool = False) -> bool:
 	"""Encode a source file to a DVPL file"""
