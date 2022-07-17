@@ -114,13 +114,13 @@ async def process_files(mode: str, cwd: str, args: argparse.Namespace):
 		logger.error(str(err))
 
 
-async def mk_file_queue(queue : asyncio.Queue, arg_files: list, suffixes: list = None):
+async def mk_file_queue(queue : asyncio.Queue, files: list, suffixes: list = None):
 	"""Create queue of files to process"""
 
 	assert suffixes == None or isinstance(suffixes, list), f"suffixes has to be None or list or strings"
 
 	try:
-		if arg_files[0] == '-':
+		if files[0] == '-':
 			logger.debug('Reading file list from STDIN')
 			stdin, _ = await aioconsole.get_standard_streams()
 			while True:
@@ -140,6 +140,7 @@ async def mk_file_queue(queue : asyncio.Queue, arg_files: list, suffixes: list =
 	except Exception as err:
 		logger.error(str(err))
 
+
 async def add_file_to_process(queue, fn, suffixes: list = None):
 	"""Recursive function to build process queueu"""
 	if  os.path.isdir(fn):
@@ -150,11 +151,6 @@ async def add_file_to_process(queue, fn, suffixes: list = None):
 		if match_suffix(fn, suffixes):					
 			await queue.put(fn)
 	
-
-async def scan_dir_for_files(queue, fn, suffixes: list = None): 
-	"""Scan directory for files to process"""
-	return None
-
 
 def match_suffix(filename: str, suffixes: list) -> bool:
 	""""Match file name with list of suffixes"""
