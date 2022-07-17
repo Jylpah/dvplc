@@ -127,35 +127,34 @@ async def mk_file_queue(queue : asyncio.Queue, arg_files: list, suffixes: list =
 				fn = os.path.normpath((await stdin.readline()).decode('utf-8').rstrip())
 				if not fn: 
 					break
-				else:
-					if suffixes != None (p_replayfile.match(line) != None):
-						await queue.put(line)
+				await add_file_to_process(queue, fn, suffixes)
+				
 		else:
 			for fn in files:
-				if fn.endswith('"'):
-					fn = fn[:-1]  
-				if os.path.isfile(fn) and (p_replayfile.match(fn) != None):
-					await queue.put(await mkQueueItem(fn, title))
-					bu.debug('File added to queue: ' + fn)
-				elif os.path.isdir(fn):
-					with os.scandir(fn) as dirEntry:
-						for entry in dirEntry:
-							try:
-								bu.debug('Found: ' + entry.name)
-								if entry.is_file() and (p_replayfile.match(entry.name) != None): 
-									bu.debug(entry.name)
-									await queue.put(await mkQueueItem(entry.path, title))
-									bu.debug('File added to queue: ' + entry.path)
-							except Exception as err:
-								bu.error(str(err))
-				else:
-					bu.error('File not found: ' + fn)
+				fn.rstrip('"')
+				await add_file_to_process(queue, fn, suffixes)				
 				
-		bu.debug('Finished')
+		logger.debug('Finished building source file list to process')
 		return None		
 	
 	except Exception as err:
 		logger.error(str(err))
+
+async def add_file_to_process(queue, fn, suffixes: list = None):
+	"""Recursive function to build process queueu"""
+	if  os.path.isdir(fn):
+		with os.scandir(fn) as dirEntry:
+			for entry in dirEntry:
+				await add_file_to_process(queue, entry, suffixes)		
+	elif os.path.isfile(fn):
+		if match_suffix(fn, suffixes):					
+			await queue.put(fn)
+	
+
+async def scan_dir_for_files(queue, fn, suffixes: list = None): 
+	"""Scan directory for files to process"""
+	return None
+
 
 def match_suffix(filename: str, suffixes: list) -> bool:
 	""""Match file name with list of suffixes"""
