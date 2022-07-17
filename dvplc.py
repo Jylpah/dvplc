@@ -16,6 +16,8 @@ from bson import encode
 import lz4.block
 import zlib
 
+from secretstorage import ItemNotFoundException
+
 logging.basicConfig(encoding='utf-8', format='%(levelname)s:%(message)s', level=logging.DEBUG)
 logging.getLogger("asyncio").setLevel(logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -27,6 +29,7 @@ COMPRESSION_TYPE= dict()
 for i in range(0, len(COMPRESSIONS)):
 	COMPRESSION_TYPE[COMPRESSIONS[i]] = i
 DVPL_MARKER = b'DVPL'
+DVPL_FOOTER_LEN = 20
 
 # main() -------------------------------------------------------------
 
@@ -76,14 +79,81 @@ async def main(argv):
 async def iterate_files(mode: str, cwd: str, files: list(str), options: argparse.Namespace):
 	pass
 
-async def decodeDVPL(dvpl_fn: str, output_fn: str= None, compression: str = None, force: bool = False) -> bool:
-	"""Decode a DVPL file"""
-	
-	
-	pass
+
+async def decode_dvpl_file(dvpl_fn: str, output_fn: str, force: bool = False) -> str:
+	"""Encode a source file to a DVPL file"""
+	try:
+		if not os.path.isfile(dvpl_fn):
+			logger.error('Source file not found: ' + dvpl_fn)
+			return 'Source file not found'	
+		if not dvpl_fn.lower.endswith('.dvpl'):
+			logger.info('Source file is not a DVPL file: ' + dvpl_fn)
+			return 'Source file is a DVPL file'		
+		if output_fn.lower.endswith('.dvpl'):
+			logger.info('Output file is a DVPL file: ' + output_fn)
+			return 'Output file is a DVPL file'
+		if os.path.isfile(output_fn) and not force:
+			logger.warning(output_fn + ' file exists, use --force to overwrite')
+			return 'Dencoded file exists'
+
+		output = bytearray()
+
+		## Read encoded DVPL file
+		async with aiofiles.open(dvpl_fn, mode='rb') as ifp:			 
+			output = await decode_dvpl(await ifp.read())		
+		
+		## Write decoded file
+		if output == None:
+			return 'Error decoding data'
+		async with aiofiles.open(output_fn, mode='wb') as ofp:			
+			await ofp.write(output)
+
+		return None
+	except asyncio.CancelledError as err:
+		return 'Cancelled'
+	except Exception as err:
+		error(str(err))
+		return 'Error encoding file'
 
 
-async def encodeDVPL(input_fn: str, dvpl_fn: str= None, compression: str = COMPRESSION, force: bool = False) -> str:
+async def decode_dvpl(input: bytearray) -> bytearray:
+	"""Decode a DVPL bytearray"""
+	try:
+		footer = read_dvpl_footer(input)
+
+		d_size 		= footer['d_size']  # decoded (output) size
+		t_type 		= footer['e_type']	# encoding type
+		e_crc 		= footer['e_crc']	# CRC32 of endocoded (input) data
+		e_length	= footer['e_size']	# encoded (input) size
+
+		input = input[:-DVPL_FOOTER_LEN]
+		if e_length != len(input):
+			raise EncodingWarning('Encoded DVPL data size differs DVPL footer info')
+		if e_crc != zlib.crc32(bytes(input)):
+			raise EncodingWarning('Encoded DVPL data CRC32 differs DVPL footer checksum')
+		
+		output = bytearray()
+		
+		if t_type == 'none':
+			output = input
+		elif t_type == 'lz4' or t_type == 'lz4_hc':
+			output = lz4.block.decompress(input, uncompressed_size = d_size, return_bytearray=True)
+		elif t_type == 'rfc1951':
+			raise NotImplementedError('RFC1951 encoding is not supported')
+			return None
+		
+		if len(output) != d_size:
+			raise EncodingWarning('Decoded data size differs from DVPL footer into')
+		
+		return output
+	
+	except Exception as err:
+		error(str(err))
+		raise err
+	return None
+
+
+async def encode_dvpl_file(input_fn: str, dvpl_fn: str, compression: str = COMPRESSION, force: bool = False) -> str:
 	"""Encode a source file to a DVPL file"""
 	try:
 		if not os.path.isfile(input_fn):
@@ -91,67 +161,80 @@ async def encodeDVPL(input_fn: str, dvpl_fn: str= None, compression: str = COMPR
 			return 'Source file not found'	
 		if input_fn.lower.endswith('.dvpl'):
 			logger.info('Source file is a DVPL file: ' + input_fn)
-			return 'Source file is a DVPL file'		
-		if os.path.isfile(input_fn + '.dvpl') and not force:
-			logger.warning(input_fn + '.dvpl file exists, use --force to overwrite')
+			return 'Source file is a DVPL file'
+		if not dvpl_fn.lower.endswith('.dvpl'):
+			logger.info('Output file is not a DVPL file: ' + input_fn)
+			return 'Output file is not a DVPL file'
+		if os.path.isfile(dvpl_fn) and not force:
+			logger.warning(dvpl_fn + ' file exists, use --force to overwrite')
 			return 'Encoded DVPL file exists'
-
-		input = bytearray()
+		
+		# read source file
 		output = bytearray()
-		i_size = 0
-		async with aiofiles.open(input_fn, mode='r', encoding="utf-8") as ifp:				
-			input 	= await ifp.read()
-			i_size 	= len(input)
-			if compression == 'lz4':
-				output = lz4.block.compress(input, mode='default', return_bytearray=True)
-			elif compression == 'lz4_hc':
-				output = lz4.block.compress(input, mode='high_compression', return_bytearray=True)
-			elif compression == 'none':
-				output = bytearray(input)
-			elif compression == 'rfc1951':
-				raise Exception('RFC1951 compression is not supported')
+		async with aiofiles.open(input_fn, mode='rb') as ifp:			 
+			output = await encode_dvpl(await ifp.read(), compression)		
 		
 		## Write dvpl file
-		async with aiofiles.open(input_fn + '.dvpl', mode='wb') as ofp:
-			await ofp.write(append_dvpl_footer(output, i_size, compression))
+		if output == None:
+			return 'Error encoding data'
+		async with aiofiles.open(dvpl_fn, mode='wb') as ofp:			
+			await ofp.write(output)
 
-		return True
+		return None
 	except asyncio.CancelledError as err:
-		return False
+		return 'Cancelled'
 	except Exception as err:
 		error(str(err))
-		return False
+		return 'Error encoding file'
 
 
-def append_dvpl_footer(encoded: bytearray, i_size: int, compression: str) -> bytes:
-	"""Append DVPL footer to the encoded (compressed) bytearray and return bytes"""
-	
+async def encode_dvpl(input: bytearray, compression: str) -> bytearray:
+	try:
+		i_size = len(input)
+		if compression == 'lz4':
+			output = lz4.block.compress(input, mode='default', return_bytearray=True)
+		elif compression == 'lz4_hc':
+			output = lz4.block.compress(input, mode='high_compression', return_bytearray=True)
+		elif compression == 'none':
+			output = bytearray(input)
+		elif compression == 'rfc1951':
+			raise Exception('RFC1951 compression is not supported')
+		return append_dvpl_footer(output, i_size, compression)
+	except Exception as err:
+		error(str(err))
+		return None, None
+
+
+def append_dvpl_footer(encoded: bytearray, i_size: int, compression: str) -> tuple:
+	"""Append DVPL footer to the encoded (compressed) bytearray and return the whole bytearray"""	
 	encoded.append(toUInt32LE(i_size))							# input size as UInt32LE
 	encoded.append(toUInt32LE(len(encoded)))					# output size as UInt32LE
 	encoded.append(zlib.crc32(bytes(encoded)))					# outout crc32 as UInt32LE
 	encoded.append(toUInt32LE(COMPRESSION_TYPE[compression]))  	# output type as UInt32LE
 	encoded.append(DVPL_MARKER.encode(encoding='utf-8', errors='strict'))
 	
-	return bytes(encoded)
+	return encoded
 
 
 def read_dvpl_footer(data: bytes) -> dict():
 	"""Read and check 20 byte DVPL footer"""
 	result = dict()
 	try:
-		footer = data[-20:]
-		result['marker'] = str(data[-4:], encoding='utf-8', errors='strict')
+		if len(data) < DVPL_FOOTER_LEN:
+			raise EncodingWarning('Data is too short')
+
+		footer = data[-DVPL_FOOTER_LEN:]
+		result['marker'] = str(footer[-4:], encoding='utf-8', errors='strict')
 		if result['marker'] != DVPL_MARKER:
 			raise EncodingWarning("File is missig 'DVPL' marker in the end of the file.")
-		result['i_size'] 	= fromUInt32LE(footer[:4])
-		result['o_length'] 	= fromUInt32LE(footer[4:8])
-		result['o_crc'] 	= fromUInt32LE(footer[8:12])
-		result['o_type'] 	= fromUInt32LE(footer[12:16])
+		result['d_size'] 	= fromUInt32LE(footer[:4])			# decoded size
+		result['e_size'] 	= fromUInt32LE(footer[4:8])			# encoded size
+		result['e_crc'] 	= fromUInt32LE(footer[8:12])		# encoded CRC32
+		result['e_type'] 	= COMPRESSIONS[fromUInt32LE(footer[12:16])]  # encoding type
 		
 		return result
 	except Exception as err:
-		error(str(type(err)) + ' : '+ str(err))
-		return None
+		raise err
 
 
 def toUInt32LE(value: int) -> bytes:
@@ -162,25 +245,6 @@ def toUInt32LE(value: int) -> bytes:
 def fromUInt32LE(data: bytes) -> int:
 	"""Convert a 32-bit unsigned integer in Little-Endian byte-order to integer"""
 	return int.from_bytes(data, byteorder='little', signed=False)
-
-
-async def encodeDVPLlz4(source_fn: str, dvpl_fn: str= None, level: int = lz4.frame.COMPRESSIONLEVEL_MIN, force: bool = False) -> bool:
-	try: 
-		async with aiofiles.open(source_fn) as fp:
-			source_size = Path(source_fn).stat().st_size
-			c_ctx = lz4.frame.create_compression_context()
-
-
-			data = await fp.read()  # does not handle very large files
-			
-
-	except asyncio.CancelledError as err:
-		raise err
-	except Exception as err:
-		error('Unexpected error: ' + str(type(err)) + ' : '+ str(err))
-	
-	pass
-
 
 
 ### main()
