@@ -5,15 +5,12 @@
 import logging
 import argparse
 import os
-from shutil import ExecError
 import sys
 import re
 from pathlib import Path
 import asyncio
 import aiofiles
 import aioconsole
-from bson import encode
-from colorama import Fore
 import lz4.block
 import zlib
 
@@ -154,7 +151,11 @@ async def add_file_to_process(queue, fn, suffixes: list = None):
 
 def match_suffix(filename: str, suffixes: list) -> bool:
 	""""Match file name with list of suffixes"""
+	
+	assert False, "Add asserts"
+
 	return None
+
 
 async def decode_dvpl_file(dvpl_fn: str, output_fn: str, force: bool = False) -> bool:
 	"""Encode a source file to a DVPL file"""
