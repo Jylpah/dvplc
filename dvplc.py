@@ -4,7 +4,7 @@
 
 import logging
 import argparse
-import os
+from os import remove, getcwd, path
 import sys
 import re
 from pathlib import Path
@@ -28,132 +28,116 @@ for i in range(0, len(COMPRESSIONS)):
 	COMPRESSION_TYPE[COMPRESSIONS[i]] = i
 DVPL_MARKER 	= 'DVPL'
 DVPL_FOOTER_LEN = 20
-CONVERSIONS		= [ 'keep', 'replace', 'dest_dir']
+CONVERSIONS		= [ 'keep', 'replace', 'mirror']
 QUEUE_LEN 		= 1000
 
 # main() -------------------------------------------------------------
 
 async def main(argv):
 	# set the directory for the script
-	cwd = os.getcwd()
 	global logger
+	cwd = getcwd()
 
 	# Default params
 	THREADS = 20
 
-	parser = argparse.ArgumentParser(description='Encoder/decoder for SmartDLC DVPL files')
-	arggroup_verbosity = parser.add_mutually_exclusive_group()
-	arggroup_verbosity.add_argument('--debug',dest='LEVEL', action='store_const', const='DEBUG',  
-									help='Debug mode')
-	arggroup_verbosity.add_argument('--warning', dest='LEVEL', action='store_const', const='WARNING', default='WARNING',
-									help='Default verbosity (warning)')
-	arggroup_verbosity.add_argument('--verbose', dest='LEVEL', action='store_const', const='INFO',
-									help='Verbose mode')
-	arggroup_verbosity.add_argument('--silent', dest='LEVEL', action='store_const', const='CRITICAL',
-									help='Silent mode')
-	parser.add_argument('--force', action='store_true', default=False, help='Overwrite files')
-	parser.add_argument('--threads', type=int, default=THREADS, 
-						help='Set number of asynchronous threads. Default is automatic.')
-	parser.add_argument('--compression', type=str, choices=COMPRESSIONS, 
-						default=COMPRESSION, help='Select compression to use when encoding')
-	parser.add_argument('mode', type=str, choices=MODES, metavar='encode | decode | verify', help="Choose encode/decode mode.")
+	try:
 
-	arggroup_conversion = parser.add_mutually_exclusive_group()
-	arggroup_conversion.add_argument('--replace',dest='CONVERSION', action='store_const', const='replace', 
-			help='Save converted file(s) into the same dir as source file(s) and delete the source files(s)')
-	arggroup_conversion.add_argument('--keep',dest='CONVERSION', action='store_const', const='keep', 
-			help='Save converted file(s) into the same dir as source file(s)')
-	arggroup_conversion.add_argument('--destination',type=str, nargs=1, default=None, 
-			help='Save the converted files under destination directory')
+		parser = argparse.ArgumentParser(description='Encoder/decoder for SmartDLC DVPL files')
+		arggroup_verbosity = parser.add_mutually_exclusive_group()
+		arggroup_verbosity.add_argument('--debug',dest='LEVEL', action='store_const', const='DEBUG',  
+										help='Debug mode')
+		arggroup_verbosity.add_argument('--warning', dest='LEVEL', action='store_const', const='WARNING', default='WARNING',
+										help='Default verbosity (warning)')
+		arggroup_verbosity.add_argument('--verbose', dest='LEVEL', action='store_const', const='INFO',
+										help='Verbose mode')
+		arggroup_verbosity.add_argument('--silent', dest='LEVEL', action='store_const', const='CRITICAL',
+										help='Silent mode')
+		parser.add_argument('--force', action='store_true', default=False, help='Overwrite files')
+		parser.add_argument('--threads', type=int, default=THREADS, 
+							help='Set number of asynchronous threads. Default is automatic.')
+		parser.add_argument('--compression', type=str, choices=COMPRESSIONS, 
+							default=COMPRESSION, help='Select compression to use when encoding')
+		parser.add_argument('mode', type=str, choices=MODES, metavar='encode | decode | verify', help="Choose encode/decode mode.")
 
-	parser.add_argument('--conversion', type=str, choices=CONVERSIONS, metavar='encode | decode | verify', help="Choose encode/decode mode.")
-	
-	parser.add_argument('files', metavar='FILE1 [FILE2 ...]', type=str, nargs=1, help='Files to read. Use \'-\' for STDIN')
-	
-	parser.set_defaults(LEVEL='WARNING', CONVERSION='keep')
-	args = parser.parse_args()
-	logger.setLevel(args.LEVEL)
-	if args.destination != None:
-		args.CONVERSION = 'dest_dir'
+		arggroup_conversion = parser.add_mutually_exclusive_group()
+		arggroup_conversion.add_argument('--replace',dest='conversion', action='store_const', const='replace', 
+				help='Save converted file(s) into the same dir as source file(s) and delete the source files(s)')
+		arggroup_conversion.add_argument('--keep',dest='conversion', action='store_const', const='keep', 
+				help='Save converted file(s) into the same dir as source file(s)')
+		arggroup_conversion.add_argument('--mirror_to',type=str, nargs=1, default=None, 
+				help='Save the converted files under destination directory')
 
-	logger.debug('Argumengs given: ' + str(args))
+		parser.add_argument('files', metavar='FILE1 [FILE2 ...]', type=str, nargs=1, help='Files to read. Use \'-\' for STDIN')
+		
+		parser.set_defaults(LEVEL='WARNING', conversion='keep')
+		args = parser.parse_args()
+		logger.setLevel(args.LEVEL)
+		if args.mirror_to != None:
+			args.conversion = 'mirror'
 
-	await process_files(args.mode, os.getcwd(), args)
+		logger.debug('Argumengs given: ' + str(args))
 
-	if args.mode == 'encode':
-		await encode_dvpl_file(args.files[0], args.files[0] + '.dvpl', args.compression, force=args.force)
-	elif args.mode == 'decode':
-		await decode_dvpl_file(args.files[0], args.files[0].removesuffix('.dvpl'), force=args.force)
-	elif args.mode == 'verify':
-		await verify_dvpl_file(args.files[0])
-	else:
-		logger.critical('Invalid mode given: ' + args.mode)
+		if args.mode in ['decode', 'verify']:
+				fq = FileQueue(filter="*.dvpl")
+		elif args.mode == 'encode':
+			fq = FileQueue()
+		
+		workers = list()
+
+		workers.append(asyncio.create_task(fq.mk_queue(args.files)))
+		for i in range(args.threads):
+			workers.append(asyncio.create_task(process_files(fq, args)))
+			logger.debug(f"Process thread {str(i)} started")
+
+		logger.debug('Building file queue')
+		await asyncio.wait([workers[0]])
+		logger.debug('Processing files')
+		await fq.join()
+		logger.debug('Cancelling workers')
+		for worker in workers:
+			worker.cancel()	
+		
+	except Exception as err:
+		logger.error(str(err))
 		sys.exit(1)
 
 
-async def process_files(mode: str, cwd: str, args: argparse.Namespace):
-	"""Process files"""
-	
-	assert mode != None, "Mode is None"
-	assert mode in MODES, f"Unknown mode given: {mode}"
-	assert cwd != None, "Working directory is None"
-	assert args != None, "Arguments given is None"
-	assert args.files != None and len(args.files) > 0, "No files given to process"
-	assert args.CONVERSION in CONVERSIONS, f"Unknown conversion mode: {args.CONVERSION}"
-	
+async def process_files(fileQ: FileQueue, args : argparse.Namespace):
 	try:
-		queue  = asyncio.Queue(QUEUE_LEN)
-
-
-
+		cwd = getcwd()
+		while True:
+			source = await fileQ.get()
+			try:				
+				
+				target = source
+				result = False
+				if args.conversion == 'mirror':
+					if source.beginswith(cwd):
+						target = path.join(args.mirror_to, source.removeprefix(cwd))
+					else:
+						raise ValueError(f"Source file: '{source}' is outside working directory: {cwd}")
+				if args.mode == 'encode':
+					target = target + '.dvpl'
+					result = await decode_dvpl_file(source, target, compression=args.compression, force=args.force)
+				elif args.mode == 'decode':
+					target = target.removesuffix('.dvpl')
+					result = await decode_dvpl_file(source, target, force=args.force)
+				elif args.mode == 'verify':
+					result = await verify_dvpl_file(source)
+				if result and args.conversion == 'replace' and args.mode != 'verify':
+					logger.debug(f"Removing source file: {source}")
+					remove(source)				
+			except Exception as err:
+				logger.error(str(err))
+			finally:
+				fileQ.task_done()
+	
+	except asyncio.CancelledError:		
+		logger.debug('Worker cancelled')
+		return None
 	except Exception as err:
 		logger.error(str(err))
-
-
-async def mk_file_queue(queue : asyncio.Queue, files: list, suffixes: list = None):
-	"""Create queue of files to process"""
-
-	assert suffixes == None or isinstance(suffixes, list), f"suffixes has to be None or list or strings"
-
-	try:
-		if files[0] == '-':
-			logger.debug('Reading file list from STDIN')
-			stdin, _ = await aioconsole.get_standard_streams()
-			while True:
-				fn = os.path.normpath((await stdin.readline()).decode('utf-8').rstrip())
-				if not fn: 
-					break
-				await add_file_to_process(queue, fn, suffixes)
-				
-		else:
-			for fn in files:
-				fn.rstrip('"')
-				await add_file_to_process(queue, fn, suffixes)				
-				
-		logger.debug('Finished building source file list to process')
-		return None		
-	
-	except Exception as err:
-		logger.error(str(err))
-
-
-async def add_file_to_process(queue, fn, suffixes: list = None):
-	"""Recursive function to build process queueu"""
-	if  os.path.isdir(fn):
-		with os.scandir(fn) as dirEntry:
-			for entry in dirEntry:
-				await add_file_to_process(queue, entry, suffixes)		
-	elif os.path.isfile(fn):
-		if match_suffix(fn, suffixes):					
-			await queue.put(fn)
-	
-
-def match_suffix(filename: str, suffixes: list) -> bool:
-	""""Match file name with list of suffixes"""
-	
-	assert False, "Add asserts"
-
-	return None
 
 
 async def decode_dvpl_file(dvpl_fn: str, output_fn: str, force: bool = False) -> bool:
@@ -164,13 +148,13 @@ async def decode_dvpl_file(dvpl_fn: str, output_fn: str, force: bool = False) ->
 	assert force != None, f"--force value is None"
 
 	try:
-		if not os.path.isfile(dvpl_fn):
+		if not path.isfile(dvpl_fn):
 			raise FileNotFoundError('Source file not found: ' + dvpl_fn)
 		if not dvpl_fn.lower().endswith('.dvpl'):
 			raise ValueError('Source file is not a DVPL file: ' + dvpl_fn)
 		if output_fn.lower().endswith('.dvpl'):	
 			raise ValueError('Output file is a DVPL file: ' + output_fn)
-		if os.path.isfile(output_fn) and not force:
+		if path.isfile(output_fn) and not force:
 			raise FileExistsError('Output file exists, use --force to overwrite ' + output_fn)
 
 		## Read encoded DVPL file
@@ -186,12 +170,10 @@ async def decode_dvpl_file(dvpl_fn: str, output_fn: str, force: bool = False) ->
 
 		return True
 	except asyncio.CancelledError as err:
-		logger.info('Cancelled')
-		return False
+		logger.info('Cancelled')		
 	except Exception as err:
-		logger.error(str(err))
-		return False
-
+		logger.error(str(err))		
+	return False
 
 async def decode_dvpl(input: bytes) -> bytes:
 	"""Decode a DVPL bytearray"""
@@ -246,13 +228,13 @@ async def encode_dvpl_file(input_fn: str, dvpl_fn: str, compression: str = COMPR
 	assert force != None, f"--force is None"
 	
 	try:
-		if not os.path.isfile(input_fn):
+		if not path.isfile(input_fn):
 			raise FileNotFoundError('Source file not found: ' + input_fn)
 		if input_fn.lower().endswith('.dvpl'):
 			raise ValueError('Source file is a DVPL file: ' + input_fn)
 		if not dvpl_fn.lower().endswith('.dvpl'):
 			raise ValueError('Output file is not a DVPL file: ' + input_fn)
-		if os.path.isfile(dvpl_fn) and not force:
+		if path.isfile(dvpl_fn) and not force:
 			raise FileExistsError('Output file exists, use --force to overwrite: ' + dvpl_fn)
 		
 		# read source file
@@ -268,11 +250,10 @@ async def encode_dvpl_file(input_fn: str, dvpl_fn: str, compression: str = COMPR
 
 		return True
 	except asyncio.CancelledError as err:
-		logger.info('Cancelled')
-		return False
+		logger.info('Cancelled')		
 	except Exception as err:
 		logger.error(str(err))
-		return False
+	return False
 
 
 async def encode_dvpl(input: bytes, compression: str) -> bytes:
@@ -313,7 +294,7 @@ async def verify_dvpl_file(dvpl_fn: str) -> bool:
 	assert dvpl_fn != None, f"input file name is None type"
 	
 	try:
-		if not os.path.isfile(dvpl_fn):
+		if not path.isfile(dvpl_fn):
 			raise FileNotFoundError('Source file not found: ' + dvpl_fn)
 		if not dvpl_fn.lower().endswith('.dvpl'):
 			raise ValueError('Source file is not a DVPL file: ' + dvpl_fn)
