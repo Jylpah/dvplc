@@ -13,7 +13,7 @@ import aiofiles
 import aioconsole
 import lz4.block
 import zlib
-from blitzutils import FileQueue
+from blitzutils.filequeue import FileQueue
 
 logging.basicConfig(encoding='utf-8', format='%(levelname)s:%(funcName)s:%(message)s', level=logging.DEBUG)
 logging.getLogger("asyncio").setLevel(logging.DEBUG)
