@@ -2,9 +2,10 @@
 
 # Script convert Dava game engine's SmartDLC DVPL files
 
+from genericpath import isdir
 import logging
 import argparse
-from os import remove, getcwd, path
+from os import sep, remove, getcwd, makedirs, path
 import sys
 import re
 from pathlib import Path
@@ -30,7 +31,7 @@ DVPL_MARKER 	= 'DVPL'
 DVPL_FOOTER_LEN = 20
 CONVERSIONS		= [ 'keep', 'replace', 'mirror']
 QUEUE_LEN 		= 1000
-THREADS 		= 20
+THREADS 		= 5
 
 # main() -------------------------------------------------------------
 
@@ -63,23 +64,27 @@ async def main(argv):
 				help='Save converted file(s) into the same dir as source file(s) and delete the source files(s)')
 		arggroup_conversion.add_argument('--keep',dest='conversion', action='store_const', const='keep', 
 				help='Save converted file(s) into the same dir as source file(s) (Default)')
-		arggroup_conversion.add_argument('--mirror_to', metavar="DIR", type=str, nargs=1, default=None, 
+		arggroup_conversion.add_argument('--mirror', metavar="DIR", type=str, default=None, 
 				help='Mirror converted files into destination directory')
 
-		parser.add_argument('files', metavar='FILE1 [FILE2 ...]', type=str, nargs=1, help='Files to read. Use \'-\' for STDIN')
-		
+		parser.add_argument('files', metavar='FILE1 [FILE2 ...]', type=str, nargs='+', help='Files to read. Use \'-\' for STDIN')
 		parser.set_defaults(LEVEL='WARNING', conversion='keep')
 		args = parser.parse_args()
+
 		logger.setLevel(args.LEVEL)
-		if args.mirror_to != None:
+		if args.mirror != None:
 			args.conversion = 'mirror'
+			if len(args.files) != 1:
+				raise argparse.ArgumentError("More than file arguments given with --mirror")
+			elif not path.isdir(args.files[0]):
+				raise argparse.ArgumentError("when using --mirror, file argument has to be a directory")
 
 		logger.debug('Argumengs given: ' + str(args))
 
 		if args.mode in ['decode', 'verify']:
 				fq = FileQueue(filter="*.dvpl")
 		elif args.mode == 'encode':
-			fq = FileQueue()
+			fq = FileQueue(filter="*.dvpl", exclude=True)
 		
 		workers = list()
 
@@ -104,20 +109,27 @@ async def main(argv):
 async def process_files(fileQ: FileQueue, args : argparse.Namespace):
 	try:
 		cwd = getcwd()
+		source_root = ''
+		target_root = ''
+		if args.conversion == 'mirror':
+			assert args.mirror != None, "args.mirror is None"
+			source_root = path.normpath(args.files[0]) + sep
+			target_root = path.normpath(args.mirror)
+
 		while True:
 			source = await fileQ.get()
 			try:				
-				
 				target = source
 				result = False
 				if args.conversion == 'mirror':
-					if source.beginswith(cwd):
-						target = path.join(args.mirror_to, source.removeprefix(cwd))
-					else:
-						raise ValueError(f"Source file: '{source}' is outside working directory: {cwd}")
+					target = sep.join([target_root, source.removeprefix(source_root)])
+					targetdir = path.dirname(target)
+					if not path.isdir(targetdir):
+						logger.debug(f"creating dir: {targetdir}")
+						makedirs(targetdir)					
 				if args.mode == 'encode':
 					target = target + '.dvpl'
-					result = await decode_dvpl_file(source, target, compression=args.compression, force=args.force)
+					result = await encode_dvpl_file(source, target, compression=args.compression, force=args.force)
 				elif args.mode == 'decode':
 					target = target.removesuffix('.dvpl')
 					result = await decode_dvpl_file(source, target, force=args.force)
@@ -195,7 +207,7 @@ async def decode_dvpl(input: bytes) -> bytes:
 		if e_crc != zlib.crc32(input):
 			raise EncodingWarning('Encoded DVPL data CRC32 differs DVPL footer checksum')
 		else:
-			logger.debug(f"Encoded CRC matches {e_crc}")
+			logger.debug(f"Encoded CRC matches {hex(e_crc)}")
 		
 		output = bytes()
 		
@@ -243,7 +255,7 @@ async def encode_dvpl_file(input_fn: str, dvpl_fn: str, compression: str = COMPR
 		# read source file
 		output = bytes()
 		async with aiofiles.open(input_fn, mode='rb') as ifp:
-			logger.debug(f"reading from file: {input_fn}")			 
+			logger.debug(f"reading from file: {input_fn}")
 			output = await encode_dvpl(await ifp.read(), compression)
 		
 		## Write dvpl file
@@ -305,7 +317,8 @@ async def verify_dvpl_file(dvpl_fn: str) -> bool:
 			raise ValueError('Source file is not a DVPL file: ' + dvpl_fn)
 		
 		## Try to decode a DVPL file
-		async with aiofiles.open(dvpl_fn, mode='rb') as ifp:			 
+		async with aiofiles.open(dvpl_fn, mode='rb') as ifp:
+			logger.debug(f"reading from file: {dvpl_fn}")
 			_ = await decode_dvpl(await ifp.read())	
 		print(dvpl_fn + ': OK')
 		return True
