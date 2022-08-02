@@ -30,6 +30,7 @@ DVPL_MARKER 	= 'DVPL'
 DVPL_FOOTER_LEN = 20
 CONVERSIONS		= [ 'keep', 'replace', 'mirror']
 QUEUE_LEN 		= 1000
+THREADS 		= 20
 
 # main() -------------------------------------------------------------
 
@@ -37,9 +38,6 @@ async def main(argv):
 	# set the directory for the script
 	global logger
 	cwd = getcwd()
-
-	# Default params
-	THREADS = 20
 
 	try:
 
@@ -64,9 +62,9 @@ async def main(argv):
 		arggroup_conversion.add_argument('--replace',dest='conversion', action='store_const', const='replace', 
 				help='Save converted file(s) into the same dir as source file(s) and delete the source files(s)')
 		arggroup_conversion.add_argument('--keep',dest='conversion', action='store_const', const='keep', 
-				help='Save converted file(s) into the same dir as source file(s)')
-		arggroup_conversion.add_argument('--mirror_to',type=str, nargs=1, default=None, 
-				help='Save the converted files under destination directory')
+				help='Save converted file(s) into the same dir as source file(s) (Default)')
+		arggroup_conversion.add_argument('--mirror_to', metavar="DIR", type=str, nargs=1, default=None, 
+				help='Mirror converted files into destination directory')
 
 		parser.add_argument('files', metavar='FILE1 [FILE2 ...]', type=str, nargs=1, help='Files to read. Use \'-\' for STDIN')
 		
@@ -159,13 +157,15 @@ async def decode_dvpl_file(dvpl_fn: str, output_fn: str, force: bool = False) ->
 
 		## Read encoded DVPL file
 		output = bytes()
-		async with aiofiles.open(dvpl_fn, mode='rb') as ifp:			 
+		async with aiofiles.open(dvpl_fn, mode='rb') as ifp:
+			logger.debug(f"reading from file: {dvpl_fn}")				 
 			output = await decode_dvpl(await ifp.read())	
 		
 		## Write decoded file
 		if output == None:
 			return EncodingWarning('Error decoding data')
-		async with aiofiles.open(output_fn, mode='wb') as ofp:			
+		async with aiofiles.open(output_fn, mode='wb') as ofp:
+			logger.debug(f"writing to file: {output_fn}")	
 			await ofp.write(output)
 
 		return True
@@ -174,6 +174,7 @@ async def decode_dvpl_file(dvpl_fn: str, output_fn: str, force: bool = False) ->
 	except Exception as err:
 		logger.error(str(err))		
 	return False
+
 
 async def decode_dvpl(input: bytes) -> bytes:
 	"""Decode a DVPL bytearray"""
@@ -193,6 +194,8 @@ async def decode_dvpl(input: bytes) -> bytes:
 			raise EncodingWarning('Encoded DVPL data size differs DVPL footer info')
 		if e_crc != zlib.crc32(input):
 			raise EncodingWarning('Encoded DVPL data CRC32 differs DVPL footer checksum')
+		else:
+			logger.debug(f"Encoded CRC matches {e_crc}")
 		
 		output = bytes()
 		
@@ -239,13 +242,15 @@ async def encode_dvpl_file(input_fn: str, dvpl_fn: str, compression: str = COMPR
 		
 		# read source file
 		output = bytes()
-		async with aiofiles.open(input_fn, mode='rb') as ifp:			 
+		async with aiofiles.open(input_fn, mode='rb') as ifp:
+			logger.debug(f"reading from file: {input_fn}")			 
 			output = await encode_dvpl(await ifp.read(), compression)
 		
 		## Write dvpl file
 		if output == None:
 			raise EncodingWarning('Error encoding data')
-		async with aiofiles.open(dvpl_fn, mode='wb') as ofp:			
+		async with aiofiles.open(dvpl_fn, mode='wb') as ofp:
+			logger.debug(f"writing to file: {dvpl_fn}")	
 			await ofp.write(output)
 
 		return True
@@ -310,6 +315,7 @@ async def verify_dvpl_file(dvpl_fn: str) -> bool:
 	except Exception as err:
 		logger.error(str(err))
 		return False
+
 
 def make_dvpl_footer(encoded: bytes, d_size: int, compression: str) -> bytes:
 	"""Make a 20-byte DVPL footer"""
