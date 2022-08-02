@@ -15,7 +15,7 @@ Tested on Linux & Working :-)
 
 # SYNOPSIS
 
-`dvplc MODE [OPTION] FILE | DIR [FILE | DIR] ...`
+`dvplc [OPTIONS] MODE FILE | DIR [FILE | DIR] ...`
 
 # DESCRIPTION
 
