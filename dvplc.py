@@ -97,7 +97,7 @@ async def main(argv):
 		logger.debug('Cancelling workers')
 		for worker in workers:
 			worker.cancel()	
-		
+
 	except Exception as err:
 		logger.error(str(err))
 		sys.exit(1)
@@ -134,10 +134,10 @@ async def process_files(fileQ: FileQueue, args : argparse.Namespace):
 				fileQ.task_done()
 	
 	except asyncio.CancelledError:		
-		logger.debug('Worker cancelled')
-		return None
+		logger.debug('Worker cancelled')		
 	except Exception as err:
 		logger.error(str(err))
+	return None
 
 
 async def decode_dvpl_file(dvpl_fn: str, output_fn: str, force: bool = False) -> bool:
