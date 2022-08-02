@@ -2,13 +2,11 @@
 
 # Script convert Dava game engine's SmartDLC DVPL files
 
-from genericpath import isdir
 import logging
 import argparse
 from os import cpu_count, sep, remove, getcwd, makedirs, path
 import sys
 import re
-from pathlib import Path
 import asyncio
 import aiofiles
 import aioconsole
