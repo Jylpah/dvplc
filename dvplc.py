@@ -5,7 +5,7 @@
 from genericpath import isdir
 import logging
 import argparse
-from os import sep, remove, getcwd, makedirs, path
+from os import cpu_count, sep, remove, getcwd, makedirs, path
 import sys
 import re
 from pathlib import Path
@@ -16,8 +16,8 @@ import lz4.block
 import zlib
 from blitzutils.filequeue import FileQueue
 
-logging.basicConfig(encoding='utf-8', format='%(levelname)s:%(funcName)s:%(message)s', level=logging.DEBUG)
-logging.getLogger("asyncio").setLevel(logging.DEBUG)
+logging.basicConfig(encoding='utf-8', format='%(levelname)s: %(message)s', level=logging.WARNING)
+logging.getLogger("asyncio").setLevel(logging.WARNING)
 logger = logging.getLogger(__name__)
 
 # Constants & defaults
@@ -32,6 +32,8 @@ DVPL_FOOTER_LEN = 20
 CONVERSIONS		= [ 'keep', 'replace', 'mirror']
 QUEUE_LEN 		= 1000
 THREADS 		= 5
+if cpu_count() != None:
+	THREADS = cpu_count()
 
 # main() -------------------------------------------------------------
 
@@ -72,6 +74,11 @@ async def main(argv):
 		args = parser.parse_args()
 
 		logger.setLevel(args.LEVEL)
+		if args.LEVEL == logging.INFO:
+			logging.basicConfig(encoding='utf-8', format='%(levelname)s: %(message)s')
+		if args.LEVEL == logging.DEBUG:
+			logging.basicConfig(encoding='utf-8', format='%(levelname)s: %(funcName)s: %(message)s')
+
 		if args.mirror != None:
 			args.conversion = 'mirror'
 			if len(args.files) != 1:
@@ -82,9 +89,9 @@ async def main(argv):
 		logger.debug('Argumengs given: ' + str(args))
 
 		if args.mode in ['decode', 'verify']:
-				fq = FileQueue(filter="*.dvpl")
+				fq = FileQueue(filter="*.dvpl", maxsize=QUEUE_LEN)
 		elif args.mode == 'encode':
-			fq = FileQueue(filter="*.dvpl", exclude=True)
+			fq = FileQueue(filter="*.dvpl", exclude=True, maxsize=QUEUE_LEN)
 		
 		workers = list()
 
@@ -125,7 +132,7 @@ async def process_files(fileQ: FileQueue, args : argparse.Namespace):
 					target = sep.join([target_root, source.removeprefix(source_root)])
 					targetdir = path.dirname(target)
 					if not path.isdir(targetdir):
-						logger.debug(f"creating dir: {targetdir}")
+						logger.info(f"creating dir: {targetdir}")
 						makedirs(targetdir)					
 				if args.mode == 'encode':
 					target = target + '.dvpl'
@@ -170,7 +177,7 @@ async def decode_dvpl_file(dvpl_fn: str, output_fn: str, force: bool = False) ->
 		## Read encoded DVPL file
 		output = bytes()
 		async with aiofiles.open(dvpl_fn, mode='rb') as ifp:
-			logger.debug(f"reading from file: {dvpl_fn}")				 
+			logger.info(f"decoding file: {dvpl_fn}")				 
 			output = await decode_dvpl(await ifp.read())	
 		
 		## Write decoded file
@@ -188,7 +195,7 @@ async def decode_dvpl_file(dvpl_fn: str, output_fn: str, force: bool = False) ->
 	return False
 
 
-async def decode_dvpl(input: bytes) -> bytes:
+async def decode_dvpl(input: bytes, quiet: bool = False) -> bytes:
 	"""Decode a DVPL bytearray"""
 
 	assert input != None, f"input value is None"
@@ -228,9 +235,11 @@ async def decode_dvpl(input: bytes) -> bytes:
 		return output
 	
 	except lz4.block.LZ4BlockError as err:
-		logger.error('LZ4 decoding error: ' + str(err))
+		if not quiet:
+			logger.error('LZ4 decoding error: ' + str(err))
 	except Exception as err:
-		logger.error(str(err))
+		if not quiet:
+			logger.error(str(err))
 	return None
 
 
@@ -255,7 +264,7 @@ async def encode_dvpl_file(input_fn: str, dvpl_fn: str, compression: str = COMPR
 		# read source file
 		output = bytes()
 		async with aiofiles.open(input_fn, mode='rb') as ifp:
-			logger.debug(f"reading from file: {input_fn}")
+			logger.info(f"encoding file: {input_fn}")
 			output = await encode_dvpl(await ifp.read(), compression)
 		
 		## Write dvpl file
@@ -318,16 +327,18 @@ async def verify_dvpl_file(dvpl_fn: str) -> bool:
 		
 		## Try to decode a DVPL file
 		async with aiofiles.open(dvpl_fn, mode='rb') as ifp:
-			logger.debug(f"reading from file: {dvpl_fn}")
-			_ = await decode_dvpl(await ifp.read())	
-		print(dvpl_fn + ': OK')
+			logger.debug(f"reading file: {dvpl_fn}")
+			ret = await decode_dvpl(await ifp.read(), quiet=True)	
+		if ret != None:
+			logger.info(dvpl_fn + ': OK')
+		else:
+			print(dvpl_fn + ': ERROR')
 		return True
 	except asyncio.CancelledError as err:
 		logger.info('Cancelled')
-		return False
 	except Exception as err:
 		logger.error(str(err))
-		return False
+	return False
 
 
 def make_dvpl_footer(encoded: bytes, d_size: int, compression: str) -> bytes:
