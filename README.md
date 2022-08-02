@@ -32,7 +32,7 @@
 
 `verify` - Verify DVPL files
 
-## decode OPTIONS
+## `decode` OPTIONS
 --compression lz4 | lz4_hc | rfc1951 | none
 
 DVPL File format
