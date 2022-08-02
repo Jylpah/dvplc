@@ -1,6 +1,6 @@
 # NAME
 
-`dvplc` - convert Dava game engine's SmartDLC DVPL files. 
+`dvplc` - encode/decode/verify Dava game engine's SmartDLC DVPL files. 
 
 # STATUS
 
@@ -10,8 +10,29 @@ Tested on Linux & Working :-)
 
 * Write automated tests
 * Test on other platforms 
-* Write installation instructions
 * Easier installation
+
+# Installation 
+
+*Python 3.10+ is required*
+
+```
+# Clone repository
+git clone https://github.com/Jylpah/dvplc.git
+
+# Pull submodules
+git submodule update --init
+
+# Install required Python modules with Python pip
+pip install -f requirements
+```
+## Update
+
+```
+git pull
+git submodule update --remote
+```
+
 
 # SYNOPSIS
 
