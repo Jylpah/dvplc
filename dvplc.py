@@ -328,7 +328,8 @@ async def verify_dvpl_file(dvpl_fn: str) -> bool:
 			logger.debug(f"reading file: {dvpl_fn}")
 			ret = await decode_dvpl(await ifp.read(), quiet=True)	
 		if ret != None:
-			logger.info(dvpl_fn + ': OK')
+			if logger.getEffectiveLevel() < logging.CRITICAL:
+				print(dvpl_fn + ': OK')
 		else:
 			print(dvpl_fn + ': ERROR')
 		return True
