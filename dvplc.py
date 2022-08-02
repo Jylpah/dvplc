@@ -60,12 +60,12 @@ async def main(argv):
 		parser.add_argument('mode', type=str, choices=MODES, metavar='encode | decode | verify', help="Choose encode/decode mode.")
 
 		arggroup_conversion = parser.add_mutually_exclusive_group()
-		arggroup_conversion.add_argument('--replace',dest='conversion', action='store_const', const='replace', 
-				help='Save converted file(s) into the same dir as source file(s) and delete the source files(s)')
 		arggroup_conversion.add_argument('--keep',dest='conversion', action='store_const', const='keep', 
 				help='Save converted file(s) into the same dir as source file(s) (Default)')
+		arggroup_conversion.add_argument('--replace',dest='conversion', action='store_const', const='replace', 
+				help='Delete source files after successful conversion')		
 		arggroup_conversion.add_argument('--mirror', metavar="DIR", type=str, default=None, 
-				help='Mirror converted files into destination directory')
+				help='Mirror converted files under DIR')
 
 		parser.add_argument('files', metavar='FILE1 [FILE2 ...]', type=str, nargs='+', help='Files to read. Use \'-\' for STDIN')
 		parser.set_defaults(LEVEL='WARNING', conversion='keep')
