@@ -44,7 +44,14 @@ Credits Maddoxkkm
 
 # STATUS
 
-WORK IN PROGRESS. Decoding, encoding, verifying a single file works. 
+Tested on Linux & Working :-) 
+
+## TODO
+
+* Write automated tests
+* Test on other platforms 
+* Write installation instructions
+* Easier installation
 
 # SYNOPSIS
 
