@@ -1,0 +1,4 @@
+[submodule "blitzutils"]
+	path = blitzutils
+	url = https://github.com/Jylpah/blitzutils.git
+	branch = dev
