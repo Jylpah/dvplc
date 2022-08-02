@@ -48,8 +48,6 @@ async def main(argv):
 		arggroup_verbosity = parser.add_mutually_exclusive_group()
 		arggroup_verbosity.add_argument('--debug',dest='LEVEL', action='store_const', const='DEBUG',  
 										help='Debug mode')
-		arggroup_verbosity.add_argument('--warning', dest='LEVEL', action='store_const', const='WARNING', default='WARNING',
-										help='Default verbosity (warning)')
 		arggroup_verbosity.add_argument('--verbose', dest='LEVEL', action='store_const', const='INFO',
 										help='Verbose mode')
 		arggroup_verbosity.add_argument('--silent', dest='LEVEL', action='store_const', const='CRITICAL',
