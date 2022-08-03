@@ -2,6 +2,7 @@
 
 # Script convert Dava game engine's SmartDLC DVPL files
 
+from typing import Optional, Union, Dict
 import logging
 import argparse
 from os import cpu_count, sep, remove, getcwd, makedirs, path
@@ -14,7 +15,7 @@ import lz4.block
 import zlib
 from blitzutils.filequeue import FileQueue
 
-logging.basicConfig(encoding='utf-8', format='%(levelname)s: %(message)s', level=logging.WARNING)
+logging.basicConfig(encoding='utf-8', format='%(levelname)s: %(funcName)s: %(message)s', level=logging.WARNING)
 logging.getLogger("asyncio").setLevel(logging.WARNING)
 logger = logging.getLogger(__name__)
 
@@ -30,12 +31,13 @@ DVPL_FOOTER_LEN = 20
 CONVERSIONS		= [ 'keep', 'replace', 'mirror']
 QUEUE_LEN 		= 1000
 THREADS 		= 5
-if cpu_count() != None:
-	THREADS = cpu_count()
+cpus = cpu_count()
+if cpus is not None:
+	THREADS = cpus
 
 # main() -------------------------------------------------------------
 
-async def main(argv):
+async def main(argv: list[str]):
 	# set the directory for the script
 	global logger
 	cwd = getcwd()
@@ -69,18 +71,18 @@ async def main(argv):
 		parser.set_defaults(LEVEL='WARNING', conversion='keep')
 		args = parser.parse_args()
 
-		logger.setLevel(args.LEVEL)
 		if args.LEVEL == logging.INFO:
 			logging.basicConfig(encoding='utf-8', format='%(levelname)s: %(message)s')
 		if args.LEVEL == logging.DEBUG:
 			logging.basicConfig(encoding='utf-8', format='%(levelname)s: %(funcName)s: %(message)s')
+		logger.setLevel(args.LEVEL)
 
 		if args.mirror != None:
 			args.conversion = 'mirror'
 			if len(args.files) != 1:
-				raise argparse.ArgumentError("More than file arguments given with --mirror")
+				raise argparse.ArgumentError(argument=args.mirror, message="More than one file argument given")
 			elif not path.isdir(args.files[0]):
-				raise argparse.ArgumentError("when using --mirror, file argument has to be a directory")
+				raise argparse.ArgumentError(argument=args.mirror, message="File argument has to be a directory")
 
 		logger.debug('Argumengs given: ' + str(args))
 
@@ -161,7 +163,9 @@ async def decode_dvpl_file(dvpl_fn: str, output_fn: str, force: bool = False) ->
 	assert force != None, f"--force value is None"
 
 	try:
+		output : Optional[bytes] = None
 		status = ''
+
 		if not path.isfile(dvpl_fn):
 			raise FileNotFoundError('Source file not found: ' + dvpl_fn)
 		if not dvpl_fn.lower().endswith('.dvpl'):
@@ -178,7 +182,7 @@ async def decode_dvpl_file(dvpl_fn: str, output_fn: str, force: bool = False) ->
 			output, status = await decode_dvpl(await ifp.read())	
 		
 		## Write decoded file
-		if output == None:
+		if output is None:
 			raise EncodingWarning(f"Error decoding data: {dvpl_fn} : {status}")
 		async with aiofiles.open(output_fn, mode='wb') as ofp:
 			logger.debug(f"writing to file: {output_fn}")	
@@ -192,7 +196,7 @@ async def decode_dvpl_file(dvpl_fn: str, output_fn: str, force: bool = False) ->
 	return False
 
 
-async def decode_dvpl(input: bytes, quiet: bool = False) -> tuple[bytes, str]:
+async def decode_dvpl(input: bytes, quiet: bool = False) -> tuple[Optional[bytes], str]:
 	"""Decode a DVPL bytearray"""
 
 	assert input != None, f"input value is None"
@@ -250,6 +254,7 @@ async def encode_dvpl_file(input_fn: str, dvpl_fn: str, compression: str = COMPR
 	assert force != None, f"--force is None"
 	
 	try:
+		output : Optional[bytes] = None
 		status = ''
 		if not path.isfile(input_fn):
 			raise FileNotFoundError('Source file not found: ' + input_fn)
@@ -267,7 +272,7 @@ async def encode_dvpl_file(input_fn: str, dvpl_fn: str, compression: str = COMPR
 			output, status = await encode_dvpl(await ifp.read(), compression)
 		
 		## Write dvpl file
-		if output == None:
+		if output is None:
 			raise EncodingWarning(f"Error encoding data: {status}")
 		async with aiofiles.open(dvpl_fn, mode='wb') as ofp:
 			logger.debug(f"writing to file: {dvpl_fn}")	
@@ -280,7 +285,7 @@ async def encode_dvpl_file(input_fn: str, dvpl_fn: str, compression: str = COMPR
 	return False
 
 
-async def encode_dvpl(input: bytes, compression: str, quiet: bool = False) -> tuple[bytes, str]:
+async def encode_dvpl(input: bytes, compression: str, quiet: bool = False) -> tuple[Optional[bytes], str]:
 	"""Encode data to a DVPL format"""
 
 	assert isinstance(input, bytes), f"input needs to be bytes, got {type(input)}"
@@ -321,6 +326,7 @@ async def verify_dvpl_file(dvpl_fn: str) -> bool:
 	assert dvpl_fn != None, f"input file name is None type"
 	
 	try:
+		output : Optional[bytes] = None
 		status = ''
 		if not path.isfile(dvpl_fn):
 			raise FileNotFoundError('Source file not found: ' + dvpl_fn)
@@ -330,8 +336,8 @@ async def verify_dvpl_file(dvpl_fn: str) -> bool:
 		## Try to decode a DVPL file
 		async with aiofiles.open(dvpl_fn, mode='rb') as ifp:
 			logger.debug(f"reading file: {dvpl_fn}")
-			ret, status = await decode_dvpl(await ifp.read(), quiet=True)	
-		if ret != None:
+			output, status = await decode_dvpl(await ifp.read(), quiet=True)	
+		if output is not None:
 			if logger.getEffectiveLevel() < logging.CRITICAL:
 				print(dvpl_fn + ': OK')
 		else:
@@ -344,11 +350,10 @@ async def verify_dvpl_file(dvpl_fn: str) -> bool:
 	return False
 
 
-def make_dvpl_footer(encoded: bytes, d_size: int, compression: str) -> bytes:
+def make_dvpl_footer(encoded: bytes, d_size: int, compression: str) -> Optional[bytes]:
 	"""Make a 20-byte DVPL footer"""
 
 	assert isinstance(encoded, bytes), f"input needs to be bytes, got {type(encoded)}"
-	
 	assert compression in COMPRESSIONS, f"Unknown compression: {compression}"
 
 	try:
@@ -360,50 +365,65 @@ def make_dvpl_footer(encoded: bytes, d_size: int, compression: str) -> bytes:
 			logger.debug('encoding type: ' + compression)
 
 		footer = bytearray()
-		footer += toUInt32LE(d_size)							# input size as UInt32LE
-		footer += toUInt32LE(len(encoded))						# output size as UInt32LE
-		footer += toUInt32LE(zlib.crc32(encoded))				# outout crc32 as UInt32LE
-		footer += toUInt32LE(COMPRESSION_TYPE[compression])  	# output type as UInt32LE
+		f_d_size 	= toUInt32LE(d_size)							# input size as UInt32LE
+		f_e_size 	= toUInt32LE(len(encoded))						# output size as UInt32LE
+		f_crc32		= toUInt32LE(zlib.crc32(encoded))				# output crc32 as UInt32LE
+		f_compression = toUInt32LE(COMPRESSION_TYPE[compression])  	# output type as UInt32LE
+
+		assert (f_d_size is not None) and (f_e_size is not None) and (f_crc32 is not None) and (f_compression is not None), \
+				"Making DVPL footer failed"
+		footer += f_d_size							# input size as UInt32LE
+		footer += f_e_size					# output size as UInt32LE
+		footer += f_crc32				# outout crc32 as UInt32LE
+		footer += f_compression  	# output type as UInt32LE
 		footer += DVPL_MARKER.encode(encoding='utf-8', errors='strict')
-		footer = bytes(footer)
 
 		assert len(footer) == 20, f"Footer size != 20"
-
-		return footer
+		return bytes(footer)
 	except Exception as err:
 		logger.error(str(err))
 	return None
 
 
-def read_dvpl_footer(data: bytes) -> tuple[dict(), bytes]:
+def read_dvpl_footer(data: bytes) -> tuple[dict, bytes]:
 	"""Read and check 20 byte DVPL footer"""
 
 	assert(isinstance(data, bytes)), f"input needs to be bytes, got {type(data)}"
 
-	result = dict()
+	result : Dict[str, Union[int, str]] = dict()
 
 	if len(data) < DVPL_FOOTER_LEN:
 		raise EncodingWarning('Data is too short (< 20 bytes)')
 
 	footer = data[-DVPL_FOOTER_LEN:]
+	
 	result['marker'] = str(footer[-4:], encoding='utf-8', errors='strict')
 	if result['marker'] != DVPL_MARKER:
 		raise EncodingWarning("File is missig 'DVPL' marker in the end of the file.")
-	result['d_size'] 	= fromUInt32LE(footer[:4])			# decoded size
-	result['e_size'] 	= fromUInt32LE(footer[4:8])			# encoded size
-	result['e_crc'] 	= fromUInt32LE(footer[8:12])		# encoded CRC32
-	result['e_type'] 	= COMPRESSIONS[fromUInt32LE(footer[12:16])]  # encoding type
+		
+	f_d_size 	= fromUInt32LE(footer[:4])			# decoded size
+	f_e_size 	= fromUInt32LE(footer[4:8])			# encoded size
+	f_crc32		= fromUInt32LE(footer[8:12])		# encoded CRC32
+	f_compression = fromUInt32LE(footer[12:16]) # encoding type
+
+	assert (f_d_size is not None) and (f_e_size is not None) and (f_crc32 is not None) and (f_compression is not None), \
+				"Malformed DVPL footer"
+	result['d_size'] 	= f_d_size
+	result['e_size'] 	= f_e_size
+	result['e_crc'] 	= f_crc32
+	result['e_type'] 	= COMPRESSIONS[f_compression] 
 	
 	if logger.getEffectiveLevel() == logging.DEBUG:
-		logger.debug('decoded size: ' + str(result['d_size']))
+		logger.debug('decoded size: ' + str(result['d_size']))		
 		logger.debug('encoded size: ' + str(result['e_size']))
-		logger.debug('encoded CRC32: ' + hex(result['e_crc']))
-		logger.debug('encoding type: ' + result['e_type'])
+		if isinstance(result['e_crc'], int):
+			logger.debug('encoded CRC32: ' + hex(result['e_crc']))
+		logger.debug('encoding type: ' + str(result['e_type']))
 	
 	return result, data[:-DVPL_FOOTER_LEN]
 
 
-def toUInt32LE(value: int) -> bytes:	
+def toUInt32LE(value: int) -> Optional[bytes]:	
 	"""Convert an integer to 32-bit unsigned integer in Little-Endian byte-order"""
 	try:
 		if value == None:
@@ -416,7 +436,7 @@ def toUInt32LE(value: int) -> bytes:
 	return None
 
 
-def fromUInt32LE(data: bytes) -> int:
+def fromUInt32LE(data: bytes) -> Optional[int]:
 	"""Convert a 32-bit unsigned integer in Little-Endian byte-order to integer"""
 	try:
 		if data == None:
@@ -425,14 +445,6 @@ def fromUInt32LE(data: bytes) -> int:
 	except Exception as err:
 		logger.error(str(err))
 	return None
-
-def error(err: Exception):
-	logger.error(str(err))
-	raise err
-
-def warning(err: Exception): 
-	logger.warning(str(err))
-	raise err
 
 ### main()
 if __name__ == "__main__":
