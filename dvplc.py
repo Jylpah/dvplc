@@ -161,6 +161,7 @@ async def decode_dvpl_file(dvpl_fn: str, output_fn: str, force: bool = False) ->
 	assert force != None, f"--force value is None"
 
 	try:
+		status = ''
 		if not path.isfile(dvpl_fn):
 			raise FileNotFoundError('Source file not found: ' + dvpl_fn)
 		if not dvpl_fn.lower().endswith('.dvpl'):
@@ -174,11 +175,11 @@ async def decode_dvpl_file(dvpl_fn: str, output_fn: str, force: bool = False) ->
 		output = bytes()
 		async with aiofiles.open(dvpl_fn, mode='rb') as ifp:
 			logger.info(f"decoding file: {dvpl_fn}")				 
-			output = await decode_dvpl(await ifp.read())	
+			output, status = await decode_dvpl(await ifp.read())	
 		
 		## Write decoded file
 		if output == None:
-			return EncodingWarning('Error decoding data')
+			raise EncodingWarning(f"Error decoding data: {dvpl_fn} : {status}")
 		async with aiofiles.open(output_fn, mode='wb') as ofp:
 			logger.debug(f"writing to file: {output_fn}")	
 			await ofp.write(output)
@@ -191,7 +192,7 @@ async def decode_dvpl_file(dvpl_fn: str, output_fn: str, force: bool = False) ->
 	return False
 
 
-async def decode_dvpl(input: bytes, quiet: bool = False) -> bytes:
+async def decode_dvpl(input: bytes, quiet: bool = False) -> tuple[bytes, str]:
 	"""Decode a DVPL bytearray"""
 
 	assert input != None, f"input value is None"
@@ -228,15 +229,16 @@ async def decode_dvpl(input: bytes, quiet: bool = False) -> bytes:
 		assert output != None, f"Output value is None"
 		assert isinstance(output, bytes), f"Output needs to be bytes, got {type(input)}"
 		
-		return output
+		return output, "OK"
 	
 	except lz4.block.LZ4BlockError as err:
 		if not quiet:
 			logger.error('LZ4 decoding error: ' + str(err))
+		return None, 'LZ4 decoding error'
 	except Exception as err:
 		if not quiet:
 			logger.error(str(err))
-	return None
+		return None, str(err)
 
 
 async def encode_dvpl_file(input_fn: str, dvpl_fn: str, compression: str = COMPRESSION, force: bool = False) -> bool:
@@ -248,6 +250,7 @@ async def encode_dvpl_file(input_fn: str, dvpl_fn: str, compression: str = COMPR
 	assert force != None, f"--force is None"
 	
 	try:
+		status = ''
 		if not path.isfile(input_fn):
 			raise FileNotFoundError('Source file not found: ' + input_fn)
 		if input_fn.lower().endswith('.dvpl'):
@@ -261,15 +264,14 @@ async def encode_dvpl_file(input_fn: str, dvpl_fn: str, compression: str = COMPR
 		output = bytes()
 		async with aiofiles.open(input_fn, mode='rb') as ifp:
 			logger.info(f"encoding file: {input_fn}")
-			output = await encode_dvpl(await ifp.read(), compression)
+			output, status = await encode_dvpl(await ifp.read(), compression)
 		
 		## Write dvpl file
 		if output == None:
-			raise EncodingWarning('Error encoding data')
+			raise EncodingWarning(f"Error encoding data: {status}")
 		async with aiofiles.open(dvpl_fn, mode='wb') as ofp:
 			logger.debug(f"writing to file: {dvpl_fn}")	
 			await ofp.write(output)
-
 		return True
 	except asyncio.CancelledError as err:
 		logger.info('Cancelled')		
@@ -278,7 +280,7 @@ async def encode_dvpl_file(input_fn: str, dvpl_fn: str, compression: str = COMPR
 	return False
 
 
-async def encode_dvpl(input: bytes, compression: str) -> bytes:
+async def encode_dvpl(input: bytes, compression: str, quiet: bool = False) -> tuple[bytes, str]:
 	"""Encode data to a DVPL format"""
 
 	assert isinstance(input, bytes), f"input needs to be bytes, got {type(input)}"
@@ -301,13 +303,16 @@ async def encode_dvpl(input: bytes, compression: str) -> bytes:
 
 		logger.debug('decoded CRC32: ' + hex(zlib.crc32(input)))		
 
-		return output + footer
+		return output + footer, "OK"
 
 	except lz4.block.LZ4BlockError as err:
-		logger.error('LZ4 encoding error')
+		if not quiet:
+			logger.error('LZ4 encoding error')
+		return None, 'LZ4 encoding error'
 	except Exception as err:		
-		logger.error(str(err))	
-	return None
+		if not quiet:
+			logger.error(str(err))	
+		return None, str(err)
 
 
 async def verify_dvpl_file(dvpl_fn: str) -> bool:
@@ -316,6 +321,7 @@ async def verify_dvpl_file(dvpl_fn: str) -> bool:
 	assert dvpl_fn != None, f"input file name is None type"
 	
 	try:
+		status = ''
 		if not path.isfile(dvpl_fn):
 			raise FileNotFoundError('Source file not found: ' + dvpl_fn)
 		if not dvpl_fn.lower().endswith('.dvpl'):
@@ -324,12 +330,12 @@ async def verify_dvpl_file(dvpl_fn: str) -> bool:
 		## Try to decode a DVPL file
 		async with aiofiles.open(dvpl_fn, mode='rb') as ifp:
 			logger.debug(f"reading file: {dvpl_fn}")
-			ret = await decode_dvpl(await ifp.read(), quiet=True)	
+			ret, status = await decode_dvpl(await ifp.read(), quiet=True)	
 		if ret != None:
 			if logger.getEffectiveLevel() < logging.CRITICAL:
 				print(dvpl_fn + ': OK')
 		else:
-			print(dvpl_fn + ': ERROR')
+			print(f"{dvpl_fn} : ERROR: {status}")
 		return True
 	except asyncio.CancelledError as err:
 		logger.info('Cancelled')
