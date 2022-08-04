@@ -1,3 +1,8 @@
 lz4
 aiofiles
 aioconsole
+
+# dev
+pytest
+mypy
+pytest-asyncio
