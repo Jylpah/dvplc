@@ -113,6 +113,7 @@ async def main(argv: list[str]):
 
 async def process_files(fileQ: FileQueue, args : argparse.Namespace):
 	try:
+		assert fileQ is not None and args is not None, "parameters must not be None"
 		cwd = getcwd()
 		source_root = ''
 		target_root = ''
@@ -152,7 +153,7 @@ async def process_files(fileQ: FileQueue, args : argparse.Namespace):
 		logger.debug('Worker cancelled')		
 	except Exception as err:
 		logger.error(str(err))
-	return None
+	
 
 
 async def decode_dvpl_file(dvpl_fn: str, output_fn: str, force: bool = False) -> bool:
