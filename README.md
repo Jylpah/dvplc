@@ -10,29 +10,27 @@ Tested on Linux & Working :-)
 
 * Write automated tests
 * Test on other platforms 
-* Easier installation
 
 # Installation 
 
 *Python 3.10+ is required*
 
+My recommendation is to use `git` as your *package manager*.
 ```
-# Clone repository
-git clone https://github.com/Jylpah/dvplc.git
-
-# Pull submodules
-git submodule update --init
+# Clone repo
+git clone --recurse-submodules https://github.com/Jylpah/dvplc.git
 
 # Install required Python modules with Python pip
 pip install -f requirements
 ```
+
+**If** you forgot to add the `--recurse-submodules` option to `git clone` you can run `git submodule update --init` after cloning the repository. 
+
 ## Update
 
 ```
-git pull
-git submodule update --remote
+git pull --recurse-submodules
 ```
-
 
 # SYNOPSIS
 
