@@ -18,6 +18,10 @@ def test_source_data_0() -> bytes:
 
 FIXTURE_DIR = os.path.dirname(os.path.realpath(__file__))
 
+def pytest_configure(config):
+    plugin = config.pluginmanager.getplugin('mypy')
+    plugin.mypy_argv.append('--check-untyped-defs')
+	
 
 @pytest.fixture
 def test_checksums() -> dict[str, str]:
