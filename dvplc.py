@@ -342,9 +342,10 @@ async def verify_dvpl_file(dvpl_fn: str) -> bool:
 		if output is not None:
 			if logger.getEffectiveLevel() < logging.CRITICAL:
 				print(dvpl_fn + ': OK')
+			return True
 		else:
 			print(f"{dvpl_fn} : ERROR: {status}")
-		return True
+			return False
 	except asyncio.CancelledError as err:
 		logger.info('Cancelled')
 	except Exception as err:
@@ -413,6 +414,7 @@ def read_dvpl_footer(data: bytes) -> tuple[dict, bytes]:
 	result['d_size'] 	= f_d_size
 	result['e_size'] 	= f_e_size
 	result['e_crc'] 	= f_crc32
+	assert f_compression >= 0 and f_compression < len(COMPRESSIONS), "unknown compression in DVPL footer"
 	result['e_type'] 	= COMPRESSIONS[f_compression] 
 	
 	if logger.getEffectiveLevel() == logging.DEBUG:
