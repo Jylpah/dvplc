@@ -6,3 +6,4 @@ aioconsole
 pytest
 mypy
 pytest-asyncio
+pytest-datafiles
