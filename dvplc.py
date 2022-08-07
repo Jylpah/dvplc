@@ -43,8 +43,8 @@ async def main(argv: list[str]):
 	cwd = getcwd()
 
 	try:
-
 		parser = argparse.ArgumentParser(description='Encoder/decoder for SmartDLC DVPL files')
+
 		arggroup_verbosity = parser.add_mutually_exclusive_group()
 		arggroup_verbosity.add_argument('--debug',dest='LEVEL', action='store_const', const='DEBUG',  
 										help='Debug mode')
@@ -81,6 +81,7 @@ async def main(argv: list[str]):
 			args.conversion = 'mirror'
 			if len(args.files) != 1:
 				raise argparse.ArgumentError(argument=args.mirror, message="More than one file argument given")
+		## is this needed?
 			elif not path.isdir(args.files[0]):
 				raise argparse.ArgumentError(argument=args.mirror, message="File argument has to be a directory")
 
@@ -400,7 +401,7 @@ def read_dvpl_footer(data: bytes) -> tuple[dict, bytes]:
 	
 	result['marker'] = str(footer[-4:], encoding='utf-8', errors='strict')
 	if result['marker'] != DVPL_MARKER:
-		raise EncodingWarning("File is missig 'DVPL' marker in the end of the file.")
+		raise EncodingWarning("File is missing 'DVPL' marker in the end of the file.")
 		
 	f_d_size 	= fromUInt32LE(footer[:4])			# decoded size
 	f_e_size 	= fromUInt32LE(footer[4:8])			# encoded size
