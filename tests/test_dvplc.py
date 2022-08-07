@@ -1,7 +1,7 @@
 from asyncio.log import logger
-import pytest
+import pytest, os
 
-from ..dvplc import COMPRESSION, encode_dvpl, decode_dvpl
+from ..dvplc import COMPRESSION, encode_dvpl, decode_dvpl, encode_dvpl_file, verify_dvpl_file, decode_dvpl_file
 
 #target = __import__("dvplc.py")
 
@@ -15,13 +15,9 @@ from ..dvplc import COMPRESSION, encode_dvpl, decode_dvpl
 def test_source_data_0() -> bytes:
 	return bytes(b'1234567890')
 
-@pytest.fixture
-def test_encode_source() -> list[str]:
-	return [ '1_source.txt', '2_source.bin' ]
 
-@pytest.fixture
-def test_decode_source() -> list[str]:
-	return [ '3_source.txt.dvpl', '4_source.bin.dvpl' ]
+FIXTURE_DIR = os.path.dirname(os.path.realpath(__file__))
+
 
 @pytest.fixture
 def test_checksums() -> dict[str, str]:
@@ -38,7 +34,7 @@ def test_checksums() -> dict[str, str]:
 
 	
 @pytest.mark.asyncio
-async def test_dvpl_encode_decode_passes(test_source_data_0):
+async def test_0_dvpl_encode_decode_passes(test_source_data_0):
 	res_encode, txt = await encode_dvpl(input=test_source_data_0, compression=COMPRESSION, quiet=True)
 
 	assert txt == "OK"
@@ -51,6 +47,49 @@ async def test_dvpl_encode_decode_passes(test_source_data_0):
 
 
 @pytest.mark.asyncio
-async def test_encode_file_passes():
-	pass
+@pytest.mark.datafiles(
+    os.path.join(FIXTURE_DIR, '01_source.txt'),
+    os.path.join(FIXTURE_DIR, '02_source.bin')
+    )
+async def test_1_encode_file_passes(datafiles):
+	for i in datafiles.listdir():
+		input = str(i)
+		output = input + '.dvpl'
+		print(f"Input: {input}, Output: {output}")
+		assert await encode_dvpl_file(input, output), f"encoding failed: {input}"
+		assert await verify_dvpl_file(output), f"dvpl verification failed: {output}"
 
+
+@pytest.mark.asyncio
+@pytest.mark.datafiles(
+    os.path.join(FIXTURE_DIR, '03_source.txt.dvpl'),
+    os.path.join(FIXTURE_DIR, '04_source.bin.dvpl')
+    )
+async def test_2_decode_file_passes(datafiles):
+	for i in datafiles.listdir():
+		input = str(i)
+		output = input.removesuffix('.dvpl')
+		print(f"Input: {input}, Output: {output}")
+		assert await verify_dvpl_file(input), f"dvpl verification failed: {input}"
+		assert await decode_dvpl_file(input, output), f"decoding failed: {input}"
+		
+
+@pytest.mark.asyncio
+@pytest.mark.datafiles(    
+	os.path.join(FIXTURE_DIR, '05_source.txt_fails_marker.dvpl'),
+	os.path.join(FIXTURE_DIR, '06_source.bin_fails_marker.dvpl'),
+	os.path.join(FIXTURE_DIR, '07_source.txt_fails_compression.dvpl'),
+	os.path.join(FIXTURE_DIR, '08_source.bin_fails_compression.dvpl'),
+	os.path.join(FIXTURE_DIR, '09_source.txt_fails_crc.dvpl'),
+	os.path.join(FIXTURE_DIR, '10_source.bin_fails_crc.dvpl'),
+	os.path.join(FIXTURE_DIR, '11_source.txt_fails_encoded_size.dvpl'),
+	os.path.join(FIXTURE_DIR, '12_source.bin_fails_encoded_size.dvpl'),
+	os.path.join(FIXTURE_DIR, '13_source.txt_fails_decoded_size.dvpl'),
+	os.path.join(FIXTURE_DIR, '14_source.bin_fails_decoded_size.dvpl')
+    )
+async def test_3_verify_file_fails(datafiles):
+	for i in datafiles.listdir():
+		input = str(i)
+		print(f"Input: {input}")
+		assert not await verify_dvpl_file(input), f"dvpl verification failed (false positive): {input}"
+		
