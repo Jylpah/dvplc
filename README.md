@@ -8,7 +8,6 @@ Tested on Linux & Working :-)
 
 ## TODO
 
-* Write automated tests
 * Test on other platforms 
 
 # Installation 
