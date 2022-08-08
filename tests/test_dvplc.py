@@ -1,8 +1,8 @@
 from asyncio.log import logger
 import pytest, os
 
-from ..dvplc import COMPRESSION, encode_dvpl, decode_dvpl, encode_dvpl_file, verify_dvpl_file, decode_dvpl_file
-
+#from ..dvplc import COMPRESSION, encode_dvpl, decode_dvpl, encode_dvpl_file, verify_dvpl_file, decode_dvpl_file
+from .. import dvplc
 #target = __import__("dvplc.py")
 
 ## Test plan
