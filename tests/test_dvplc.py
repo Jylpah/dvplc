@@ -3,8 +3,6 @@ import pytest, os
 
 from ..dvplc import COMPRESSION, encode_dvpl, decode_dvpl, encode_dvpl_file, verify_dvpl_file, decode_dvpl_file
 
-#target = __import__("dvplc.py")
-
 ## Test plan
 # 1) mypy static typing
 # 2) test encoding
