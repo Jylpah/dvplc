@@ -61,7 +61,7 @@ git pull --recurse-submodules
 
 `--replace` Delete source files after conversion
 
-`--destination` `DIR` Place converted files in to DIR and mirror the source file tree structure. All source files have to be under working dir. 
+`--mirror` `DIR` Mirror source tree structure to DIR and place converted files there. All source files have to be under working dir. 
 
 ## `encode` OPTIONS
 
