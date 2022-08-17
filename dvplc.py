@@ -13,11 +13,10 @@ import aiofiles
 import aioconsole
 import lz4.block
 import zlib
-from blitzutils.filequeue 			import FileQueue
-from blitzutils.eventlogger 		import EventLogger
-from blitzutils.multilevelformatter import MultilevelFormatter
+from pyutils.filequeue 			import FileQueue
+from pyutils.eventlogger 		import EventLogger
+from pyutils.multilevelformatter import MultilevelFormatter
 
-#logging.basicConfig(encoding='utf-8', level=logging.WARNING)
 logging.getLogger("asyncio").setLevel(logging.WARNING)
 logger = logging.getLogger(__name__)
 message=logger.warning
@@ -35,9 +34,6 @@ DVPL_FOOTER_LEN = 20
 CONVERSIONS		= [ 'keep', 'replace', 'mirror']
 QUEUE_LEN 		= 1000
 THREADS 		= 5
-#cpus = cpu_count()
-#if cpus is not None:
-#	THREADS = cpus
 
 # main() -------------------------------------------------------------
 
