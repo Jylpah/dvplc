@@ -14,6 +14,7 @@ import aioconsole
 import lz4.block
 import zlib
 from blitzutils.filequeue import FileQueue
+from blitzutils.eventlogger import EventLogger
 
 logging.basicConfig(encoding='utf-8', format='%(levelname)s: %(funcName)s: %(message)s', level=logging.WARNING)
 logging.getLogger("asyncio").setLevel(logging.WARNING)
@@ -31,9 +32,9 @@ DVPL_FOOTER_LEN = 20
 CONVERSIONS		= [ 'keep', 'replace', 'mirror']
 QUEUE_LEN 		= 1000
 THREADS 		= 5
-cpus = cpu_count()
-if cpus is not None:
-	THREADS = cpus
+#cpus = cpu_count()
+#if cpus is not None:
+#	THREADS = cpus
 
 # main() -------------------------------------------------------------
 
@@ -77,7 +78,7 @@ async def main(argv: list[str]):
 			logging.basicConfig(encoding='utf-8', format='%(levelname)s: %(funcName)s: %(message)s')
 		logger.setLevel(args.LEVEL)
 
-		if args.mirror != None:
+		if args.mirror is not None:
 			args.conversion = 'mirror'
 			if len(args.files) != 1:
 				raise argparse.ArgumentError(argument=args.mirror, message="More than one file argument given")
@@ -93,16 +94,17 @@ async def main(argv: list[str]):
 			fq = FileQueue(filter="*.dvpl", exclude=True, maxsize=QUEUE_LEN)
 		
 		workers = list()
-
-		workers.append(asyncio.create_task(fq.mk_queue(args.files)))
+		logger.debug(f"file queue is {str(fq.qsize())} long")
+		scanner = asyncio.create_task(fq.mk_queue(args.files))
 		for i in range(args.threads):
 			workers.append(asyncio.create_task(process_files(fq, args)))
 			logger.debug(f"Process thread {str(i)} started")
 
 		logger.debug('Building file queue')
-		await asyncio.wait([workers[0]])
+		await asyncio.wait([scanner])
 		logger.debug('Processing files')
 		await fq.join()
+		# await fq.get_stats()
 		logger.debug('Cancelling workers')
 		for worker in workers:
 			worker.cancel()	
@@ -112,19 +114,20 @@ async def main(argv: list[str]):
 		sys.exit(1)
 
 
-async def process_files(fileQ: FileQueue, args : argparse.Namespace):
+async def process_files(fileQ: FileQueue, args : argparse.Namespace) -> EventLogger:
 	try:
 		assert fileQ is not None and args is not None, "parameters must not be None"
-		cwd = getcwd()
-		source_root = ''
-		target_root = ''
+		action : dict[str, str] = { 'encode': 'encoding', 'decode': 'decoding', 'verify': 'verification' }
+		source_root: str = ''
+		target_root: str = ''
+		el = EventLogger('Files processed')
 		if args.conversion == 'mirror':
-			assert args.mirror != None, "args.mirror is None"
+			assert args.mirror is not None, "args.mirror is None"
 			source_root = path.normpath(args.files[0]) + sep
 			target_root = path.normpath(args.mirror)
-
 		while True:
 			source = await fileQ.get()
+			el.log('Files read')
 			try:				
 				target = source
 				result = False
@@ -137,15 +140,22 @@ async def process_files(fileQ: FileQueue, args : argparse.Namespace):
 				if args.mode == 'encode':
 					target = target + '.dvpl'
 					result = await encode_dvpl_file(source, target, compression=args.compression, force=args.force)
+					el.log('Files encoded')
 				elif args.mode == 'decode':
 					target = target.removesuffix('.dvpl')
 					result = await decode_dvpl_file(source, target, force=args.force)
+					el.log('Files decoded')
 				elif args.mode == 'verify':
 					result = await verify_dvpl_file(source)
+				if result:
+					el.log(f'File {action[args.mode]} OK')
+				else:
+					el.log(f'File {action[args.mode]} FAILED')
 				if result and args.conversion == 'replace' and args.mode != 'verify':
 					logger.debug(f"Removing source file: {source}")
 					remove(source)				
 			except Exception as err:
+				el.log('Errors')
 				logger.error(str(err))
 			finally:
 				fileQ.task_done()
@@ -154,15 +164,16 @@ async def process_files(fileQ: FileQueue, args : argparse.Namespace):
 		logger.debug('Worker cancelled')		
 	except Exception as err:
 		logger.error(str(err))
+	return el
 	
 
 
 async def decode_dvpl_file(dvpl_fn: str, output_fn: str, force: bool = False) -> bool:
 	"""Encode a source file to a DVPL file"""
 	
-	assert dvpl_fn != None, f"DVPL file name is None"	
-	assert output_fn != None, f"output file name is None"
-	assert force != None, f"--force value is None"
+	assert dvpl_fn is not None, f"DVPL file name is None"	
+	assert output_fn is not None, f"output file name is None"
+	assert force is not None, f"--force value is None"
 
 	try:
 		output : Optional[bytes] = None
@@ -201,7 +212,7 @@ async def decode_dvpl_file(dvpl_fn: str, output_fn: str, force: bool = False) ->
 async def decode_dvpl(input: bytes, quiet: bool = False) -> tuple[Optional[bytes], str]:
 	"""Decode a DVPL bytearray"""
 
-	assert input != None, f"input value is None"
+	assert input is not None, f"input value is None"
 	assert isinstance(input, bytes), f"input needs to be bytes, got {type(input)}"
 
 	try:		
@@ -232,7 +243,7 @@ async def decode_dvpl(input: bytes, quiet: bool = False) -> tuple[Optional[bytes
 		
 		logger.debug('decoded CRC32: ' + hex(zlib.crc32(output)))
 
-		assert output != None, f"Output value is None"
+		assert output is not None, f"Output value is None"
 		assert isinstance(output, bytes), f"Output needs to be bytes, got {type(input)}"
 		
 		return output, "OK"
@@ -250,10 +261,10 @@ async def decode_dvpl(input: bytes, quiet: bool = False) -> tuple[Optional[bytes
 async def encode_dvpl_file(input_fn: str, dvpl_fn: str, compression: str = COMPRESSION, force: bool = False) -> bool:
 	"""Encode a source file to a DVPL file"""
 
-	assert input_fn != None, f"input file name is None"
-	assert dvpl_fn != None, f"DVPL file name is None"
+	assert input_fn is not None, f"input file name is None"
+	assert dvpl_fn is not None, f"DVPL file name is None"
 	assert compression in COMPRESSIONS, f"Unknown compression: {compression}"
-	assert force != None, f"--force is None"
+	assert force is not None, f"--force is None"
 	
 	try:
 		output : Optional[bytes] = None
@@ -291,7 +302,7 @@ async def encode_dvpl(input: bytes, compression: str, quiet: bool = False) -> tu
 	"""Encode data to a DVPL format"""
 
 	assert isinstance(input, bytes), f"input needs to be bytes, got {type(input)}"
-	assert input != None, f"input is None"
+	assert input is not None, f"input is None"
 	assert compression in COMPRESSIONS, f"Unknown compression: {compression}"
 
 	try:
@@ -325,7 +336,7 @@ async def encode_dvpl(input: bytes, compression: str, quiet: bool = False) -> tu
 async def verify_dvpl_file(dvpl_fn: str) -> bool:
 	"""Verify a DVPL file"""
 
-	assert dvpl_fn != None, f"input file name is None type"
+	assert dvpl_fn is not None, f"input file name is None type"
 	
 	try:
 		output : Optional[bytes] = None
@@ -430,7 +441,7 @@ def read_dvpl_footer(data: bytes) -> tuple[dict, bytes]:
 def toUInt32LE(value: int) -> Optional[bytes]:	
 	"""Convert an integer to 32-bit unsigned integer in Little-Endian byte-order"""
 	try:
-		if value == None:
+		if value is None:
 			raise ValueError('None given as input')
 		if value < 0:
 			raise ValueError('Cannot cast negative value as unsigned int')
@@ -443,7 +454,7 @@ def toUInt32LE(value: int) -> Optional[bytes]:
 def fromUInt32LE(data: bytes) -> Optional[int]:
 	"""Convert a 32-bit unsigned integer in Little-Endian byte-order to integer"""
 	try:
-		if data == None:
+		if data is None:
 			raise ValueError('None given as input')		
 		return int.from_bytes(data, byteorder='little', signed=False)
 	except Exception as err:
