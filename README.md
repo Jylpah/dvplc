@@ -21,7 +21,7 @@ git clone --recurse-submodules https://github.com/Jylpah/dvplc.git
 
 # Install required Python modules with Python pip
 cd dvplc
-pip install -f requirements.txt
+pip install -r requirements.txt
 ```
 
 **If** you forgot to add the `--recurse-submodules` option to `git clone` you can run `git submodule update --init` after cloning the repository. 
