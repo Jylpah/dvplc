@@ -20,6 +20,7 @@ My recommendation is to use `git` as your *package manager*.
 git clone --recurse-submodules https://github.com/Jylpah/dvplc.git
 
 # Install required Python modules with Python pip
+cd dvplc
 pip install -f requirements.txt
 ```
 
