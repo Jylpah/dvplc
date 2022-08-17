@@ -15,7 +15,7 @@ import lz4.block
 import zlib
 from pyutils.filequeue 			import FileQueue
 from pyutils.eventlogger 		import EventLogger
-from pyutils.multilevelformatter import MultilevelFormatter
+from pyutils.multilevelformatter import MultilevelFormatter, set_logging
 
 logging.getLogger("asyncio").setLevel(logging.WARNING)
 logger = logging.getLogger(__name__)
@@ -82,19 +82,7 @@ async def main(argv: list[str]):
 			logging.WARNING: 	'%(message)s',
 			logging.ERROR: 		'%(levelname)s: %(message)s'
 		}
-		multi_formatter = MultilevelFormatter(fmts=logger_conf)
-		stream_handler = logging.StreamHandler(sys.stdout)
-		stream_handler.setFormatter(multi_formatter)		
-		logger.addHandler(stream_handler)
-		
-		#logging.basicConfig(level=args.LEVEL,format='%(levelname)s: %(message)s', handlers=[stream_handler])
-
-		if args.log is not None:
-			file_handler = logging.FileHandler(args.log)			
-			log_formatter = logging.Formatter('%(levelname)s:: %(funcName)s: %(message)s')
-			file_handler.setFormatter(log_formatter)
-			logger.addHandler(file_handler)
-		
+		set_logging(logger, mlevel_format=logger_conf, log_file=args.log)		
 
 		if args.mirror is not None:
 			args.conversion = 'mirror'
