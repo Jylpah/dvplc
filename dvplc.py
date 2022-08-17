@@ -13,11 +13,15 @@ import aiofiles
 import aioconsole
 import lz4.block
 import zlib
-from blitzutils.filequeue import FileQueue
+from blitzutils.filequeue 			import FileQueue
+from blitzutils.eventlogger 		import EventLogger
+from blitzutils.multilevelformatter import MultilevelFormatter
 
-logging.basicConfig(encoding='utf-8', format='%(levelname)s: %(funcName)s: %(message)s', level=logging.WARNING)
+#logging.basicConfig(encoding='utf-8', level=logging.WARNING)
 logging.getLogger("asyncio").setLevel(logging.WARNING)
 logger = logging.getLogger(__name__)
+message=logger.warning
+verbose=logger.info
 
 # Constants & defaults
 MODES			= ['encode', 'decode', 'verify']
@@ -31,18 +35,18 @@ DVPL_FOOTER_LEN = 20
 CONVERSIONS		= [ 'keep', 'replace', 'mirror']
 QUEUE_LEN 		= 1000
 THREADS 		= 5
-cpus = cpu_count()
-if cpus is not None:
-	THREADS = cpus
+#cpus = cpu_count()
+#if cpus is not None:
+#	THREADS = cpus
 
 # main() -------------------------------------------------------------
 
 async def main(argv: list[str]):
 	# set the directory for the script
 	global logger
-	cwd = getcwd()
-
+	
 	try:
+		# parse arguments
 		parser = argparse.ArgumentParser(description='Encoder/decoder for SmartDLC DVPL files')
 
 		arggroup_verbosity = parser.add_mutually_exclusive_group()
@@ -52,6 +56,8 @@ async def main(argv: list[str]):
 										help='Verbose mode')
 		arggroup_verbosity.add_argument('--silent', dest='LEVEL', action='store_const', const='CRITICAL',
 										help='Silent mode')
+		parser.add_argument('--log', type=str, metavar='LOGFILE', default=None, help='Log to LOGFILE')
+
 		parser.add_argument('--force', action='store_true', default=False, help='Overwrite files')
 		parser.add_argument('--threads', type=int, default=THREADS, 
 							help='Set number of asynchronous threads. Default is automatic.')
@@ -66,24 +72,41 @@ async def main(argv: list[str]):
 				help='Delete source files after successful conversion')		
 		arggroup_conversion.add_argument('--mirror', metavar="DIR", type=str, default=None, 
 				help='Mirror converted files under DIR')
-
+		parser.add_argument('--base', metavar="DIR", type=str, default=getcwd(), 
+				help='Base source directory for --mirror')
 		parser.add_argument('files', metavar='FILE1 [FILE2 ...]', type=str, nargs='+', help='Files to read. Use \'-\' for STDIN')
 		parser.set_defaults(LEVEL='WARNING', conversion='keep')
+
 		args = parser.parse_args()
 
-		if args.LEVEL == logging.INFO:
-			logging.basicConfig(encoding='utf-8', format='%(levelname)s: %(message)s')
-		if args.LEVEL == logging.DEBUG:
-			logging.basicConfig(encoding='utf-8', format='%(levelname)s: %(funcName)s: %(message)s')
+		# setup logging
 		logger.setLevel(args.LEVEL)
+		logger_conf: dict[int, str] = { 
+			logging.INFO: 		'%(message)s',
+			logging.WARNING: 	'%(message)s',
+			logging.ERROR: 		'%(levelname)s: %(message)s'
+		}
+		multi_formatter = MultilevelFormatter(fmts=logger_conf)
+		stream_handler = logging.StreamHandler(sys.stdout)
+		stream_handler.setFormatter(multi_formatter)		
+		logger.addHandler(stream_handler)
+		
+		#logging.basicConfig(level=args.LEVEL,format='%(levelname)s: %(message)s', handlers=[stream_handler])
 
-		if args.mirror != None:
+		if args.log is not None:
+			file_handler = logging.FileHandler(args.log)			
+			log_formatter = logging.Formatter('%(levelname)s:: %(funcName)s: %(message)s')
+			file_handler.setFormatter(log_formatter)
+			logger.addHandler(file_handler)
+		
+
+		if args.mirror is not None:
 			args.conversion = 'mirror'
-			if len(args.files) != 1:
-				raise argparse.ArgumentError(argument=args.mirror, message="More than one file argument given")
-		## is this needed?
-			elif not path.isdir(args.files[0]):
-				raise argparse.ArgumentError(argument=args.mirror, message="File argument has to be a directory")
+			## FIX: If one arg, it has to be DIR and will serve as mirror source base, 
+			# otherwise CWD will be mirror source base and all the source files have to be under it
+			if len(args.files) == 1:
+				args.base = args.files[0]
+			assert path.isdir(args.base), f"--base DIR has to be directory: {args.base}"
 
 		logger.debug('Argumengs given: ' + str(args))
 
@@ -93,59 +116,79 @@ async def main(argv: list[str]):
 			fq = FileQueue(filter="*.dvpl", exclude=True, maxsize=QUEUE_LEN)
 		
 		workers = list()
-
-		workers.append(asyncio.create_task(fq.mk_queue(args.files)))
+		logger.debug(f"file queue is {str(fq.qsize())} long")
+		scanner = asyncio.create_task(fq.mk_queue(args.files))
 		for i in range(args.threads):
 			workers.append(asyncio.create_task(process_files(fq, args)))
 			logger.debug(f"Process thread {str(i)} started")
 
 		logger.debug('Building file queue')
-		await asyncio.wait([workers[0]])
+		await asyncio.wait([scanner])
 		logger.debug('Processing files')
 		await fq.join()
+		# await fq.get_stats()
 		logger.debug('Cancelling workers')
 		for worker in workers:
-			worker.cancel()	
+			worker.cancel()
+
+		el = EventLogger('Files processed ----------------------------------------')
+		for el_worker in await asyncio.gather(*workers, return_exceptions=True):
+			el.merge(el_worker)	
+		
+		message(el.print(do_print=False))
 
 	except Exception as err:
 		logger.error(str(err))
 		sys.exit(1)
 
 
-async def process_files(fileQ: FileQueue, args : argparse.Namespace):
+async def process_files(fileQ: FileQueue, args : argparse.Namespace) -> EventLogger:
 	try:
 		assert fileQ is not None and args is not None, "parameters must not be None"
-		cwd = getcwd()
-		source_root = ''
-		target_root = ''
+		action : dict[str, str] = { 'encode': 'Encoded', 'decode': 'Decoded', 'verify': 'Verified' }
+		source_root: str = ''
+		target_root: str = ''
+		el = EventLogger('Files processed')
 		if args.conversion == 'mirror':
-			assert args.mirror != None, "args.mirror is None"
-			source_root = path.normpath(args.files[0]) + sep
+			assert args.mirror is not None, "args.mirror is None"
+			source_root = path.normpath(args.base) + sep
 			target_root = path.normpath(args.mirror)
-
 		while True:
-			source = await fileQ.get()
+			source = path.normpath(await fileQ.get())
+			el.log('Processed')
 			try:				
 				target = source
 				result = False
 				if args.conversion == 'mirror':
+					if path.commonpath([source, source_root]) != source_root:
+						logger.error(f"Source file is not under base dir: {source}")
+						el.log('Skipped')
+						continue				
 					target = sep.join([target_root, source.removeprefix(source_root)])
 					targetdir = path.dirname(target)
 					if not path.isdir(targetdir):
-						logger.info(f"creating dir: {targetdir}")
+						verbose(f"creating dir: {targetdir}")
 						makedirs(targetdir)					
 				if args.mode == 'encode':
 					target = target + '.dvpl'
 					result = await encode_dvpl_file(source, target, compression=args.compression, force=args.force)
+					# el.log('Encoded')
 				elif args.mode == 'decode':
 					target = target.removesuffix('.dvpl')
 					result = await decode_dvpl_file(source, target, force=args.force)
+					# el.log('Decoded')
 				elif args.mode == 'verify':
 					result = await verify_dvpl_file(source)
+				
+				if result:
+					el.log(f"{action[args.mode]} OK")
+				else:
+					el.log(f"{action[args.mode]} FAILED")
 				if result and args.conversion == 'replace' and args.mode != 'verify':
 					logger.debug(f"Removing source file: {source}")
 					remove(source)				
 			except Exception as err:
+				el.log('Errors')
 				logger.error(str(err))
 			finally:
 				fileQ.task_done()
@@ -154,15 +197,16 @@ async def process_files(fileQ: FileQueue, args : argparse.Namespace):
 		logger.debug('Worker cancelled')		
 	except Exception as err:
 		logger.error(str(err))
+	return el
 	
 
 
 async def decode_dvpl_file(dvpl_fn: str, output_fn: str, force: bool = False) -> bool:
 	"""Encode a source file to a DVPL file"""
 	
-	assert dvpl_fn != None, f"DVPL file name is None"	
-	assert output_fn != None, f"output file name is None"
-	assert force != None, f"--force value is None"
+	assert dvpl_fn is not None, f"DVPL file name is None"	
+	assert output_fn is not None, f"output file name is None"
+	assert force is not None, f"--force value is None"
 
 	try:
 		output : Optional[bytes] = None
@@ -180,7 +224,7 @@ async def decode_dvpl_file(dvpl_fn: str, output_fn: str, force: bool = False) ->
 		## Read encoded DVPL file
 		output = bytes()
 		async with aiofiles.open(dvpl_fn, mode='rb') as ifp:
-			logger.info(f"decoding file: {dvpl_fn}")				 
+			verbose(f"decoding file: {dvpl_fn}")				 
 			output, status = await decode_dvpl(await ifp.read())	
 		
 		## Write decoded file
@@ -192,7 +236,7 @@ async def decode_dvpl_file(dvpl_fn: str, output_fn: str, force: bool = False) ->
 
 		return True
 	except asyncio.CancelledError as err:
-		logger.info('Cancelled')		
+		verbose('Cancelled')		
 	except Exception as err:
 		logger.error(str(err))		
 	return False
@@ -201,7 +245,7 @@ async def decode_dvpl_file(dvpl_fn: str, output_fn: str, force: bool = False) ->
 async def decode_dvpl(input: bytes, quiet: bool = False) -> tuple[Optional[bytes], str]:
 	"""Decode a DVPL bytearray"""
 
-	assert input != None, f"input value is None"
+	assert input is not None, f"input value is None"
 	assert isinstance(input, bytes), f"input needs to be bytes, got {type(input)}"
 
 	try:		
@@ -232,7 +276,7 @@ async def decode_dvpl(input: bytes, quiet: bool = False) -> tuple[Optional[bytes
 		
 		logger.debug('decoded CRC32: ' + hex(zlib.crc32(output)))
 
-		assert output != None, f"Output value is None"
+		assert output is not None, f"Output value is None"
 		assert isinstance(output, bytes), f"Output needs to be bytes, got {type(input)}"
 		
 		return output, "OK"
@@ -250,10 +294,10 @@ async def decode_dvpl(input: bytes, quiet: bool = False) -> tuple[Optional[bytes
 async def encode_dvpl_file(input_fn: str, dvpl_fn: str, compression: str = COMPRESSION, force: bool = False) -> bool:
 	"""Encode a source file to a DVPL file"""
 
-	assert input_fn != None, f"input file name is None"
-	assert dvpl_fn != None, f"DVPL file name is None"
+	assert input_fn is not None, f"input file name is None"
+	assert dvpl_fn is not None, f"DVPL file name is None"
 	assert compression in COMPRESSIONS, f"Unknown compression: {compression}"
-	assert force != None, f"--force is None"
+	assert force is not None, f"--force is None"
 	
 	try:
 		output : Optional[bytes] = None
@@ -270,7 +314,7 @@ async def encode_dvpl_file(input_fn: str, dvpl_fn: str, compression: str = COMPR
 		# read source file
 		output = bytes()
 		async with aiofiles.open(input_fn, mode='rb') as ifp:
-			logger.info(f"encoding file: {input_fn}")
+			verbose(f"encoding file: {input_fn}")
 			output, status = await encode_dvpl(await ifp.read(), compression)
 		
 		## Write dvpl file
@@ -281,7 +325,7 @@ async def encode_dvpl_file(input_fn: str, dvpl_fn: str, compression: str = COMPR
 			await ofp.write(output)
 		return True
 	except asyncio.CancelledError as err:
-		logger.info('Cancelled')		
+		verbose('Cancelled')		
 	except Exception as err:
 		logger.error(str(err))
 	return False
@@ -291,7 +335,7 @@ async def encode_dvpl(input: bytes, compression: str, quiet: bool = False) -> tu
 	"""Encode data to a DVPL format"""
 
 	assert isinstance(input, bytes), f"input needs to be bytes, got {type(input)}"
-	assert input != None, f"input is None"
+	assert input is not None, f"input is None"
 	assert compression in COMPRESSIONS, f"Unknown compression: {compression}"
 
 	try:
@@ -325,7 +369,7 @@ async def encode_dvpl(input: bytes, compression: str, quiet: bool = False) -> tu
 async def verify_dvpl_file(dvpl_fn: str) -> bool:
 	"""Verify a DVPL file"""
 
-	assert dvpl_fn != None, f"input file name is None type"
+	assert dvpl_fn is not None, f"input file name is None type"
 	
 	try:
 		output : Optional[bytes] = None
@@ -340,14 +384,13 @@ async def verify_dvpl_file(dvpl_fn: str) -> bool:
 			logger.debug(f"reading file: {dvpl_fn}")
 			output, status = await decode_dvpl(await ifp.read(), quiet=True)	
 		if output is not None:
-			if logger.getEffectiveLevel() < logging.CRITICAL:
-				print(dvpl_fn + ': OK')
+			verbose(f"{dvpl_fn} : OK")
 			return True
 		else:
-			print(f"{dvpl_fn} : ERROR: {status}")
+			message(f"{dvpl_fn} : ERROR: {status}")
 			return False
 	except asyncio.CancelledError as err:
-		logger.info('Cancelled')
+		verbose('Cancelled')
 	except Exception as err:
 		logger.error(str(err))
 	return False
@@ -430,7 +473,7 @@ def read_dvpl_footer(data: bytes) -> tuple[dict, bytes]:
 def toUInt32LE(value: int) -> Optional[bytes]:	
 	"""Convert an integer to 32-bit unsigned integer in Little-Endian byte-order"""
 	try:
-		if value == None:
+		if value is None:
 			raise ValueError('None given as input')
 		if value < 0:
 			raise ValueError('Cannot cast negative value as unsigned int')
@@ -443,7 +486,7 @@ def toUInt32LE(value: int) -> Optional[bytes]:
 def fromUInt32LE(data: bytes) -> Optional[int]:
 	"""Convert a 32-bit unsigned integer in Little-Endian byte-order to integer"""
 	try:
-		if data == None:
+		if data is None:
 			raise ValueError('None given as input')		
 		return int.from_bytes(data, byteorder='little', signed=False)
 	except Exception as err:
