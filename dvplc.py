@@ -13,12 +13,15 @@ import aiofiles
 import aioconsole
 import lz4.block
 import zlib
-from blitzutils.filequeue import FileQueue
-from blitzutils.eventlogger import EventLogger
+from blitzutils.filequeue 			import FileQueue
+from blitzutils.eventlogger 		import EventLogger
+from blitzutils.multilevelformatter import MultilevelFormatter
 
-logging.basicConfig(encoding='utf-8', format='%(levelname)s: %(funcName)s: %(message)s', level=logging.WARNING)
+#logging.basicConfig(encoding='utf-8', level=logging.WARNING)
 logging.getLogger("asyncio").setLevel(logging.WARNING)
 logger = logging.getLogger(__name__)
+message=logger.warning
+verbose=logger.info
 
 # Constants & defaults
 MODES			= ['encode', 'decode', 'verify']
@@ -41,9 +44,9 @@ THREADS 		= 5
 async def main(argv: list[str]):
 	# set the directory for the script
 	global logger
-	cwd = getcwd()
-
+	
 	try:
+		# parse arguments
 		parser = argparse.ArgumentParser(description='Encoder/decoder for SmartDLC DVPL files')
 
 		arggroup_verbosity = parser.add_mutually_exclusive_group()
@@ -53,6 +56,8 @@ async def main(argv: list[str]):
 										help='Verbose mode')
 		arggroup_verbosity.add_argument('--silent', dest='LEVEL', action='store_const', const='CRITICAL',
 										help='Silent mode')
+		parser.add_argument('--log', type=str, metavar='LOGFILE', default=None, help='Log to LOGFILE')
+
 		parser.add_argument('--force', action='store_true', default=False, help='Overwrite files')
 		parser.add_argument('--threads', type=int, default=THREADS, 
 							help='Set number of asynchronous threads. Default is automatic.')
@@ -67,24 +72,41 @@ async def main(argv: list[str]):
 				help='Delete source files after successful conversion')		
 		arggroup_conversion.add_argument('--mirror', metavar="DIR", type=str, default=None, 
 				help='Mirror converted files under DIR')
-
+		parser.add_argument('--base', metavar="DIR", type=str, default=getcwd(), 
+				help='Base source directory for --mirror')
 		parser.add_argument('files', metavar='FILE1 [FILE2 ...]', type=str, nargs='+', help='Files to read. Use \'-\' for STDIN')
 		parser.set_defaults(LEVEL='WARNING', conversion='keep')
+
 		args = parser.parse_args()
 
-		if args.LEVEL == logging.INFO:
-			logging.basicConfig(encoding='utf-8', format='%(levelname)s: %(message)s')
-		if args.LEVEL == logging.DEBUG:
-			logging.basicConfig(encoding='utf-8', format='%(levelname)s: %(funcName)s: %(message)s')
+		# setup logging
 		logger.setLevel(args.LEVEL)
+		logger_conf: dict[int, str] = { 
+			logging.INFO: 		'%(message)s',
+			logging.WARNING: 	'%(message)s',
+			logging.ERROR: 		'%(levelname)s: %(message)s'
+		}
+		multi_formatter = MultilevelFormatter(fmts=logger_conf)
+		stream_handler = logging.StreamHandler(sys.stdout)
+		stream_handler.setFormatter(multi_formatter)		
+		logger.addHandler(stream_handler)
+		
+		#logging.basicConfig(level=args.LEVEL,format='%(levelname)s: %(message)s', handlers=[stream_handler])
+
+		if args.log is not None:
+			file_handler = logging.FileHandler(args.log)			
+			log_formatter = logging.Formatter('%(levelname)s:: %(funcName)s: %(message)s')
+			file_handler.setFormatter(log_formatter)
+			logger.addHandler(file_handler)
+		
 
 		if args.mirror is not None:
 			args.conversion = 'mirror'
-			if len(args.files) != 1:
-				raise argparse.ArgumentError(argument=args.mirror, message="More than one file argument given")
-		## is this needed?
-			elif not path.isdir(args.files[0]):
-				raise argparse.ArgumentError(argument=args.mirror, message="File argument has to be a directory")
+			## FIX: If one arg, it has to be DIR and will serve as mirror source base, 
+			# otherwise CWD will be mirror source base and all the source files have to be under it
+			if len(args.files) == 1:
+				args.base = args.files[0]
+			assert path.isdir(args.base), f"--base DIR has to be directory: {args.base}"
 
 		logger.debug('Argumengs given: ' + str(args))
 
@@ -107,7 +129,13 @@ async def main(argv: list[str]):
 		# await fq.get_stats()
 		logger.debug('Cancelling workers')
 		for worker in workers:
-			worker.cancel()	
+			worker.cancel()
+
+		el = EventLogger('Summary ----------------------------------------')
+		for el_worker in await asyncio.gather(*workers, return_exceptions=True):
+			el.merge(el_worker)	
+		
+		message(el.print(do_print=False))
 
 	except Exception as err:
 		logger.error(str(err))
@@ -117,21 +145,25 @@ async def main(argv: list[str]):
 async def process_files(fileQ: FileQueue, args : argparse.Namespace) -> EventLogger:
 	try:
 		assert fileQ is not None and args is not None, "parameters must not be None"
-		action : dict[str, str] = { 'encode': 'encoding', 'decode': 'decoding', 'verify': 'verification' }
+		action : dict[str, str] = { 'encode': 'encoded', 'decode': 'decoded', 'verify': 'verified' }
 		source_root: str = ''
 		target_root: str = ''
 		el = EventLogger('Files processed')
 		if args.conversion == 'mirror':
 			assert args.mirror is not None, "args.mirror is None"
-			source_root = path.normpath(args.files[0]) + sep
+			source_root = path.normpath(args.base) + sep
 			target_root = path.normpath(args.mirror)
 		while True:
-			source = await fileQ.get()
-			el.log('Files read')
+			source = path.normpath(await fileQ.get())
+			el.log('Files processed')
 			try:				
 				target = source
 				result = False
 				if args.conversion == 'mirror':
+					if path.commonpath([source, source_root]) != source_root:
+						logger.error(f"Source file is not under base dir: {source}")
+						el.log('Skipped')
+						continue				
 					target = sep.join([target_root, source.removeprefix(source_root)])
 					targetdir = path.dirname(target)
 					if not path.isdir(targetdir):
@@ -140,17 +172,18 @@ async def process_files(fileQ: FileQueue, args : argparse.Namespace) -> EventLog
 				if args.mode == 'encode':
 					target = target + '.dvpl'
 					result = await encode_dvpl_file(source, target, compression=args.compression, force=args.force)
-					el.log('Files encoded')
+					# el.log('Encoded')
 				elif args.mode == 'decode':
 					target = target.removesuffix('.dvpl')
 					result = await decode_dvpl_file(source, target, force=args.force)
-					el.log('Files decoded')
+					# el.log('Decoded')
 				elif args.mode == 'verify':
 					result = await verify_dvpl_file(source)
+				
 				if result:
-					el.log(f'File {action[args.mode]} OK')
+					el.log(f'Files {action[args.mode]} OK')
 				else:
-					el.log(f'File {action[args.mode]} FAILED')
+					el.log(f'Files {action[args.mode]} FAILED')
 				if result and args.conversion == 'replace' and args.mode != 'verify':
 					logger.debug(f"Removing source file: {source}")
 					remove(source)				
