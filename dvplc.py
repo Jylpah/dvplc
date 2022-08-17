@@ -131,7 +131,7 @@ async def main(argv: list[str]):
 		for worker in workers:
 			worker.cancel()
 
-		el = EventLogger('Summary ----------------------------------------')
+		el = EventLogger('Files processed ----------------------------------------')
 		for el_worker in await asyncio.gather(*workers, return_exceptions=True):
 			el.merge(el_worker)	
 		
@@ -145,7 +145,7 @@ async def main(argv: list[str]):
 async def process_files(fileQ: FileQueue, args : argparse.Namespace) -> EventLogger:
 	try:
 		assert fileQ is not None and args is not None, "parameters must not be None"
-		action : dict[str, str] = { 'encode': 'encoded', 'decode': 'decoded', 'verify': 'verified' }
+		action : dict[str, str] = { 'encode': 'Encoded', 'decode': 'Decoded', 'verify': 'Verified' }
 		source_root: str = ''
 		target_root: str = ''
 		el = EventLogger('Files processed')
@@ -155,7 +155,7 @@ async def process_files(fileQ: FileQueue, args : argparse.Namespace) -> EventLog
 			target_root = path.normpath(args.mirror)
 		while True:
 			source = path.normpath(await fileQ.get())
-			el.log('Files processed')
+			el.log('Processed')
 			try:				
 				target = source
 				result = False
@@ -167,7 +167,7 @@ async def process_files(fileQ: FileQueue, args : argparse.Namespace) -> EventLog
 					target = sep.join([target_root, source.removeprefix(source_root)])
 					targetdir = path.dirname(target)
 					if not path.isdir(targetdir):
-						logger.info(f"creating dir: {targetdir}")
+						verbose(f"creating dir: {targetdir}")
 						makedirs(targetdir)					
 				if args.mode == 'encode':
 					target = target + '.dvpl'
@@ -181,9 +181,9 @@ async def process_files(fileQ: FileQueue, args : argparse.Namespace) -> EventLog
 					result = await verify_dvpl_file(source)
 				
 				if result:
-					el.log(f'Files {action[args.mode]} OK')
+					el.log(f"{action[args.mode]} OK")
 				else:
-					el.log(f'Files {action[args.mode]} FAILED')
+					el.log(f"{action[args.mode]} FAILED")
 				if result and args.conversion == 'replace' and args.mode != 'verify':
 					logger.debug(f"Removing source file: {source}")
 					remove(source)				
@@ -224,7 +224,7 @@ async def decode_dvpl_file(dvpl_fn: str, output_fn: str, force: bool = False) ->
 		## Read encoded DVPL file
 		output = bytes()
 		async with aiofiles.open(dvpl_fn, mode='rb') as ifp:
-			logger.info(f"decoding file: {dvpl_fn}")				 
+			verbose(f"decoding file: {dvpl_fn}")				 
 			output, status = await decode_dvpl(await ifp.read())	
 		
 		## Write decoded file
@@ -236,7 +236,7 @@ async def decode_dvpl_file(dvpl_fn: str, output_fn: str, force: bool = False) ->
 
 		return True
 	except asyncio.CancelledError as err:
-		logger.info('Cancelled')		
+		verbose('Cancelled')		
 	except Exception as err:
 		logger.error(str(err))		
 	return False
@@ -314,7 +314,7 @@ async def encode_dvpl_file(input_fn: str, dvpl_fn: str, compression: str = COMPR
 		# read source file
 		output = bytes()
 		async with aiofiles.open(input_fn, mode='rb') as ifp:
-			logger.info(f"encoding file: {input_fn}")
+			verbose(f"encoding file: {input_fn}")
 			output, status = await encode_dvpl(await ifp.read(), compression)
 		
 		## Write dvpl file
@@ -325,7 +325,7 @@ async def encode_dvpl_file(input_fn: str, dvpl_fn: str, compression: str = COMPR
 			await ofp.write(output)
 		return True
 	except asyncio.CancelledError as err:
-		logger.info('Cancelled')		
+		verbose('Cancelled')		
 	except Exception as err:
 		logger.error(str(err))
 	return False
@@ -384,14 +384,13 @@ async def verify_dvpl_file(dvpl_fn: str) -> bool:
 			logger.debug(f"reading file: {dvpl_fn}")
 			output, status = await decode_dvpl(await ifp.read(), quiet=True)	
 		if output is not None:
-			if logger.getEffectiveLevel() < logging.CRITICAL:
-				print(dvpl_fn + ': OK')
+			verbose(f"{dvpl_fn} : OK")
 			return True
 		else:
-			print(f"{dvpl_fn} : ERROR: {status}")
+			message(f"{dvpl_fn} : ERROR: {status}")
 			return False
 	except asyncio.CancelledError as err:
-		logger.info('Cancelled')
+		verbose('Cancelled')
 	except Exception as err:
 		logger.error(str(err))
 	return False
