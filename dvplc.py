@@ -15,7 +15,7 @@ import lz4.block
 import zlib
 from pyutils.filequeue 			import FileQueue
 from pyutils.eventlogger 		import EventLogger
-from pyutils.multilevelformatter import MultilevelFormatter, set_logging
+from pyutils.multilevelformatter import MultilevelFormatter, set_mlevel_logging
 
 logging.getLogger("asyncio").setLevel(logging.WARNING)
 logger = logging.getLogger(__name__)
@@ -68,7 +68,7 @@ async def main(argv: list[str]):
 				help='Delete source files after successful conversion')		
 		arggroup_conversion.add_argument('--mirror', metavar="DIR", type=str, default=None, 
 				help='Mirror converted files under DIR')
-		parser.add_argument('--base', metavar="DIR", type=str, default=getcwd(), 
+		parser.add_argument('--base', metavar="DIR", type=str, default=None, 
 				help='Base source directory for --mirror')
 		parser.add_argument('files', metavar='FILE1 [FILE2 ...]', type=str, nargs='+', help='Files to read. Use \'-\' for STDIN')
 		parser.set_defaults(LEVEL='WARNING', conversion='keep')
@@ -82,22 +82,22 @@ async def main(argv: list[str]):
 			logging.WARNING: 	'%(message)s',
 			logging.ERROR: 		'%(levelname)s: %(message)s'
 		}
-		set_logging(logger, mlevel_format=logger_conf, log_file=args.log)		
+		set_mlevel_logging(logger, fmts=logger_conf, fmt='%(levelname)s: %(funcName)s: %(message)s', log_file=args.log)		
 
 		if args.mirror is not None:
 			args.conversion = 'mirror'
 			## FIX: If one arg, it has to be DIR and will serve as mirror source base, 
 			# otherwise CWD will be mirror source base and all the source files have to be under it
-			if len(args.files) == 1:
-				args.base = args.files[0]
-			assert path.isdir(args.base), f"--base DIR has to be directory: {args.base}"
+			# if len(args.files) == 1:
+			# 	args.base = args.files[0]
+			assert args.base is None or path.isdir(args.base), f"If set --base DIR has to be a directory: {args.base}"
 
 		logger.debug('Argumengs given: ' + str(args))
 
 		if args.mode in ['decode', 'verify']:
-				fq = FileQueue(filter="*.dvpl", maxsize=QUEUE_LEN)
+				fq = FileQueue(filter="*.dvpl", base=args.base, maxsize=QUEUE_LEN)
 		elif args.mode == 'encode':
-			fq = FileQueue(filter="*.dvpl", exclude=True, maxsize=QUEUE_LEN)
+			fq = FileQueue(filter="*.dvpl", exclude=True, base=args.base, maxsize=QUEUE_LEN)
 		
 		workers = list()
 		logger.debug(f"file queue is {str(fq.qsize())} long")
@@ -134,24 +134,30 @@ async def process_files(fileQ: FileQueue, args : argparse.Namespace) -> EventLog
 		target_root: str = ''
 		el = EventLogger('Files processed')
 		if args.conversion == 'mirror':
-			assert args.mirror is not None, "args.mirror is None"
-			source_root = path.normpath(args.base) + sep
+			assert args.mirror is not None, "args.mirror is None"			
+			if args.base is not None:
+				source_root = path.normpath(args.base)
+			else:
+				source_root = '.' 
 			target_root = path.normpath(args.mirror)
 		while True:
+			source = '-'
 			source = path.normpath(await fileQ.get())
 			el.log('Processed')
 			try:				
 				target = source
 				result = False
 				if args.conversion == 'mirror':
-					if path.commonpath([source, source_root]) != source_root:
+					if ( args.base is None and str(source).startswith('..' + sep)) or \
+						(args.base is not None and path.commonpath([source, source_root]) != source_root):
 						logger.error(f"Source file is not under base dir: {source}")
+						logger.debug(f"Common path is: {path.commonpath([source, source_root])}")
 						el.log('Skipped')
 						continue				
-					target = sep.join([target_root, source.removeprefix(source_root)])
+					target = sep.join([target_root, path.relpath(source, source_root)])
 					targetdir = path.dirname(target)
 					if not path.isdir(targetdir):
-						verbose(f"creating dir: {targetdir}")
+						logger.debug(f"creating dir: {targetdir}")
 						makedirs(targetdir)					
 				if args.mode == 'encode':
 					target = target + '.dvpl'
@@ -173,7 +179,7 @@ async def process_files(fileQ: FileQueue, args : argparse.Namespace) -> EventLog
 					remove(source)				
 			except Exception as err:
 				el.log('Errors')
-				logger.error(str(err))
+				logger.error(f"{str(err)} : {source}")
 			finally:
 				fileQ.task_done()
 	
