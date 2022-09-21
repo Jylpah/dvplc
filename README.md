@@ -8,7 +8,8 @@ Tested on Linux & Working :-)
 
 ## TODO
 
-* Test on other platforms 
+* Test on other platforms
+* Provide a proper Python package
 
 # Installation 
 
