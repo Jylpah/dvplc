@@ -13,6 +13,8 @@ import aiofiles
 import aioconsole
 import lz4.block
 import zlib
+
+from pyutils.filequeue 			import FileQueue
 from pyutils.filequeue 			import FileQueue
 from pyutils.eventlogger 		import EventLogger
 from pyutils.multilevelformatter import MultilevelFormatter, set_mlevel_logging
