@@ -1,1 +1,1 @@
-__all__ = [ 'filequeue', 'eventlogger', 'multilevelformatter', 'throttledclientsession' ]
+__all__ = [ 'eventcounter', 'filequeue', 'multilevelformatter', 'throttledclientsession' ]
