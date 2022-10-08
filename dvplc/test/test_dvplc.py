@@ -1,7 +1,12 @@
 from asyncio.log import logger
-import pytest, os
+import pytest, os, sys
 
-from ..dvplc import COMPRESSION, encode_dvpl, decode_dvpl, encode_dvpl_file, verify_dvpl_file, decode_dvpl_file  # type: ignore
+from pathlib import Path # if you haven't already done so
+file = Path(__file__).resolve()
+root = file.parents[1]
+sys.path.append(str(root))
+
+from dvplc import COMPRESSION, encode_dvpl, decode_dvpl, encode_dvpl_file, verify_dvpl_file, decode_dvpl_file  # type: ignore
 
 ## Test plan
 # 1) mypy static typing
@@ -19,14 +24,14 @@ FIXTURE_DIR = os.path.dirname(os.path.realpath(__file__))
 def pytest_configure(config):
     plugin = config.pluginmanager.getplugin('mypy')
     plugin.mypy_argv.append('--check-untyped-defs')
-	
+
 
 @pytest.fixture
 def test_checksums() -> dict[str, str]:
 	res: dict[str, str] = dict()
 	try:
 		with open('checksum.sha256', mode='r', encoding='utf-8') as c:
-			while c:				
+			while c:
 				line = c.readline()
 				chksum = line.split()
 				res[chksum[1]] = chksum[0]
@@ -74,10 +79,10 @@ async def test_2_decode_file_passes(datafiles):
 		print(f"Input: {input}, Output: {output}")
 		assert await verify_dvpl_file(input), f"dvpl verification failed: {input}"
 		assert await decode_dvpl_file(input, output), f"decoding failed: {input}"
-		
+
 
 @pytest.mark.asyncio
-@pytest.mark.datafiles(    
+@pytest.mark.datafiles(
 	os.path.join(FIXTURE_DIR, '05_source.txt_fails_marker.dvpl'),
 	os.path.join(FIXTURE_DIR, '06_source.bin_fails_marker.dvpl'),
 	os.path.join(FIXTURE_DIR, '07_source.txt_fails_compression.dvpl'),
@@ -94,4 +99,4 @@ async def test_3_verify_file_fails(datafiles):
 		input = str(i)
 		print(f"Input: {input}")
 		assert not await verify_dvpl_file(input), f"dvpl verification failed (false positive): {input}"
-		
+
