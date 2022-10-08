@@ -1,5 +1,5 @@
 ## -----------------------------------------------------------
-#### Class EventLogger()
+#### Class EventCounter()
 # Class to log/count events, pass them to parent function 
 # and merge the results
 ## -----------------------------------------------------------
@@ -17,7 +17,7 @@ verbose = logger.info
 
 FuncTypeFormatter 	= Callable[[str], str]
 FuncTypeFormatterParam = Optional[FuncTypeFormatter]
-class EventLogger():
+class EventCounter():
 	"""Count events for categories"""
 	def __init__(self, name: str = '', totals: Optional[str] = None, categories: list[str] = list(), errors: list[str] = list(), 
 				int_format: FuncTypeFormatterParam = None, float_format: FuncTypeFormatterParam = None):
@@ -107,13 +107,13 @@ class EventLogger():
 		return self._error_status
 	
 
-	def merge(self, B: 'EventLogger') -> bool:
-		"""Merge two EventLogger instances together"""
-		assert isinstance(B, EventLogger), f"input is not type of 'EventLogger' but: {type(B)}"
+	def merge(self, B: 'EventCounter') -> bool:
+		"""Merge two EventCounter instances together"""
+		assert isinstance(B, EventCounter), f"input is not type of 'EventCounter' but: {type(B)}"
 		
 		try:
-			if not isinstance(B, EventLogger):
-				logger.error(f"input is not type of 'EventLogger' but: {type(B)}")
+			if not isinstance(B, EventCounter):
+				logger.error(f"input is not type of 'EventCounter' but: {type(B)}")
 				return False			
 			for cat in B.get_categories():
 				value: int = B.get_value(cat)
@@ -127,9 +127,9 @@ class EventLogger():
 		return False
 		
 
-	def merge_child(self, B: 'EventLogger') -> bool:
-		"""Merge two EventLogger instances together"""
-		assert isinstance(B, EventLogger), f"input is not type of 'EventLogger' but: {type(B)}"
+	def merge_child(self, B: 'EventCounter') -> bool:
+		"""Merge two EventCounter instances together"""
+		assert isinstance(B, EventCounter), f"input is not type of 'EventCounter' but: {type(B)}"
 		
 		try:
 			for cat in B.get_categories():

@@ -16,7 +16,7 @@ import zlib
 
 from pyutils.filequeue 			import FileQueue
 from pyutils.filequeue 			import FileQueue
-from pyutils.eventlogger 		import EventLogger
+from pyutils.eventcounter 		import EventCounter
 from pyutils.multilevelformatter import MultilevelFormatter, set_mlevel_logging
 
 logging.getLogger("asyncio").setLevel(logging.WARNING)
@@ -117,7 +117,7 @@ async def main(argv: list[str]):
 		for worker in workers:
 			worker.cancel()
 
-		el = EventLogger('Files processed ----------------------------------------')
+		el = EventCounter('Files processed ----------------------------------------')
 		for el_worker in await asyncio.gather(*workers, return_exceptions=True):
 			el.merge(el_worker)	
 		
@@ -128,15 +128,15 @@ async def main(argv: list[str]):
 		sys.exit(1)
 
 
-async def process_files(fileQ: FileQueue, args : argparse.Namespace) -> EventLogger:
+async def process_files(fileQ: FileQueue, args : argparse.Namespace) -> EventCounter:
 	try:
 		assert fileQ is not None and args is not None, "parameters must not be None"
 		action : dict[str, str] = { 'encode': 'Encoded', 'decode': 'Decoded', 'verify': 'Verified' }
 		source_root: str = ''
 		target_root: str = ''
-		el = EventLogger('Files processed')
+		el = EventCounter('Files processed')
 		if args.conversion == 'mirror':
-			assert args.mirror is not None, "args.mirror is None"			
+			assert args.mirror is not None, "args.mirror is not set"			
 			if args.base is not None:
 				source_root = path.normpath(args.base)
 			else:
