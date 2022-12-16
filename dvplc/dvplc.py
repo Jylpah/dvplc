@@ -15,7 +15,6 @@ import lz4.block
 import zlib
 
 from pyutils.filequeue 			import FileQueue
-from pyutils.filequeue 			import FileQueue
 from pyutils.eventcounter 		import EventCounter
 from pyutils.multilevelformatter import MultilevelFormatter, set_mlevel_logging
 
@@ -42,17 +41,17 @@ THREADS 		= 5
 async def main(argv: list[str]):
 	# set the directory for the script
 	global logger
-	
+
 	try:
 		# parse arguments
 		parser = argparse.ArgumentParser(description='Encoder/decoder for SmartDLC DVPL files')
 
 		arggroup_verbosity = parser.add_mutually_exclusive_group()
-		arggroup_verbosity.add_argument('--debug',dest='LEVEL', action='store_const', const='DEBUG',  
+		arggroup_verbosity.add_argument('--debug', '-d', dest='LEVEL', action='store_const', const='DEBUG',  
 										help='Debug mode')
-		arggroup_verbosity.add_argument('--verbose', dest='LEVEL', action='store_const', const='INFO',
+		arggroup_verbosity.add_argument('--verbose', '-v', dest='LEVEL', action='store_const', const='INFO',
 										help='Verbose mode')
-		arggroup_verbosity.add_argument('--silent', dest='LEVEL', action='store_const', const='CRITICAL',
+		arggroup_verbosity.add_argument('--silent', '-s', dest='LEVEL', action='store_const', const='CRITICAL',
 										help='Silent mode')
 		parser.add_argument('--log', type=str, metavar='LOGFILE', default=None, help='Log to LOGFILE')
 
