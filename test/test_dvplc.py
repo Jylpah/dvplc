@@ -1,5 +1,7 @@
 from asyncio.log import logger
-import pytest, os, sys
+import pytest # type: ignore
+import os
+import sys
 
 from pathlib import Path # if you haven't already done so
 file = Path(__file__).resolve()
