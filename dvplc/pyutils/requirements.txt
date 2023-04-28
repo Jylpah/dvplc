@@ -1,7 +1,0 @@
-aiohttp
-aioconsole
-
-# for development & testing
-pytest
-mypy
-pytest-asyncio
