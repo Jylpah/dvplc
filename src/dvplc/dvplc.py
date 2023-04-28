@@ -10,7 +10,7 @@ import re
 import asyncio
 import aiofiles
 import aioconsole
-import lz4.block
+from lz4.block import compress, decompress, LZ4BlockError
 import zlib
 
 from pyutils.filequeue 			import FileQueue
@@ -129,12 +129,16 @@ async def main(argv: list[str]):
 
 
 async def process_files(fileQ: FileQueue, args : argparse.Namespace) -> EventCounter:
+	el = EventCounter('Files processed')
 	try:
 		assert fileQ is not None and args is not None, "parameters must not be None"
-		action : dict[str, str] = { 'encode': 'Encoded', 'decode': 'Decoded', 'verify': 'Verified' }
+		action : dict[str, str] = { 'encode': 'Encoded', 
+									'decode': 'Decoded', 
+									'verify': 'Verified' 
+								}
 		source_root: str = ''
 		target_root: str = ''
-		el = EventCounter('Files processed')
+		
 		if args.conversion == 'mirror':
 			assert args.mirror is not None, "args.mirror is not set"			
 			if args.base is not None:
@@ -260,7 +264,7 @@ async def decode_dvpl(input: bytes, quiet: bool = False) -> tuple[Optional[bytes
 		if t_type == 'none':
 			output = input
 		elif t_type == 'lz4' or t_type == 'lz4_hc':
-			output = lz4.block.decompress(input, uncompressed_size=d_size)
+			output = decompress(input, uncompressed_size=d_size)
 		elif t_type == 'rfc1951':
 			raise NotImplementedError('RFC1951 encoding is not supported')
 		if len(output) != d_size:
@@ -273,7 +277,7 @@ async def decode_dvpl(input: bytes, quiet: bool = False) -> tuple[Optional[bytes
 		
 		return output, "OK"
 	
-	except lz4.block.LZ4BlockError as err:
+	except LZ4BlockError as err:
 		if not quiet:
 			logger.error('LZ4 decoding error: ' + str(err))
 		return None, 'LZ4 decoding error'
@@ -331,24 +335,26 @@ async def encode_dvpl(input: bytes, compression: str, quiet: bool = False) -> tu
 	assert compression in COMPRESSIONS, f"Unknown compression: {compression}"
 
 	try:
+		output : bytes | None = None
 		d_size = len(input)
 		if compression.startswith('lz4'):
 			mode='high_compression'
 			if compression == 'lz4':
 				mode='default'
-			output = lz4.block.compress(input, mode=mode, store_size=False)
+			output = compress(input, mode=mode, store_size=False)
 		elif compression == 'none':
 			output = input
 		elif compression == 'rfc1951':
 			raise NotImplementedError('RFC1951 compression is not supported')
+		
+		if output is not None:
+			footer = make_dvpl_footer(output, d_size, compression)
 
-		footer = make_dvpl_footer(output, d_size, compression)
+			logger.debug('decoded CRC32: ' + hex(zlib.crc32(input)))		
+			if footer is not None:
+				return output + footer, "OK"
 
-		logger.debug('decoded CRC32: ' + hex(zlib.crc32(input)))		
-
-		return output + footer, "OK"
-
-	except lz4.block.LZ4BlockError as err:
+	except LZ4BlockError as err:
 		if not quiet:
 			logger.error('LZ4 encoding error')
 		return None, 'LZ4 encoding error'
@@ -356,6 +362,7 @@ async def encode_dvpl(input: bytes, compression: str, quiet: bool = False) -> tu
 		if not quiet:
 			logger.error(str(err))	
 		return None, str(err)
+	return None, 'Unknown error'
 
 
 async def verify_dvpl_file(dvpl_fn: str) -> bool:
