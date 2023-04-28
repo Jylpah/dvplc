@@ -30,7 +30,6 @@ dev = [
 	"pytest-asyncio",
 	"pytest-datafiles",
 	"types-aiofiles>=23.1.0.1",
-	"pyutils[dev] @ git+https://github.com/Jylpah/pyutils.git@dev",
 ]
 
 [project.scripts]
