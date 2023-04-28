@@ -33,7 +33,7 @@ dev = [
 ]
 
 [project.scripts]
-dvplc = "dvplc.dvplc:__main__"
+dvplc = "dvplc.dvplc:cli_main"
 
 [project.urls]
 "Homepage" = "https://github.com/Jylpah/dvplc"
