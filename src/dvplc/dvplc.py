@@ -34,7 +34,7 @@ THREADS 		= 5
 
 # main() -------------------------------------------------------------
 
-async def main(argv: list[str]):
+async def main() -> None:
 	# set the directory for the script
 	global logger
 
@@ -109,7 +109,6 @@ async def main(argv: list[str]):
 		await asyncio.wait([scanner])
 		logger.debug('Processing files')
 		await fq.join()
-		# await fq.get_stats()
 		logger.debug('Cancelling workers')
 		for worker in workers:
 			worker.cancel()
@@ -492,4 +491,7 @@ def fromUInt32LE(data: bytes) -> Optional[int]:
 ### main()
 if __name__ == "__main__":
    #asyncio.run(main(sys.argv[1:]), debug=True)
-   asyncio.run(main(sys.argv[1:]))
+   asyncio.run(main())
+
+def cli_main() -> None:
+	return asyncio.run(main())
