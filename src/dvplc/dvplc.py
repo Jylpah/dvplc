@@ -114,8 +114,7 @@ async def main() -> None:
 			worker.cancel()
 
 		el = EventCounter('Files processed ----------------------------------------')
-		for el_worker in await asyncio.gather(*workers, return_exceptions=True):
-			el.merge(el_worker)	
+		await el.gather_stats(workers, merge_child=False)
 		
 		message(el.print(do_print=False))
 
