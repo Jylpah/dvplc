@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 # Script convert Dava game engine's SmartDLC DVPL files
-
 from typing import Optional, Union, Dict
 import logging
 import argparse
@@ -96,9 +95,11 @@ async def main(argv: list[str]):
 		logger.debug('Argumengs given: ' + str(args))
 
 		if args.mode in ['decode', 'verify']:
-				fq = FileQueue(filter="*.dvpl", base=args.base, maxsize=QUEUE_LEN)
+			fq = FileQueue(filter="*.dvpl", base=args.base, maxsize=QUEUE_LEN)
 		elif args.mode == 'encode':
 			fq = FileQueue(filter="*.dvpl", exclude=True, base=args.base, maxsize=QUEUE_LEN)
+		else:
+			raise ValueError(f'Unknown mode: {args.mode}')
 		
 		workers = list()
 		logger.debug(f"file queue is {str(fq.qsize())} long")
