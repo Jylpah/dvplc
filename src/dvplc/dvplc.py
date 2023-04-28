@@ -6,16 +6,13 @@ import logging
 import argparse
 from os import cpu_count, sep, remove, getcwd, makedirs, path
 import sys
-import re
 import asyncio
 import aiofiles
-import aioconsole
 from lz4.block import compress, decompress, LZ4BlockError
 import zlib
 
-from pyutils.filequeue 			import FileQueue
-from pyutils.eventcounter 		import EventCounter
-from pyutils.multilevelformatter import MultilevelFormatter, set_mlevel_logging
+from pyutils import FileQueue, EventCounter
+from pyutils.multilevelformatter import set_mlevel_logging
 
 logging.getLogger("asyncio").setLevel(logging.WARNING)
 logger = logging.getLogger(__name__)
