@@ -29,6 +29,7 @@ dev = [
 	"pytest",
 	"pytest-asyncio",
 	"pytest-datafiles",
+	"pytest-mypy",
 	"types-aiofiles>=23.1.0.1",
 ]
 
