@@ -49,9 +49,13 @@ allow-direct-references = true
 [tool.hatch.build.targets.wheel]
 packages = ["src/dvplc"]
 
-
 [tool.mypy]
 mypy_path = ['src']
 
 [tool.pyright]
 reportGeneralTypeIssues = false
+
+[tool.pytest.ini_options]
+filterwarnings = [
+    'ignore:Inheritance class ThrottledClientSession from ClientSession is discouraged:DeprecationWarning',
+]
