@@ -50,5 +50,8 @@ allow-direct-references = true
 packages = ["src/dvplc"]
 
 
+[tool.mypy]
+mypy_path = ['src']
+
 [tool.pyright]
 reportGeneralTypeIssues = false
