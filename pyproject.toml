@@ -2,32 +2,61 @@
 name = "dvplc"
 description = "CLI app to convert Dava SmartDLC .dvpl files used in Wargaming.net's World of Tanks Bliz MMO game"
 readme = "README.md"
-version = "0.1.2"
+version = "0.1.3"
+authors = [ 
+	{ name="Jylpah", email="jylpah@gmail.com"} 
+	]
 license = {text = "MIT License"}
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 classifiers = [
-    "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: MIT License",
-    "Operating System :: OS Independent",
+	"Programming Language :: Python :: 3",
+	"License :: OSI Approved :: MIT License",
+	"Operating System :: OS Independent",
+	"Environment :: Console", 
 ]
 dependencies = [
-    "lz4",
-	"aiofiles",
-	"aioconsole",
-	"importlib-metadata"
+	"lz4>=4.3.2",
+	"aiofiles>=23.1.0",
+	"aioconsole>=0.6.1",
+	"pyutils @ git+https://github.com/Jylpah/pyutils.git",
 ]
-authors = [ { name="Jylpah", email="Jylpah@gmail.com"} ]
 
+[project.optional-dependencies]
+dev = [	
+	"build>=0.10.0",
+	"mypy==1.2.0",
+	"pip-chill==1.0.3",
+	"pytest",
+	"pytest-asyncio",
+	"pytest-datafiles",
+	"pytest-mypy",
+	"types-aiofiles>=23.1.0.1",
+]
 
 [project.scripts]
-dvplc = "dvplc.dvplc:__main__"
+dvplc = "dvplc.dvplc:cli_main"
 
 [project.urls]
 "Homepage" = "https://github.com/Jylpah/dvplc"
 
-[tool.setuptools.packages.find]
-# All the following settings are optional:
-exclude = ["dvplc.tests*"]  # empty by default
 
-[mypy]
-mypy_path = "$MYPY_CONFIG_FILE_DIR/dvplc/"
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/dvplc"]
+
+[tool.mypy]
+mypy_path = ['src']
+
+[tool.pyright]
+reportGeneralTypeIssues = false
+
+[tool.pytest.ini_options]
+filterwarnings = [
+    'ignore:Inheritance class ThrottledClientSession from ClientSession is discouraged:DeprecationWarning',
+]
