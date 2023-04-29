@@ -17,16 +17,16 @@ from dvplc import COMPRESSION, encode_dvpl, decode_dvpl, \
 # 3) test verify 
 # 4) test decoding
 
-@pytest.fixture
-def test_source_data_0() -> bytes:
-	return bytes(b'1234567890')
-
 FIXTURE_DIR = dirname(realpath(__file__))
 
 def pytest_configure(config: Config):
 	plugin = config.pluginmanager.getplugin('mypy')
 	if plugin is not None:
 		plugin.mypy_argv.append('--check-untyped-defs')
+
+@pytest.fixture
+def test_source_data_0() -> bytes:
+	return bytes(b'1234567890')
 
 
 @pytest.fixture
