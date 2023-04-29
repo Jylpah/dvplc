@@ -1,12 +1,12 @@
-from asyncio.log import logger
-import pytest # type: ignore
-from os.path import dirname, realpath
-import os
 import sys
+import pytest # type: ignore
+from typing import reveal_type
+from pytest import Config
+from asyncio.log import logger
+from os.path import dirname, realpath, join as pjoin
+from pathlib import Path
 
-from pathlib import Path # if you haven't already done so
-
-sys.path.insert(0, os.path.join(dirname(dirname(realpath(__file__))), 'src'))
+sys.path.insert(0, str(Path(__file__).parent.parent.resolve() / 'src'))
 
 from dvplc import COMPRESSION, encode_dvpl, decode_dvpl, \
 					encode_dvpl_file, verify_dvpl_file, decode_dvpl_file
@@ -21,11 +21,12 @@ from dvplc import COMPRESSION, encode_dvpl, decode_dvpl, \
 def test_source_data_0() -> bytes:
 	return bytes(b'1234567890')
 
-FIXTURE_DIR = os.path.dirname(os.path.realpath(__file__))
+FIXTURE_DIR = dirname(realpath(__file__))
 
-def pytest_configure(config):
+def pytest_configure(config: Config):
 	plugin = config.pluginmanager.getplugin('mypy')
-	plugin.mypy_argv.append('--check-untyped-defs')
+	if plugin is not None:
+		plugin.mypy_argv.append('--check-untyped-defs')
 
 
 @pytest.fixture
@@ -43,26 +44,23 @@ def test_checksums() -> dict[str, str]:
 
 	
 @pytest.mark.asyncio
-async def test_0_dvpl_encode_decode_passes(test_source_data_0):
+async def test_0_dvpl_encode_decode_passes(test_source_data_0: bytes) -> None:
 	res_encode, txt = await encode_dvpl(input=test_source_data_0, compression=COMPRESSION, quiet=True)
-
 	assert txt == "OK"
-
+	assert res_encode is not None, "encoding failed"
 	res_decode, txt = await decode_dvpl(res_encode, quiet=True)
-
 	assert txt == "OK"
-
 	assert res_decode == test_source_data_0
 
 
 @pytest.mark.asyncio
 @pytest.mark.datafiles(
-	os.path.join(FIXTURE_DIR, '01_source.txt'),
-	os.path.join(FIXTURE_DIR, '02_source.bin')
+	pjoin(FIXTURE_DIR, '01_source.txt'),
+	pjoin(FIXTURE_DIR, '02_source.bin')
 	)
-async def test_1_encode_file_passes(datafiles):
-	for i in datafiles.listdir():
-		input = str(i)
+async def test_1_encode_file_passes(datafiles : Path) -> None:
+	for f in datafiles.iterdir():
+		input = str(f)
 		output = input + '.dvpl'
 		print(f"Input: {input}, Output: {output}")
 		assert await encode_dvpl_file(input, output), f"encoding failed: {input}"
@@ -71,12 +69,12 @@ async def test_1_encode_file_passes(datafiles):
 
 @pytest.mark.asyncio
 @pytest.mark.datafiles(
-	os.path.join(FIXTURE_DIR, '03_source.txt.dvpl'),
-	os.path.join(FIXTURE_DIR, '04_source.bin.dvpl')
+	pjoin(FIXTURE_DIR, '03_source.txt.dvpl'),
+	pjoin(FIXTURE_DIR, '04_source.bin.dvpl')
 	)
-async def test_2_decode_file_passes(datafiles):
-	for i in datafiles.listdir():
-		input = str(i)
+async def test_2_decode_file_passes(datafiles : Path) -> None:
+	for f in datafiles.iterdir():
+		input = str(f)
 		output = input.removesuffix('.dvpl')
 		print(f"Input: {input}, Output: {output}")
 		assert await verify_dvpl_file(input), f"dvpl verification failed: {input}"
@@ -85,20 +83,20 @@ async def test_2_decode_file_passes(datafiles):
 
 @pytest.mark.asyncio
 @pytest.mark.datafiles(
-	os.path.join(FIXTURE_DIR, '05_source.txt_fails_marker.dvpl'),
-	os.path.join(FIXTURE_DIR, '06_source.bin_fails_marker.dvpl'),
-	os.path.join(FIXTURE_DIR, '07_source.txt_fails_compression.dvpl'),
-	os.path.join(FIXTURE_DIR, '08_source.bin_fails_compression.dvpl'),
-	os.path.join(FIXTURE_DIR, '09_source.txt_fails_crc.dvpl'),
-	os.path.join(FIXTURE_DIR, '10_source.bin_fails_crc.dvpl'),
-	os.path.join(FIXTURE_DIR, '11_source.txt_fails_encoded_size.dvpl'),
-	os.path.join(FIXTURE_DIR, '12_source.bin_fails_encoded_size.dvpl'),
-	os.path.join(FIXTURE_DIR, '13_source.txt_fails_decoded_size.dvpl'),
-	os.path.join(FIXTURE_DIR, '14_source.bin_fails_decoded_size.dvpl')
+	pjoin(FIXTURE_DIR, '05_source.txt_fails_marker.dvpl'),
+	pjoin(FIXTURE_DIR, '06_source.bin_fails_marker.dvpl'),
+	pjoin(FIXTURE_DIR, '07_source.txt_fails_compression.dvpl'),
+	pjoin(FIXTURE_DIR, '08_source.bin_fails_compression.dvpl'),
+	pjoin(FIXTURE_DIR, '09_source.txt_fails_crc.dvpl'),
+	pjoin(FIXTURE_DIR, '10_source.bin_fails_crc.dvpl'),
+	pjoin(FIXTURE_DIR, '11_source.txt_fails_encoded_size.dvpl'),
+	pjoin(FIXTURE_DIR, '12_source.bin_fails_encoded_size.dvpl'),
+	pjoin(FIXTURE_DIR, '13_source.txt_fails_decoded_size.dvpl'),
+	pjoin(FIXTURE_DIR, '14_source.bin_fails_decoded_size.dvpl')
 	)
-async def test_3_verify_file_fails(datafiles):
-	for i in datafiles.listdir():
-		input = str(i)
+async def test_3_verify_file_fails(datafiles : Path) -> None:
+	for f in datafiles.iterdir():
+		input = str(f)
 		print(f"Input: {input}")
 		assert not await verify_dvpl_file(input), f"dvpl verification failed (false positive): {input}"
 
