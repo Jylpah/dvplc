@@ -1,14 +1,15 @@
 from asyncio.log import logger
 import pytest # type: ignore
+from os.path import dirname, realpath
 import os
 import sys
 
 from pathlib import Path # if you haven't already done so
-file = Path(__file__).resolve()
-root = file.parents[1]
-sys.path.append(str(root))
 
-from dvplc import COMPRESSION, encode_dvpl, decode_dvpl, encode_dvpl_file, verify_dvpl_file, decode_dvpl_file  # type: ignore
+sys.path.insert(0, os.path.join(dirname(dirname(realpath(__file__))), 'src'))
+
+from dvplc import COMPRESSION, encode_dvpl, decode_dvpl, \
+					encode_dvpl_file, verify_dvpl_file, decode_dvpl_file
 
 ## Test plan
 # 1) mypy static typing
@@ -20,12 +21,11 @@ from dvplc import COMPRESSION, encode_dvpl, decode_dvpl, encode_dvpl_file, verif
 def test_source_data_0() -> bytes:
 	return bytes(b'1234567890')
 
-
 FIXTURE_DIR = os.path.dirname(os.path.realpath(__file__))
 
 def pytest_configure(config):
-    plugin = config.pluginmanager.getplugin('mypy')
-    plugin.mypy_argv.append('--check-untyped-defs')
+	plugin = config.pluginmanager.getplugin('mypy')
+	plugin.mypy_argv.append('--check-untyped-defs')
 
 
 @pytest.fixture
@@ -57,9 +57,9 @@ async def test_0_dvpl_encode_decode_passes(test_source_data_0):
 
 @pytest.mark.asyncio
 @pytest.mark.datafiles(
-    os.path.join(FIXTURE_DIR, '01_source.txt'),
-    os.path.join(FIXTURE_DIR, '02_source.bin')
-    )
+	os.path.join(FIXTURE_DIR, '01_source.txt'),
+	os.path.join(FIXTURE_DIR, '02_source.bin')
+	)
 async def test_1_encode_file_passes(datafiles):
 	for i in datafiles.listdir():
 		input = str(i)
@@ -71,9 +71,9 @@ async def test_1_encode_file_passes(datafiles):
 
 @pytest.mark.asyncio
 @pytest.mark.datafiles(
-    os.path.join(FIXTURE_DIR, '03_source.txt.dvpl'),
-    os.path.join(FIXTURE_DIR, '04_source.bin.dvpl')
-    )
+	os.path.join(FIXTURE_DIR, '03_source.txt.dvpl'),
+	os.path.join(FIXTURE_DIR, '04_source.bin.dvpl')
+	)
 async def test_2_decode_file_passes(datafiles):
 	for i in datafiles.listdir():
 		input = str(i)
@@ -95,7 +95,7 @@ async def test_2_decode_file_passes(datafiles):
 	os.path.join(FIXTURE_DIR, '12_source.bin_fails_encoded_size.dvpl'),
 	os.path.join(FIXTURE_DIR, '13_source.txt_fails_decoded_size.dvpl'),
 	os.path.join(FIXTURE_DIR, '14_source.bin_fails_decoded_size.dvpl')
-    )
+	)
 async def test_3_verify_file_fails(datafiles):
 	for i in datafiles.listdir():
 		input = str(i)
