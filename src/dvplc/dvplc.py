@@ -8,7 +8,7 @@ from os import cpu_count, sep, remove, getcwd, makedirs, path
 import sys
 import asyncio
 import aiofiles
-from lz4.block import compress, decompress, LZ4BlockError
+from lz4.block import compress, decompress, LZ4BlockError # type:ignore
 import zlib
 
 from pyutils import FileQueue, EventCounter
