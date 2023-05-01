@@ -1,6 +1,5 @@
 import sys
 import pytest # type: ignore
-from typing import reveal_type
 from pytest import Config
 from asyncio.log import logger
 from os.path import dirname, realpath, join as pjoin

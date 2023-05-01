@@ -57,6 +57,8 @@ mypy_path = ['src']
 reportGeneralTypeIssues = false
 
 [tool.pytest.ini_options]
+minversion = "7.0"
+addopts = "-v"
 filterwarnings = [
-    'ignore:Inheritance class ThrottledClientSession from ClientSession is discouraged:DeprecationWarning',
+	'ignore:Inheritance class ThrottledClientSession from ClientSession is discouraged:DeprecationWarning',
 ]
