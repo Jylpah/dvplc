@@ -14,22 +14,17 @@ Tested on Linux & Working :-)
 
 *Python 3.10+ is required*
 
-My recommendation is to use `git` as your *package manager*.
 ```
-# Clone repo
-git clone --recurse-submodules https://github.com/Jylpah/dvplc.git
-
-# Install required Python modules with Python pip
-cd dvplc
-pip install -r requirements.txt
+pip install git+https://github.com/Jylpah/dvplc.git
 ```
-
-**If** you forgot to add the `--recurse-submodules` option to `git clone` you can run `git submodule update --init` after cloning the repository. 
-
 ## Update
 
 ```
-git pull --recurse-submodules
+pip install --upgrade git+https://github.com/Jylpah/dvplc.git
+
+# or 
+
+pip install --upgrade --force-reinstall git+https://github.com/Jylpah/dvplc.git
 ```
 
 # SYNOPSIS
