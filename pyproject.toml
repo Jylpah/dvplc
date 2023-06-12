@@ -56,6 +56,10 @@ mypy_path = ['src']
 [tool.pyright]
 reportGeneralTypeIssues = false
 
+[tool.black]
+# line-length = 120
+include = '\.pyi?$'
+
 [tool.pytest.ini_options]
 minversion = "7.0"
 addopts = "-v"
