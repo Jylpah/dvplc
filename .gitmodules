@@ -1,4 +1,0 @@
-[submodule "pyutils"]
-	path = dvplc/pyutils
-	url = https://github.com/Jylpah/pyutils.git
-	branch = dev
