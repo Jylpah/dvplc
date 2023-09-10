@@ -7,7 +7,14 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent.resolve() / "src"))
 
-from dvplc import COMPRESSION, encode_dvpl, decode_dvpl, encode_dvpl_file, verify_dvpl_file, decode_dvpl_file
+from dvplc import (
+    COMPRESSION,
+    encode_dvpl,
+    decode_dvpl,
+    encode_dvpl_file,
+    verify_dvpl_file,
+    decode_dvpl_file,
+)
 
 ## Test plan
 # 1) mypy static typing
@@ -45,16 +52,20 @@ def test_checksums() -> dict[str, str]:
 
 @pytest.mark.asyncio
 async def test_0_dvpl_encode_decode_passes(test_source_data_0: bytes) -> None:
-    res_encode, txt = await encode_dvpl(input=test_source_data_0, compression=COMPRESSION, quiet=True)
+    res_encode, txt = encode_dvpl(
+        input=test_source_data_0, compression=COMPRESSION, quiet=True
+    )
     assert txt == "OK"
     assert res_encode is not None, "encoding failed"
-    res_decode, txt = await decode_dvpl(res_encode, quiet=True)
+    res_decode, txt = decode_dvpl(res_encode, quiet=True)
     assert txt == "OK"
     assert res_decode == test_source_data_0
 
 
 @pytest.mark.asyncio
-@pytest.mark.datafiles(pjoin(FIXTURE_DIR, "01_source.txt"), pjoin(FIXTURE_DIR, "02_source.bin"))
+@pytest.mark.datafiles(
+    pjoin(FIXTURE_DIR, "01_source.txt"), pjoin(FIXTURE_DIR, "02_source.bin")
+)
 async def test_1_encode_file_passes(datafiles: Path) -> None:
     for f in datafiles.iterdir():
         input = str(f)
@@ -65,7 +76,9 @@ async def test_1_encode_file_passes(datafiles: Path) -> None:
 
 
 @pytest.mark.asyncio
-@pytest.mark.datafiles(pjoin(FIXTURE_DIR, "03_source.txt.dvpl"), pjoin(FIXTURE_DIR, "04_source.bin.dvpl"))
+@pytest.mark.datafiles(
+    pjoin(FIXTURE_DIR, "03_source.txt.dvpl"), pjoin(FIXTURE_DIR, "04_source.bin.dvpl")
+)
 async def test_2_decode_file_passes(datafiles: Path) -> None:
     for f in datafiles.iterdir():
         input = str(f)
@@ -92,4 +105,6 @@ async def test_3_verify_file_fails(datafiles: Path) -> None:
     for f in datafiles.iterdir():
         input = str(f)
         print(f"Input: {input}")
-        assert not await verify_dvpl_file(input), f"dvpl verification failed (false positive): {input}"
+        assert not await verify_dvpl_file(
+            input
+        ), f"dvpl verification failed (false positive): {input}"
