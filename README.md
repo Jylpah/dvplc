@@ -21,9 +21,9 @@ pip install git+https://github.com/Jylpah/dvplc.git
 
 ```
 pip install --upgrade git+https://github.com/Jylpah/dvplc.git
-
-# or 
-
+``` 
+or 
+```
 pip install --upgrade --force-reinstall git+https://github.com/Jylpah/dvplc.git
 ```
 
