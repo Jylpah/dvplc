@@ -41,23 +41,47 @@ async def main() -> None:
 
     try:
         # parse arguments
-        parser = argparse.ArgumentParser(description="Encoder/decoder for SmartDLC DVPL files")
+        parser = argparse.ArgumentParser(
+            description="Encoder/decoder for SmartDLC DVPL files"
+        )
 
         arggroup_verbosity = parser.add_mutually_exclusive_group()
         arggroup_verbosity.add_argument(
-            "--debug", "-d", dest="LEVEL", action="store_const", const="DEBUG", help="Debug mode"
+            "--debug",
+            "-d",
+            dest="LEVEL",
+            action="store_const",
+            const="DEBUG",
+            help="Debug mode",
         )
         arggroup_verbosity.add_argument(
-            "--verbose", "-v", dest="LEVEL", action="store_const", const="INFO", help="Verbose mode"
+            "--verbose",
+            "-v",
+            dest="LEVEL",
+            action="store_const",
+            const="INFO",
+            help="Verbose mode",
         )
         arggroup_verbosity.add_argument(
-            "--silent", "-s", dest="LEVEL", action="store_const", const="CRITICAL", help="Silent mode"
+            "--silent",
+            "-s",
+            dest="LEVEL",
+            action="store_const",
+            const="CRITICAL",
+            help="Silent mode",
         )
-        parser.add_argument("--log", type=str, metavar="LOGFILE", default=None, help="Log to LOGFILE")
-
-        parser.add_argument("--force", action="store_true", default=False, help="Overwrite files")
         parser.add_argument(
-            "--threads", type=int, default=THREADS, help="Set number of asynchronous threads. Default is automatic."
+            "--log", type=str, metavar="LOGFILE", default=None, help="Log to LOGFILE"
+        )
+
+        parser.add_argument(
+            "--force", action="store_true", default=False, help="Overwrite files"
+        )
+        parser.add_argument(
+            "--threads",
+            type=int,
+            default=THREADS,
+            help="Set number of asynchronous threads. Default is automatic.",
         )
         parser.add_argument(
             "--compression",
@@ -67,7 +91,11 @@ async def main() -> None:
             help="Select compression to use when encoding",
         )
         parser.add_argument(
-            "mode", type=str, choices=MODES, metavar="encode | decode | verify", help="Choose encode/decode mode."
+            "mode",
+            type=str,
+            choices=MODES,
+            metavar="encode | decode | verify",
+            help="Choose encode/decode mode.",
         )
 
         arggroup_conversion = parser.add_mutually_exclusive_group()
@@ -86,11 +114,25 @@ async def main() -> None:
             help="Delete source files after successful conversion",
         )
         arggroup_conversion.add_argument(
-            "--mirror", metavar="DIR", type=str, default=None, help="Mirror converted files under DIR"
+            "--mirror",
+            metavar="DIR",
+            type=str,
+            default=None,
+            help="Mirror converted files under DIR",
         )
-        parser.add_argument("--base", metavar="DIR", type=str, default=None, help="Base source directory for --mirror")
         parser.add_argument(
-            "files", metavar="FILE1 [FILE2 ...]", type=str, nargs="+", help="Files to read. Use '-' for STDIN"
+            "--base",
+            metavar="DIR",
+            type=str,
+            default=None,
+            help="Base source directory for --mirror",
+        )
+        parser.add_argument(
+            "files",
+            metavar="FILE1 [FILE2 ...]",
+            type=str,
+            nargs="+",
+            help="Files to read. Use '-' for STDIN",
         )
         parser.set_defaults(LEVEL="WARNING", conversion="keep")
 
@@ -103,7 +145,12 @@ async def main() -> None:
             logging.WARNING: "%(message)s",
             logging.ERROR: "%(levelname)s: %(message)s",
         }
-        set_mlevel_logging(logger, fmts=logger_conf, fmt="%(levelname)s: %(funcName)s: %(message)s", log_file=args.log)
+        set_mlevel_logging(
+            logger,
+            fmts=logger_conf,
+            fmt="%(levelname)s: %(funcName)s: %(message)s",
+            log_file=args.log,
+        )
 
         if args.mirror is not None:
             args.conversion = "mirror"
@@ -111,14 +158,18 @@ async def main() -> None:
             # otherwise CWD will be mirror source base and all the source files have to be under it
             # if len(args.files) == 1:
             # 	args.base = args.files[0]
-            assert args.base is None or path.isdir(args.base), f"If set --base DIR has to be a directory: {args.base}"
+            assert args.base is None or path.isdir(
+                args.base
+            ), f"If set --base DIR has to be a directory: {args.base}"
 
         logger.debug("Argumengs given: " + str(args))
 
         if args.mode in ["decode", "verify"]:
             fq = FileQueue(filter="*.dvpl", base=args.base, maxsize=QUEUE_LEN)
         elif args.mode == "encode":
-            fq = FileQueue(filter="*.dvpl", exclude=True, base=args.base, maxsize=QUEUE_LEN)
+            fq = FileQueue(
+                filter="*.dvpl", exclude=True, base=args.base, maxsize=QUEUE_LEN
+            )
         else:
             raise ValueError(f"Unknown mode: {args.mode}")
 
@@ -151,7 +202,11 @@ async def process_files(fileQ: FileQueue, args: argparse.Namespace) -> EventCoun
     el = EventCounter("Files processed")
     try:
         assert fileQ is not None and args is not None, "parameters must not be None"
-        action: dict[str, str] = {"encode": "Encoded", "decode": "Decoded", "verify": "Verified"}
+        action: dict[str, str] = {
+            "encode": "Encoded",
+            "decode": "Decoded",
+            "verify": "Verified",
+        }
         source_root: str = ""
         target_root: str = ""
 
@@ -171,10 +226,13 @@ async def process_files(fileQ: FileQueue, args: argparse.Namespace) -> EventCoun
                 result = False
                 if args.conversion == "mirror":
                     if (args.base is None and str(source).startswith(".." + sep)) or (
-                        args.base is not None and path.commonpath([source, source_root]) != source_root
+                        args.base is not None
+                        and path.commonpath([source, source_root]) != source_root
                     ):
                         logger.error(f"Source file is not under base dir: {source}")
-                        logger.debug(f"Common path is: {path.commonpath([source, source_root])}")
+                        logger.debug(
+                            f"Common path is: {path.commonpath([source, source_root])}"
+                        )
                         el.log("Skipped")
                         continue
                     target = sep.join([target_root, path.relpath(source, source_root)])
@@ -184,7 +242,9 @@ async def process_files(fileQ: FileQueue, args: argparse.Namespace) -> EventCoun
                         makedirs(targetdir)
                 if args.mode == "encode":
                     target = target + ".dvpl"
-                    result = await encode_dvpl_file(source, target, compression=args.compression, force=args.force)
+                    result = await encode_dvpl_file(
+                        source, target, compression=args.compression, force=args.force
+                    )
                     # el.log('Encoded')
                 elif args.mode == "decode":
                     target = target.removesuffix(".dvpl")
@@ -231,13 +291,15 @@ async def decode_dvpl_file(dvpl_fn: str, output_fn: str, force: bool = False) ->
         if output_fn.lower().endswith(".dvpl"):
             raise ValueError("Output file is a DVPL file: " + output_fn)
         if path.isfile(output_fn) and not force:
-            raise FileExistsError("Output file exists, use --force to overwrite " + output_fn)
+            raise FileExistsError(
+                "Output file exists, use --force to overwrite " + output_fn
+            )
 
         ## Read encoded DVPL file
         output = bytes()
         async with aiofiles.open(dvpl_fn, mode="rb") as ifp:
             verbose(f"decoding file: {dvpl_fn}")
-            output, status = await decode_dvpl(await ifp.read())
+            output, status = decode_dvpl(await ifp.read())
 
         ## Write decoded file
         if output is None:
@@ -254,7 +316,7 @@ async def decode_dvpl_file(dvpl_fn: str, output_fn: str, force: bool = False) ->
     return False
 
 
-async def decode_dvpl(input: bytes, quiet: bool = False) -> tuple[Optional[bytes], str]:
+def decode_dvpl(input: bytes, quiet: bool = False) -> tuple[Optional[bytes], str]:
     """Decode a DVPL bytearray"""
 
     assert input is not None, f"input value is None"
@@ -271,7 +333,9 @@ async def decode_dvpl(input: bytes, quiet: bool = False) -> tuple[Optional[bytes
         if e_length != len(input):
             raise EncodingWarning("Encoded DVPL data size differs DVPL footer info")
         if e_crc != zlib.crc32(input):
-            raise EncodingWarning("Encoded DVPL data CRC32 differs DVPL footer checksum")
+            raise EncodingWarning(
+                "Encoded DVPL data CRC32 differs DVPL footer checksum"
+            )
         else:
             logger.debug(f"Encoded CRC matches {hex(e_crc)}")
 
@@ -303,7 +367,9 @@ async def decode_dvpl(input: bytes, quiet: bool = False) -> tuple[Optional[bytes
         return None, str(err)
 
 
-async def encode_dvpl_file(input_fn: str, dvpl_fn: str, compression: str = COMPRESSION, force: bool = False) -> bool:
+async def encode_dvpl_file(
+    input_fn: str, dvpl_fn: str, compression: str = COMPRESSION, force: bool = False
+) -> bool:
     """Encode a source file to a DVPL file"""
 
     assert input_fn is not None, f"input file name is None"
@@ -321,13 +387,15 @@ async def encode_dvpl_file(input_fn: str, dvpl_fn: str, compression: str = COMPR
         if not dvpl_fn.lower().endswith(".dvpl"):
             raise ValueError("Output file is not a DVPL file: " + input_fn)
         if path.isfile(dvpl_fn) and not force:
-            raise FileExistsError("Output file exists, use --force to overwrite: " + dvpl_fn)
+            raise FileExistsError(
+                "Output file exists, use --force to overwrite: " + dvpl_fn
+            )
 
         # read source file
         output = bytes()
         async with aiofiles.open(input_fn, mode="rb") as ifp:
             verbose(f"encoding file: {input_fn}")
-            output, status = await encode_dvpl(await ifp.read(), compression)
+            output, status = encode_dvpl(await ifp.read(), compression)
 
         ## Write dvpl file
         if output is None:
@@ -343,7 +411,9 @@ async def encode_dvpl_file(input_fn: str, dvpl_fn: str, compression: str = COMPR
     return False
 
 
-async def encode_dvpl(input: bytes, compression: str, quiet: bool = False) -> tuple[Optional[bytes], str]:
+def encode_dvpl(
+    input: bytes, compression: str, quiet: bool = False
+) -> tuple[Optional[bytes], str]:
     """Encode data to a DVPL format"""
 
     assert isinstance(input, bytes), f"input needs to be bytes, got {type(input)}"
@@ -397,7 +467,7 @@ async def verify_dvpl_file(dvpl_fn: str) -> bool:
         ## Try to decode a DVPL file
         async with aiofiles.open(dvpl_fn, mode="rb") as ifp:
             logger.debug(f"reading file: {dvpl_fn}")
-            output, status = await decode_dvpl(await ifp.read(), quiet=True)
+            output, status = decode_dvpl(await ifp.read(), quiet=True)
         if output is not None:
             verbose(f"{dvpl_fn} : OK")
             return True
@@ -429,10 +499,15 @@ def make_dvpl_footer(encoded: bytes, d_size: int, compression: str) -> Optional[
         f_d_size = toUInt32LE(d_size)  # input size as UInt32LE
         f_e_size = toUInt32LE(len(encoded))  # output size as UInt32LE
         f_crc32 = toUInt32LE(zlib.crc32(encoded))  # output crc32 as UInt32LE
-        f_compression = toUInt32LE(COMPRESSION_TYPE[compression])  # output type as UInt32LE
+        f_compression = toUInt32LE(
+            COMPRESSION_TYPE[compression]
+        )  # output type as UInt32LE
 
         assert (
-            (f_d_size is not None) and (f_e_size is not None) and (f_crc32 is not None) and (f_compression is not None)
+            (f_d_size is not None)
+            and (f_e_size is not None)
+            and (f_crc32 is not None)
+            and (f_compression is not None)
         ), "Making DVPL footer failed"
         footer += f_d_size  # input size as UInt32LE
         footer += f_e_size  # output size as UInt32LE
@@ -469,12 +544,17 @@ def read_dvpl_footer(data: bytes) -> tuple[dict, bytes]:
     f_compression = fromUInt32LE(footer[12:16])  # encoding type
 
     assert (
-        (f_d_size is not None) and (f_e_size is not None) and (f_crc32 is not None) and (f_compression is not None)
+        (f_d_size is not None)
+        and (f_e_size is not None)
+        and (f_crc32 is not None)
+        and (f_compression is not None)
     ), "Malformed DVPL footer"
     result["d_size"] = f_d_size
     result["e_size"] = f_e_size
     result["e_crc"] = f_crc32
-    assert f_compression >= 0 and f_compression < len(COMPRESSIONS), "unknown compression in DVPL footer"
+    assert f_compression >= 0 and f_compression < len(
+        COMPRESSIONS
+    ), "unknown compression in DVPL footer"
     result["e_type"] = COMPRESSIONS[f_compression]
 
     if logger.getEffectiveLevel() == logging.DEBUG:
