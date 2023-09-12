@@ -6,18 +6,21 @@ import logging
 import argparse
 from os import cpu_count, sep, remove, getcwd, makedirs, path
 import sys
-import asyncio
+from asyncio import Task, create_task, wait, CancelledError, run
 import aiofiles
 from lz4.block import compress, decompress, LZ4BlockError  # type:ignore
 import zlib
+from pathlib import Path
 
 from pyutils import FileQueue, EventCounter
 from pyutils.multilevelformatter import set_mlevel_logging
 
 logging.getLogger("asyncio").setLevel(logging.WARNING)
 logger = logging.getLogger(__name__)
+error = logger.error
 message = logger.warning
 verbose = logger.info
+debug = logger.debug
 
 # Constants & defaults
 MODES = ["encode", "decode", "verify"]
@@ -114,18 +117,18 @@ async def main() -> None:
             help="Delete source files after successful conversion",
         )
         arggroup_conversion.add_argument(
-            "--mirror",
+            "--mirror-to",
             metavar="DIR",
             type=str,
             default=None,
-            help="Mirror converted files under DIR",
+            help="Mirror converted files to DIR",
         )
         parser.add_argument(
             "--base",
             metavar="DIR",
             type=str,
             default=None,
-            help="Base source directory for --mirror",
+            help="Base source directory to mirror from",
         )
         parser.add_argument(
             "files",
@@ -152,7 +155,7 @@ async def main() -> None:
             log_file=args.log,
         )
 
-        if args.mirror is not None:
+        if args.mirror_to is not None:
             args.conversion = "mirror"
             ## FIX: If one arg, it has to be DIR and will serve as mirror source base,
             # otherwise CWD will be mirror source base and all the source files have to be under it
@@ -165,33 +168,36 @@ async def main() -> None:
         logger.debug("Argumengs given: " + str(args))
 
         if args.mode in ["decode", "verify"]:
-            fq = FileQueue(filter="*.dvpl", base=args.base, maxsize=QUEUE_LEN)
+            fq = FileQueue(
+                filter="*.dvpl",
+                base=None if args.base is None else Path(args.base),
+                maxsize=QUEUE_LEN,
+            )
         elif args.mode == "encode":
             fq = FileQueue(
-                filter="*.dvpl", exclude=True, base=args.base, maxsize=QUEUE_LEN
+                filter="*.dvpl",
+                exclude=True,
+                base=None if args.base is None else Path(args.base),
+                maxsize=QUEUE_LEN,
             )
         else:
             raise ValueError(f"Unknown mode: {args.mode}")
 
-        workers = list()
-        logger.debug(f"file queue is {str(fq.qsize())} long")
-        scanner = asyncio.create_task(fq.mk_queue(args.files))
+        stats = EventCounter("Files processed ----------------------------------------")
+        workers: list[Task] = list()
+        logger.debug(f"file queue is {fq.qsize()} long")
+        scanner = create_task(fq.mk_queue(args.files))
         for i in range(args.threads):
-            workers.append(asyncio.create_task(process_files(fq, args)))
+            workers.append(create_task(process_files(fq, args)))
             logger.debug(f"Process thread {str(i)} started")
 
         logger.debug("Building file queue")
-        await asyncio.wait([scanner])
+        await wait([scanner])
         logger.debug("Processing files")
         await fq.join()
-        logger.debug("Cancelling workers")
-        for worker in workers:
-            worker.cancel()
+        await stats.gather_stats(workers, merge_child=False, cancel=False)
 
-        el = EventCounter("Files processed ----------------------------------------")
-        await el.gather_stats(workers, merge_child=False)
-
-        message(el.print(do_print=False))
+        message(stats.print(do_print=False))
 
     except Exception as err:
         logger.error(str(err))
@@ -199,81 +205,84 @@ async def main() -> None:
 
 
 async def process_files(fileQ: FileQueue, args: argparse.Namespace) -> EventCounter:
-    el = EventCounter("Files processed")
+    stats = EventCounter("Files processed")
     try:
         assert fileQ is not None and args is not None, "parameters must not be None"
+        src_root: Path = Path(".")
+        dst_root: Path = Path(".")
+        src_file: Path
+        dst_file: Path
+        src_rel: Path
         action: dict[str, str] = {
             "encode": "Encoded",
             "decode": "Decoded",
             "verify": "Verified",
         }
-        source_root: str = ""
-        target_root: str = ""
 
         if args.conversion == "mirror":
-            assert args.mirror is not None, "args.mirror is not set"
+            assert args.mirror_to is not None, "args.mirror_to is not set"
             if args.base is not None:
-                source_root = path.normpath(args.base)
-            else:
-                source_root = "."
-            target_root = path.normpath(args.mirror)
-        while True:
-            source = "-"
-            source = path.normpath(await fileQ.get())
-            el.log("Processed")
+                src_root = Path(args.base)
+            dst_root = Path(args.mirror_to)
+        async for src_file in fileQ:
+            # src_file = "-"
+            # src_file = path.normpath(await fileQ.get())
+            stats.log("Processed")
             try:
-                target = source
+                dst_file = src_file
                 result = False
                 if args.conversion == "mirror":
-                    if (args.base is None and str(source).startswith(".." + sep)) or (
-                        args.base is not None
-                        and path.commonpath([source, source_root]) != source_root
-                    ):
-                        logger.error(f"Source file is not under base dir: {source}")
-                        logger.debug(
-                            f"Common path is: {path.commonpath([source, source_root])}"
+                    try:
+                        src_rel = src_file.relative_to(src_root)
+                    except ValueError:
+                        error(
+                            f"source file ({src_file}) is not under source root ({src_root})"
                         )
-                        el.log("Skipped")
+                        stats.log("Skipped")
                         continue
-                    target = sep.join([target_root, path.relpath(source, source_root)])
-                    targetdir = path.dirname(target)
-                    if not path.isdir(targetdir):
-                        logger.debug(f"creating dir: {targetdir}")
-                        makedirs(targetdir)
+                    dst_file = dst_root / src_rel
+                    if not dst_file.parent.is_dir():
+                        logger.debug(f"creating dir: {dst_file.parent}")
+                        makedirs(dst_file.parent)
+
                 if args.mode == "encode":
-                    target = target + ".dvpl"
+                    dst_file = dst_file.with_suffix(".dvpl")
                     result = await encode_dvpl_file(
-                        source, target, compression=args.compression, force=args.force
+                        src_file,
+                        dst_file,
+                        compression=args.compression,
+                        force=args.force,
                     )
-                    # el.log('Encoded')
+                    # stats.log('Encoded')
                 elif args.mode == "decode":
-                    target = target.removesuffix(".dvpl")
-                    result = await decode_dvpl_file(source, target, force=args.force)
-                    # el.log('Decoded')
+                    dst_file = dst_file.with_suffix("")
+                    result = await decode_dvpl_file(
+                        src_file, dst_file, force=args.force
+                    )
+                    # stats.log('Decoded')
                 elif args.mode == "verify":
-                    result = await verify_dvpl_file(source)
+                    result = await verify_dvpl_file(src_file)
 
                 if result:
-                    el.log(f"{action[args.mode]} OK")
+                    stats.log(f"{action[args.mode]} OK")
                 else:
-                    el.log(f"{action[args.mode]} FAILED")
-                if result and args.conversion == "replace" and args.mode != "verify":
-                    logger.debug(f"Removing source file: {source}")
-                    remove(source)
-            except Exception as err:
-                el.log("Errors")
-                logger.error(f"{str(err)} : {source}")
-            finally:
-                fileQ.task_done()
+                    stats.log(f"{action[args.mode]} FAILED")
 
-    except asyncio.CancelledError:
+                if result and args.conversion == "replace" and args.mode != "verify":
+                    logger.debug(f"Removing source file: {src_file}")
+                    remove(src_file)
+            except Exception as err:
+                stats.log("Errors")
+                logger.error(f"{str(err)} : {src_file}")
+
+    except CancelledError:
         logger.debug("Worker cancelled")
     except Exception as err:
         logger.error(str(err))
-    return el
+    return stats
 
 
-async def decode_dvpl_file(dvpl_fn: str, output_fn: str, force: bool = False) -> bool:
+async def decode_dvpl_file(dvpl_fn: Path, output_fn: Path, force: bool = False) -> bool:
     """Encode a source file to a DVPL file"""
 
     assert dvpl_fn is not None, f"DVPL file name is None"
@@ -284,15 +293,15 @@ async def decode_dvpl_file(dvpl_fn: str, output_fn: str, force: bool = False) ->
         output: Optional[bytes] = None
         status = ""
 
-        if not path.isfile(dvpl_fn):
-            raise FileNotFoundError("Source file not found: " + dvpl_fn)
-        if not dvpl_fn.lower().endswith(".dvpl"):
-            raise ValueError("Source file is not a DVPL file: " + dvpl_fn)
-        if output_fn.lower().endswith(".dvpl"):
-            raise ValueError("Output file is a DVPL file: " + output_fn)
-        if path.isfile(output_fn) and not force:
+        if not dvpl_fn.is_file():
+            raise FileNotFoundError(f"Source file not found: {dvpl_fn}")
+        if dvpl_fn.suffix.lower() != ".dvpl":
+            raise ValueError(f"Source file is not a DVPL file: {dvpl_fn}")
+        if output_fn.suffix.lower() == ".dvpl":
+            raise ValueError(f"Output file is a DVPL file: {output_fn}")
+        if output_fn.exists() and not force:
             raise FileExistsError(
-                "Output file exists, use --force to overwrite " + output_fn
+                f"Output file exists, use --force to overwrite {output_fn}"
             )
 
         ## Read encoded DVPL file
@@ -309,7 +318,7 @@ async def decode_dvpl_file(dvpl_fn: str, output_fn: str, force: bool = False) ->
             await ofp.write(output)
 
         return True
-    except asyncio.CancelledError as err:
+    except CancelledError as err:
         verbose("Cancelled")
     except Exception as err:
         logger.error(str(err))
@@ -368,7 +377,7 @@ def decode_dvpl(input: bytes, quiet: bool = False) -> tuple[Optional[bytes], str
 
 
 async def encode_dvpl_file(
-    input_fn: str, dvpl_fn: str, compression: str = COMPRESSION, force: bool = False
+    input_fn: Path, dvpl_fn: Path, compression: str = COMPRESSION, force: bool = False
 ) -> bool:
     """Encode a source file to a DVPL file"""
 
@@ -380,15 +389,15 @@ async def encode_dvpl_file(
     try:
         output: Optional[bytes] = None
         status = ""
-        if not path.isfile(input_fn):
-            raise FileNotFoundError("Source file not found: " + input_fn)
-        if input_fn.lower().endswith(".dvpl"):
-            raise ValueError("Source file is a DVPL file: " + input_fn)
-        if not dvpl_fn.lower().endswith(".dvpl"):
-            raise ValueError("Output file is not a DVPL file: " + input_fn)
-        if path.isfile(dvpl_fn) and not force:
+        if not input_fn.is_file():
+            raise FileNotFoundError(f"Source file not found: {input_fn}")
+        if input_fn.suffix.lower() == ".dvpl":
+            raise ValueError(f"Source file is a DVPL file: {input_fn}")
+        if not dvpl_fn.suffix.lower() == ".dvpl":
+            raise ValueError(f"Output file is not a DVPL file: {input_fn}")
+        if dvpl_fn.exists() and not force:
             raise FileExistsError(
-                "Output file exists, use --force to overwrite: " + dvpl_fn
+                f"Output file exists, use --force to overwrite: {dvpl_fn}"
             )
 
         # read source file
@@ -404,7 +413,7 @@ async def encode_dvpl_file(
             logger.debug(f"writing to file: {dvpl_fn}")
             await ofp.write(output)
         return True
-    except asyncio.CancelledError as err:
+    except CancelledError as err:
         verbose("Cancelled")
     except Exception as err:
         logger.error(str(err))
@@ -451,7 +460,7 @@ def encode_dvpl(
     return None, "Unknown error"
 
 
-async def verify_dvpl_file(dvpl_fn: str) -> bool:
+async def verify_dvpl_file(dvpl_fn: Path) -> bool:
     """Verify a DVPL file"""
 
     assert dvpl_fn is not None, f"input file name is None type"
@@ -460,9 +469,9 @@ async def verify_dvpl_file(dvpl_fn: str) -> bool:
         output: Optional[bytes] = None
         status = ""
         if not path.isfile(dvpl_fn):
-            raise FileNotFoundError("Source file not found: " + dvpl_fn)
-        if not dvpl_fn.lower().endswith(".dvpl"):
-            raise ValueError("Source file is not a DVPL file: " + dvpl_fn)
+            raise FileNotFoundError(f"Source file not found: {dvpl_fn}")
+        if dvpl_fn.suffix.lower() != ".dvpl":
+            raise ValueError(f"Source file is not a DVPL file: {dvpl_fn}")
 
         ## Try to decode a DVPL file
         async with aiofiles.open(dvpl_fn, mode="rb") as ifp:
@@ -474,7 +483,7 @@ async def verify_dvpl_file(dvpl_fn: str) -> bool:
         else:
             message(f"{dvpl_fn} : ERROR: {status}")
             return False
-    except asyncio.CancelledError as err:
+    except CancelledError as err:
         verbose("Cancelled")
     except Exception as err:
         logger.error(str(err))
@@ -594,8 +603,8 @@ def fromUInt32LE(data: bytes) -> Optional[int]:
 ### main()
 if __name__ == "__main__":
     # asyncio.run(main(sys.argv[1:]), debug=True)
-    asyncio.run(main())
+    run(main())
 
 
 def cli_main() -> None:
-    return asyncio.run(main())
+    return run(main())

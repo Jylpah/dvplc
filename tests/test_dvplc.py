@@ -67,9 +67,8 @@ async def test_0_dvpl_encode_decode_passes(test_source_data_0: bytes) -> None:
     pjoin(FIXTURE_DIR, "01_source.txt"), pjoin(FIXTURE_DIR, "02_source.bin")
 )
 async def test_1_encode_file_passes(datafiles: Path) -> None:
-    for f in datafiles.iterdir():
-        input = str(f)
-        output = input + ".dvpl"
+    for input in datafiles.iterdir():
+        output = input.with_suffix(".dvpl")
         print(f"Input: {input}, Output: {output}")
         assert await encode_dvpl_file(input, output), f"encoding failed: {input}"
         assert await verify_dvpl_file(output), f"dvpl verification failed: {output}"
@@ -80,9 +79,8 @@ async def test_1_encode_file_passes(datafiles: Path) -> None:
     pjoin(FIXTURE_DIR, "03_source.txt.dvpl"), pjoin(FIXTURE_DIR, "04_source.bin.dvpl")
 )
 async def test_2_decode_file_passes(datafiles: Path) -> None:
-    for f in datafiles.iterdir():
-        input = str(f)
-        output = input.removesuffix(".dvpl")
+    for input in datafiles.iterdir():
+        output = input.with_suffix("")
         print(f"Input: {input}, Output: {output}")
         assert await verify_dvpl_file(input), f"dvpl verification failed: {input}"
         assert await decode_dvpl_file(input, output), f"decoding failed: {input}"
@@ -102,8 +100,7 @@ async def test_2_decode_file_passes(datafiles: Path) -> None:
     pjoin(FIXTURE_DIR, "14_source.bin_fails_decoded_size.dvpl"),
 )
 async def test_3_verify_file_fails(datafiles: Path) -> None:
-    for f in datafiles.iterdir():
-        input = str(f)
+    for input in datafiles.iterdir():
         print(f"Input: {input}")
         assert not await verify_dvpl_file(
             input
