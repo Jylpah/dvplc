@@ -165,7 +165,7 @@ async def main() -> None:
                 args.base
             ), f"If set --base DIR has to be a directory: {args.base}"
 
-        logger.debug("Argumengs given: " + str(args))
+        debug("Argumengs given: " + str(args))
 
         if args.mode in ["decode", "verify"]:
             fq = FileQueue(
@@ -185,22 +185,22 @@ async def main() -> None:
 
         stats = EventCounter("Files processed ----------------------------------------")
         workers: list[Task] = list()
-        logger.debug(f"file queue is {fq.qsize()} long")
+        debug(f"file queue is {fq.qsize()} long")
         scanner = create_task(fq.mk_queue(args.files))
         for i in range(args.threads):
             workers.append(create_task(process_files(fq, args)))
-            logger.debug(f"Process thread {str(i)} started")
+            debug(f"Process thread {str(i)} started")
 
-        logger.debug("Building file queue")
+        debug("Building file queue")
         await wait([scanner])
-        logger.debug("Processing files")
+        debug("Processing files")
         await fq.join()
         await stats.gather_stats(workers, merge_child=False, cancel=False)
 
         message(stats.print(do_print=False))
 
     except Exception as err:
-        logger.error(str(err))
+        error(str(err))
         sys.exit(1)
 
 
@@ -242,7 +242,7 @@ async def process_files(fileQ: FileQueue, args: argparse.Namespace) -> EventCoun
                         continue
                     dst_file = dst_root / src_rel
                     if not dst_file.parent.is_dir():
-                        logger.debug(f"creating dir: {dst_file.parent}")
+                        debug(f"creating dir: {dst_file.parent}")
                         makedirs(dst_file.parent)
 
                 if args.mode == "encode":
@@ -271,16 +271,16 @@ async def process_files(fileQ: FileQueue, args: argparse.Namespace) -> EventCoun
                     stats.log(f"{action[args.mode]} FAILED")
 
                 if result and args.conversion == "replace" and args.mode != "verify":
-                    logger.debug(f"Removing source file: {src_file}")
+                    debug(f"Removing source file: {src_file}")
                     remove(src_file)
             except Exception as err:
                 stats.log("Errors")
-                logger.error(f"{str(err)} : {src_file}")
+                error(f"{str(err)} : {src_file}")
 
     except CancelledError:
-        logger.debug("Worker cancelled")
+        debug("Worker cancelled")
     except Exception as err:
-        logger.error(str(err))
+        error(str(err))
     return stats
 
 
@@ -315,14 +315,14 @@ async def decode_dvpl_file(dvpl_fn: Path, output_fn: Path, force: bool = False) 
         if output is None:
             raise EncodingWarning(f"Error decoding data: {dvpl_fn} : {status}")
         async with aiofiles.open(output_fn, mode="wb") as ofp:
-            logger.debug(f"writing to file: {output_fn}")
+            debug(f"writing to file: {output_fn}")
             await ofp.write(output)
 
         return True
     except CancelledError as err:
         verbose("Cancelled")
     except Exception as err:
-        logger.error(str(err))
+        error(str(err))
     return False
 
 
@@ -347,7 +347,7 @@ def decode_dvpl(input: bytes, quiet: bool = False) -> tuple[Optional[bytes], str
                 "Encoded DVPL data CRC32 differs DVPL footer checksum"
             )
         else:
-            logger.debug(f"Encoded CRC matches {hex(e_crc)}")
+            debug(f"Encoded CRC matches {hex(e_crc)}")
 
         output = bytes()
 
@@ -360,7 +360,7 @@ def decode_dvpl(input: bytes, quiet: bool = False) -> tuple[Optional[bytes], str
         if len(output) != d_size:
             raise EncodingWarning("Decoded data size differs from DVPL footer into")
 
-        logger.debug("decoded CRC32: " + hex(zlib.crc32(output)))
+        debug("decoded CRC32: " + hex(zlib.crc32(output)))
 
         assert output is not None, f"Output value is None"
         assert isinstance(output, bytes), f"Output needs to be bytes, got {type(input)}"
@@ -369,11 +369,11 @@ def decode_dvpl(input: bytes, quiet: bool = False) -> tuple[Optional[bytes], str
 
     except LZ4BlockError as err:
         if not quiet:
-            logger.error("LZ4 decoding error: " + str(err))
+            error("LZ4 decoding error: " + str(err))
         return None, "LZ4 decoding error"
     except Exception as err:
         if not quiet:
-            logger.error(str(err))
+            error(str(err))
         return None, str(err)
 
 
@@ -410,13 +410,13 @@ async def encode_dvpl_file(
         if output is None:
             raise EncodingWarning(f"Error encoding data: {status}")
         async with aiofiles.open(dvpl_fn, mode="wb") as ofp:
-            logger.debug(f"writing to file: {dvpl_fn}")
+            debug(f"writing to file: {dvpl_fn}")
             await ofp.write(output)
         return True
     except CancelledError as err:
         verbose("Cancelled")
     except Exception as err:
-        logger.error(str(err))
+        error(str(err))
     return False
 
 
@@ -445,17 +445,17 @@ def encode_dvpl(
         if output is not None:
             footer = make_dvpl_footer(output, d_size, compression)
 
-            logger.debug("decoded CRC32: " + hex(zlib.crc32(input)))
+            debug("decoded CRC32: " + hex(zlib.crc32(input)))
             if footer is not None:
                 return output + footer, "OK"
 
     except LZ4BlockError as err:
         if not quiet:
-            logger.error("LZ4 encoding error")
+            error("LZ4 encoding error")
         return None, "LZ4 encoding error"
     except Exception as err:
         if not quiet:
-            logger.error(str(err))
+            error(str(err))
         return None, str(err)
     return None, "Unknown error"
 
@@ -475,7 +475,7 @@ async def verify_dvpl_file(dvpl_fn: Path) -> bool:
 
         ## Try to decode a DVPL file
         async with aiofiles.open(dvpl_fn, mode="rb") as ifp:
-            logger.debug(f"reading file: {dvpl_fn}")
+            debug(f"reading file: {dvpl_fn}")
             output, status = decode_dvpl(await ifp.read(), quiet=True)
         if output is not None:
             verbose(f"{dvpl_fn} : OK")
@@ -486,7 +486,7 @@ async def verify_dvpl_file(dvpl_fn: Path) -> bool:
     except CancelledError as err:
         verbose("Cancelled")
     except Exception as err:
-        logger.error(str(err))
+        error(str(err))
     return False
 
 
@@ -499,10 +499,10 @@ def make_dvpl_footer(encoded: bytes, d_size: int, compression: str) -> Optional[
     try:
         """Makes DVPL footer for the encoded (compressed) input"""
         if logger.getEffectiveLevel() == logging.DEBUG:
-            logger.debug("decoded size: " + str(d_size))
-            logger.debug("encoded size: " + str(len(encoded)))
-            logger.debug("encoded CRC32: " + hex(zlib.crc32(encoded)))
-            logger.debug("encoding type: " + compression)
+            debug("decoded size: " + str(d_size))
+            debug("encoded size: " + str(len(encoded)))
+            debug("encoded CRC32: " + hex(zlib.crc32(encoded)))
+            debug("encoding type: " + compression)
 
         footer = bytearray()
         f_d_size = toUInt32LE(d_size)  # input size as UInt32LE
@@ -527,7 +527,7 @@ def make_dvpl_footer(encoded: bytes, d_size: int, compression: str) -> Optional[
         assert len(footer) == 20, f"Footer size != 20"
         return bytes(footer)
     except Exception as err:
-        logger.error(str(err))
+        error(str(err))
     return None
 
 
@@ -567,11 +567,11 @@ def read_dvpl_footer(data: bytes) -> tuple[dict, bytes]:
     result["e_type"] = COMPRESSIONS[f_compression]
 
     if logger.getEffectiveLevel() == logging.DEBUG:
-        logger.debug("decoded size: " + str(result["d_size"]))
-        logger.debug("encoded size: " + str(result["e_size"]))
+        debug("decoded size: " + str(result["d_size"]))
+        debug("encoded size: " + str(result["e_size"]))
         if isinstance(result["e_crc"], int):
-            logger.debug("encoded CRC32: " + hex(result["e_crc"]))
-        logger.debug("encoding type: " + str(result["e_type"]))
+            debug("encoded CRC32: " + hex(result["e_crc"]))
+        debug("encoding type: " + str(result["e_type"]))
 
     return result, data[:-DVPL_FOOTER_LEN]
 
@@ -585,7 +585,7 @@ def toUInt32LE(value: int) -> Optional[bytes]:
             raise ValueError("Cannot cast negative value as unsigned int")
         return value.to_bytes(4, byteorder="little", signed=False)
     except Exception as err:
-        logger.error(str(err))
+        error(str(err))
     return None
 
 
@@ -596,7 +596,7 @@ def fromUInt32LE(data: bytes) -> Optional[int]:
             raise ValueError("None given as input")
         return int.from_bytes(data, byteorder="little", signed=False)
     except Exception as err:
-        logger.error(str(err))
+        error(str(err))
     return None
 
 
