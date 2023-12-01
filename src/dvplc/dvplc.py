@@ -247,6 +247,7 @@ async def process_files(fileQ: FileQueue, args: argparse.Namespace) -> EventCoun
 
                 if args.mode == "encode":
                     dst_file = dst_file.with_suffix(".dvpl")
+                    verbose(f"encoding file: {dst_file}")
                     result = await encode_dvpl_file(
                         src_file,
                         dst_file,
@@ -256,6 +257,7 @@ async def process_files(fileQ: FileQueue, args: argparse.Namespace) -> EventCoun
                     # stats.log('Encoded')
                 elif args.mode == "decode":
                     dst_file = dst_file.with_suffix("")
+                    verbose(f"decoding file: {src_file}")
                     result = await decode_dvpl_file(
                         src_file, dst_file, force=args.force
                     )
@@ -307,7 +309,6 @@ async def decode_dvpl_file(dvpl_fn: Path, output_fn: Path, force: bool = False) 
         ## Read encoded DVPL file
         output = bytes()
         async with aiofiles.open(dvpl_fn, mode="rb") as ifp:
-            verbose(f"decoding file: {dvpl_fn}")
             output, status = decode_dvpl(await ifp.read())
 
         ## Write decoded file
@@ -403,7 +404,6 @@ async def encode_dvpl_file(
         # read source file
         output = bytes()
         async with aiofiles.open(input_fn, mode="rb") as ifp:
-            verbose(f"encoding file: {input_fn}")
             output, status = encode_dvpl(await ifp.read(), compression)
 
         ## Write dvpl file
