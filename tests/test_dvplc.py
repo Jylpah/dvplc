@@ -64,7 +64,9 @@ async def test_0_dvpl_encode_decode_passes(test_source_data_0: bytes) -> None:
 
 @pytest.mark.asyncio
 @pytest.mark.datafiles(
-    pjoin(FIXTURE_DIR, "01_source.txt"), pjoin(FIXTURE_DIR, "02_source.bin")
+    pjoin(FIXTURE_DIR, "01_source.txt"),
+    pjoin(FIXTURE_DIR, "02_source.bin"),
+    on_duplicate="overwrite",
 )
 async def test_1_encode_file_passes(datafiles: Path) -> None:
     for input in datafiles.iterdir():
@@ -76,7 +78,9 @@ async def test_1_encode_file_passes(datafiles: Path) -> None:
 
 @pytest.mark.asyncio
 @pytest.mark.datafiles(
-    pjoin(FIXTURE_DIR, "03_source.txt.dvpl"), pjoin(FIXTURE_DIR, "04_source.bin.dvpl")
+    pjoin(FIXTURE_DIR, "03_source.txt.dvpl"),
+    pjoin(FIXTURE_DIR, "04_source.bin.dvpl"),
+    on_duplicate="overwrite",
 )
 async def test_2_decode_file_passes(datafiles: Path) -> None:
     for input in datafiles.iterdir():
@@ -98,6 +102,7 @@ async def test_2_decode_file_passes(datafiles: Path) -> None:
     pjoin(FIXTURE_DIR, "12_source.bin_fails_encoded_size.dvpl"),
     pjoin(FIXTURE_DIR, "13_source.txt_fails_decoded_size.dvpl"),
     pjoin(FIXTURE_DIR, "14_source.bin_fails_decoded_size.dvpl"),
+    on_duplicate="overwrite",
 )
 async def test_3_verify_file_fails(datafiles: Path) -> None:
     for input in datafiles.iterdir():
