@@ -22,8 +22,8 @@ dependencies = [
 [project.optional-dependencies]
 dev = [
 	"build>=0.10.0",
-	"mypy==1.2.0",
-	"pip-chill==1.0.3",
+	"mypy>=1.2.0",
+	"pip-chill>=1.0.3",
 	"pytest",
 	"pytest-asyncio",
 	"pytest-datafiles",
