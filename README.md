@@ -1,6 +1,6 @@
 # NAME
 
-`dvplc` - encode/decode/verify Dava game engine's SmartDLC DVPL files. 
+`dvplc` - encode/decode/verify Dava game engine's SmartDLC DVPL files. The file format is used in [Wargaming's](https://wargaming.net) [World of Tanks Blitz mobile](https://wotblitz.com/) game. 
 
 # STATUS
 
@@ -8,7 +8,8 @@ Tested on Linux & Working :-)
 
 ## TODO
 
-* Test on other platforms 
+- [ ] Test on other platforms
+- [ ] Provide a proper Python package
 
 # Installation 
 
