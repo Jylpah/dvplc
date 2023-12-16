@@ -1,3 +1,5 @@
+![CI](https://github.com/Jylpah/dvplc/actions/workflows/python-package.yml/badge.svg)
+
 # NAME
 
 `dvplc` - encode/decode/verify Dava game engine's SmartDLC DVPL files. The file format is used in [Wargaming's](https://wargaming.net) [World of Tanks Blitz mobile](https://wotblitz.com/) game. 
