@@ -4,17 +4,30 @@ from pytest import Config
 from asyncio.log import logger
 from os.path import dirname, realpath, join as pjoin
 from pathlib import Path
+from result import Ok, Result
+from typer.testing import CliRunner
+from click.testing import Result as ClickResult
+from typing import List
+import logging
+
+logger = logging.getLogger()
+error = logger.error
+message = logger.warning
+verbose = logger.info
+debug = logger.debug
 
 sys.path.insert(0, str(Path(__file__).parent.parent.resolve() / "src"))
 
 from dvplc import (
-    COMPRESSION,
+    DEFAULT_COMPRESSION,
+    Compression,
     encode_dvpl,
     decode_dvpl,
     encode_dvpl_file,
     verify_dvpl_file,
     decode_dvpl_file,
 )
+from dvplc.dvplc import app
 
 ## Test plan
 # 1) mypy static typing
@@ -23,6 +36,32 @@ from dvplc import (
 # 4) test decoding
 
 FIXTURE_DIR = dirname(realpath(__file__))
+
+SOURCE_FILES = pytest.mark.datafiles(
+    pjoin(FIXTURE_DIR, "01_source.txt"),
+    pjoin(FIXTURE_DIR, "02_source.bin"),
+    on_duplicate="overwrite",
+)
+
+DVPL_FILES = pytest.mark.datafiles(
+    pjoin(FIXTURE_DIR, "03_source.txt.dvpl"),
+    pjoin(FIXTURE_DIR, "04_source.bin.dvpl"),
+    on_duplicate="overwrite",
+)
+
+VERIFY_FILES = pytest.mark.datafiles(
+    pjoin(FIXTURE_DIR, "05_source.txt_fails_marker.dvpl"),
+    pjoin(FIXTURE_DIR, "06_source.bin_fails_marker.dvpl"),
+    pjoin(FIXTURE_DIR, "07_source.txt_fails_compression.dvpl"),
+    pjoin(FIXTURE_DIR, "08_source.bin_fails_compression.dvpl"),
+    pjoin(FIXTURE_DIR, "09_source.txt_fails_crc.dvpl"),
+    pjoin(FIXTURE_DIR, "10_source.bin_fails_crc.dvpl"),
+    pjoin(FIXTURE_DIR, "11_source.txt_fails_encoded_size.dvpl"),
+    pjoin(FIXTURE_DIR, "12_source.bin_fails_encoded_size.dvpl"),
+    pjoin(FIXTURE_DIR, "13_source.txt_fails_decoded_size.dvpl"),
+    pjoin(FIXTURE_DIR, "14_source.bin_fails_decoded_size.dvpl"),
+    on_duplicate="overwrite",
+)
 
 
 def pytest_configure(config: Config):
@@ -33,7 +72,9 @@ def pytest_configure(config: Config):
 
 @pytest.fixture
 def test_source_data_0() -> bytes:
-    return bytes(b"1234567890")
+    return bytes(
+        b"1234567890testsquence1234567890testsquence1234567890testsquence1234567890testsquence1234567890testsquence"
+    )
 
 
 @pytest.fixture
@@ -50,63 +91,96 @@ def test_checksums() -> dict[str, str]:
     return res
 
 
-@pytest.mark.asyncio
-async def test_0_dvpl_encode_decode_passes(test_source_data_0: bytes) -> None:
-    res_encode, txt = encode_dvpl(
-        input=test_source_data_0, compression=COMPRESSION, quiet=True
-    )
-    assert txt == "OK"
-    assert res_encode is not None, "encoding failed"
-    res_decode, txt = decode_dvpl(res_encode, quiet=True)
-    assert txt == "OK"
-    assert res_decode == test_source_data_0
-
-
-@pytest.mark.asyncio
-@pytest.mark.datafiles(
-    pjoin(FIXTURE_DIR, "01_source.txt"),
-    pjoin(FIXTURE_DIR, "02_source.bin"),
-    on_duplicate="overwrite",
+@pytest.mark.parametrize(
+    "compression,working",
+    [
+        ("none", True),
+        ("lz4", True),
+        ("lz4_hc", True),
+        ("rfc1951", False),
+    ],
 )
-async def test_1_encode_file_passes(datafiles: Path) -> None:
-    for input in datafiles.iterdir():
-        output = input.with_suffix(".dvpl")
-        print(f"Input: {input}, Output: {output}")
-        assert await encode_dvpl_file(input, output), f"encoding failed: {input}"
-        assert await verify_dvpl_file(output), f"dvpl verification failed: {output}"
-
-
 @pytest.mark.asyncio
-@pytest.mark.datafiles(
-    pjoin(FIXTURE_DIR, "03_source.txt.dvpl"),
-    pjoin(FIXTURE_DIR, "04_source.bin.dvpl"),
-    on_duplicate="overwrite",
-)
-async def test_2_decode_file_passes(datafiles: Path) -> None:
-    for input in datafiles.iterdir():
-        output = input.with_suffix("")
-        print(f"Input: {input}, Output: {output}")
-        assert await verify_dvpl_file(input), f"dvpl verification failed: {input}"
-        assert await decode_dvpl_file(input, output), f"decoding failed: {input}"
+async def test_1_dvpl_encode_decode_compressions(
+    test_source_data_0: bytes, compression: Compression, working: bool
+) -> None:
+    res: Result[bytes, str]
+    res = encode_dvpl(input=test_source_data_0, compression=Compression(compression))
+
+    assert (
+        res.is_ok() == working
+    ), f"unexpected encoding result, compression={compression}"
+
+    if isinstance(res, Ok):
+        res = decode_dvpl(res.ok_value)
+        assert isinstance(res, Ok), f"decoding failed"
+        assert (
+            res.ok_value == test_source_data_0
+        ), f"decoding encoded data did not return the original data, compression={compression}"
 
 
-@pytest.mark.asyncio
-@pytest.mark.datafiles(
-    pjoin(FIXTURE_DIR, "05_source.txt_fails_marker.dvpl"),
-    pjoin(FIXTURE_DIR, "06_source.bin_fails_marker.dvpl"),
-    pjoin(FIXTURE_DIR, "07_source.txt_fails_compression.dvpl"),
-    pjoin(FIXTURE_DIR, "08_source.bin_fails_compression.dvpl"),
-    pjoin(FIXTURE_DIR, "09_source.txt_fails_crc.dvpl"),
-    pjoin(FIXTURE_DIR, "10_source.bin_fails_crc.dvpl"),
-    pjoin(FIXTURE_DIR, "11_source.txt_fails_encoded_size.dvpl"),
-    pjoin(FIXTURE_DIR, "12_source.bin_fails_encoded_size.dvpl"),
-    pjoin(FIXTURE_DIR, "13_source.txt_fails_decoded_size.dvpl"),
-    pjoin(FIXTURE_DIR, "14_source.bin_fails_decoded_size.dvpl"),
-    on_duplicate="overwrite",
+@pytest.mark.parametrize(
+    "args,ok",
+    [
+        (["encode"], True),
+        (["--debug", "encode", "--replace"], True),
+        (["-v", "--threads", "3", "encode"], True),
+    ],
 )
-async def test_3_verify_file_fails(datafiles: Path) -> None:
+@SOURCE_FILES
+def test_2_encode_verify_file(datafiles: Path, args: list[str], ok: bool) -> None:
+    input_files: List[str] = list()
+    output_files: List[str] = list()
+
     for input in datafiles.iterdir():
-        print(f"Input: {input}")
-        assert not await verify_dvpl_file(
-            input
-        ), f"dvpl verification failed (false positive): {input}"
+        input_files.append(str(input.resolve()))
+        output_files.append(str(input.resolve().with_suffix(".dvpl")))
+
+    result: ClickResult
+
+    args = args + input_files
+    debug("running: dvplc %s", " ".join(args))
+    result = CliRunner().invoke(app, args)
+    assert (result.exit_code == 0) == ok, f"dvplc {' '.join(args)} failed"
+
+    result = CliRunner().invoke(app, ["verify"] + output_files)
+    assert (result.exit_code == 0) == ok, f"dvplc verify failed"
+
+
+@pytest.mark.parametrize(
+    "args,ok",
+    [
+        (["decode"], True),
+        (["--debug", "decode", "--replace"], True),
+        (["-v", "--threads", "2", "decode"], True),
+    ],
+)
+@DVPL_FILES
+def test_3_decode_file(datafiles: Path, args: list[str], ok: bool) -> None:
+    input_files: List[str] = list()
+    output_files: List[str] = list()
+
+    for input in datafiles.iterdir():
+        input_files.append(str(input.resolve()))
+        output_files.append(str(input.resolve().with_suffix("")))
+
+    result: ClickResult = CliRunner().invoke(app, ["verify"] + output_files)
+    assert (result.exit_code == 0) == ok, f"dvplc verify failed"
+
+    args = args + input_files
+    debug("running: dvplc %s", " ".join(args))
+    result = CliRunner().invoke(app, args)
+    assert (result.exit_code == 0) == ok, f"dvplc {' '.join(args)} failed"
+
+
+@VERIFY_FILES
+def test_4_verify_file_fails(datafiles: Path) -> None:
+    input_files: List[str] = list()
+
+    for input in datafiles.iterdir():
+        input_files.append(str(input.resolve()))
+
+    result: ClickResult = CliRunner().invoke(app, ["verify"] + input_files)
+    assert (
+        result.exit_code != 0
+    ), f"dvpl verification failed (false positive): {' '.join([ Path(file).name for file in input_files]) }"
