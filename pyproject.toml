@@ -2,7 +2,7 @@
 name = "dvplc"
 description = "CLI app to convert Dava SmartDLC .dvpl files used in Wargaming.net's World of Tanks Bliz MMO game"
 readme = "README.md"
-version = "0.2"
+version = "0.3.0"
 authors = [{ name = "Jylpah", email = "jylpah@gmail.com" }]
 license = { text = "MIT License" }
 requires-python = ">=3.10"
@@ -17,6 +17,8 @@ dependencies = [
 	"aiofiles>=23.1.0",
 	"aioconsole>=0.6.1",
 	"pyutils @ git+https://github.com/Jylpah/pyutils.git@main-1.0",
+    "result>=0.15.0", 
+    "typer>=0.9.0",
 ]
 
 [project.optional-dependencies]
@@ -24,7 +26,7 @@ dev = [
 	"build>=0.10.0",
 	"mypy>=1.2.0",
 	"pip-chill>=1.0.3",
-	"pytest",
+	"pytest>=7.4.3",
 	"pytest-asyncio",
 	"pytest-datafiles",
     "pytest-cov>=4.1.0",
@@ -59,9 +61,12 @@ reportGeneralTypeIssues = false
 # line-length = 120
 include = '\.pyi?$'
 
+[tool.coverage.run]
+omit= ['tests/*']
+
 [tool.pytest.ini_options]
 minversion = "7.0"
-addopts = "-v"
+addopts = "-v --cov=src"
 filterwarnings = [
 	'ignore:Inheritance class ThrottledClientSession from ClientSession is discouraged:DeprecationWarning',
 ]
