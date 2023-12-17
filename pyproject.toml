@@ -59,9 +59,12 @@ reportGeneralTypeIssues = false
 # line-length = 120
 include = '\.pyi?$'
 
+[tool.coverage.run]
+omit= ['tests/*']
+
 [tool.pytest.ini_options]
 minversion = "7.0"
-addopts = "-v"
+addopts = "-v --cov=src"
 filterwarnings = [
 	'ignore:Inheritance class ThrottledClientSession from ClientSession is discouraged:DeprecationWarning',
 ]
