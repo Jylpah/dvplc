@@ -17,6 +17,8 @@ dependencies = [
 	"aiofiles>=23.1.0",
 	"aioconsole>=0.6.1",
 	"pyutils @ git+https://github.com/Jylpah/pyutils.git@main-1.0",
+    "result>=0.15.0", 
+    "typer>=0.9.0",
 ]
 
 [project.optional-dependencies]

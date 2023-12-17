@@ -4,11 +4,14 @@ from pytest import Config
 from asyncio.log import logger
 from os.path import dirname, realpath, join as pjoin
 from pathlib import Path
+from result import Ok, Result
+from typer.testing import CliRunner
 
 sys.path.insert(0, str(Path(__file__).parent.parent.resolve() / "src"))
 
 from dvplc import (
-    COMPRESSION,
+    DEFAULT_COMPRESSION,
+    Compression,
     encode_dvpl,
     decode_dvpl,
     encode_dvpl_file,
@@ -33,7 +36,9 @@ def pytest_configure(config: Config):
 
 @pytest.fixture
 def test_source_data_0() -> bytes:
-    return bytes(b"1234567890")
+    return bytes(
+        b"1234567890testsquence1234567890testsquence1234567890testsquence1234567890testsquence1234567890testsquence"
+    )
 
 
 @pytest.fixture
@@ -50,16 +55,32 @@ def test_checksums() -> dict[str, str]:
     return res
 
 
+@pytest.mark.parametrize(
+    "compression,working",
+    [
+        ("none", True),
+        ("lz4", True),
+        ("lz4_hc", True),
+        ("rfc1951", False),
+    ],
+)
 @pytest.mark.asyncio
-async def test_0_dvpl_encode_decode_passes(test_source_data_0: bytes) -> None:
-    res_encode, txt = encode_dvpl(
-        input=test_source_data_0, compression=COMPRESSION, quiet=True
-    )
-    assert txt == "OK"
-    assert res_encode is not None, "encoding failed"
-    res_decode, txt = decode_dvpl(res_encode, quiet=True)
-    assert txt == "OK"
-    assert res_decode == test_source_data_0
+async def test_0_dvpl_encode_decode_passes(
+    test_source_data_0: bytes, compression: Compression, working: bool
+) -> None:
+    res: Result[bytes, str]
+    res = encode_dvpl(input=test_source_data_0, compression=compression, quiet=True)
+
+    assert (
+        res.is_ok() == working
+    ), f"unexpected encoding result, compression={compression}"
+
+    if isinstance(res, Ok):
+        res = decode_dvpl(res.ok_value, quiet=True)
+        assert isinstance(res, Ok), f"decoding failed"
+        assert (
+            res.ok_value == test_source_data_0
+        ), f"decoding encoded data did not return the original data, compression={compression}"
 
 
 @pytest.mark.asyncio
