@@ -1,19 +1,20 @@
 #!/usr/bin/env python3
 
 # Script convert Dava game engine's SmartDLC DVPL files
-from typing import Optional, Union, Dict, Annotated, List, Literal, TypeAlias
+from typing import Optional, Union, Dict, Annotated, List, Literal, TypeAlias, Tuple
 import logging
 
 # import argparse
-from os import cpu_count, sep, remove, getcwd, makedirs, path
+from os import cpu_count, sep, remove, makedirs, path
 import sys
-from asyncio import Task, create_task, wait, CancelledError, run
+from asyncio import Task, create_task, wait, CancelledError, gather
 import aiofiles
 from lz4.block import compress, decompress, LZ4BlockError  # type:ignore
 import zlib
 from pathlib import Path
 from typer import Context, Option, Argument, Exit
 from result import Ok, Err, Result, UnwrapError
+from enum import StrEnum
 
 from pyutils import FileQueue, EventCounter, AsyncTyper
 from pyutils.multilevelformatter import set_mlevel_logging, MultilevelFormatter
@@ -27,19 +28,28 @@ debug = logger.debug
 
 # Constants & defaults
 MODES = ["encode", "decode", "verify"]
-
 Mode: TypeAlias = Literal["encode", "decode", "verify"]
-Compression: TypeAlias = Literal["none", "lz4", "lz4_hc", "rfc1951"]
-DEFAULT_COMPRESSION: Compression = "lz4_hc"
-COMPRESSIONS = ["none", "lz4", "lz4_hc", "rfc1951"]
+
+# fmt: off
+class Compression(StrEnum):
+    none            = "none"
+    default         = "lz4"
+    high_compression= "lz4_hc"
+    RFC1951         = "rfc1951"
+# fmt: on
+
+# Compression: TypeAlias = Literal["none", "lz4", "lz4_hc", "rfc1951"]
+DEFAULT_COMPRESSION: Compression = Compression.default
+
 COMPRESSION_TYPE = dict()
-for i in range(0, len(COMPRESSIONS)):
-    COMPRESSION_TYPE[COMPRESSIONS[i]] = i
+for i in range(0, len(Compression)):
+    COMPRESSION_TYPE[list(Compression)[i]] = i
 DVPL_MARKER = "DVPL"
 DVPL_FOOTER_LEN = 20
 CONVERSIONS = ["keep", "replace", "mirror"]
 QUEUE_LEN = 1000
 THREADS = 5
+
 
 # main() -------------------------------------------------------------
 
@@ -87,7 +97,7 @@ def cli(
     ] = THREADS,
     log: Annotated[Optional[Path], Option(help="log to FILE", metavar="FILE")] = None,
 ) -> None:
-    """Encoder/decoder for SmartDLC DVPL files"""
+    """Encoder/decoder for SmartDLC DVPL files used e.g. in Wargaming's games"""
     global logger
 
     try:
@@ -100,37 +110,34 @@ def cli(
             LOG_LEVEL = logging.ERROR
         MultilevelFormatter.setDefaults(logger, log_file=log)
         logger.setLevel(LOG_LEVEL)
-        # logger_conf: dict[int, str] = {
-        #     logging.INFO: "%(message)s",
-        #     logging.WARNING: "%(message)s",
-        #     logging.ERROR: "%(levelname)s: %(message)s",
-        # }
-        # set_mlevel_logging(
-        #     logger,
-        #     fmts=logger_conf,
-        #     fmt="%(levelname)s: %(funcName)s: %(message)s",
-        #     log_file=log,
-        # )
+
         ctx.ensure_object(dict)
         ctx.obj["force"] = force
         ctx.obj["threads"] = threads
 
-        # parser.add_argument(
-        #         "--compression",
-        #         type=str,
-        #         choices=COMPRESSIONS,
-        #         default=COMPRESSION,
-        #         help="Select compression to use when encoding",
-        #     )
-
     except Exception as err:
         error(f"error parsing command line options: {err}")
-        Exit(code=1)
-        raise
+        raise Exit(code=1)
 
 
 def callback_paths(value: Optional[list[Path]]) -> list[Path]:
     return value if value is not None else []
+
+
+async def _gather_results(
+    workers: List[Task], stats: EventCounter, ret_val: int = 0
+) -> Tuple[EventCounter, int]:
+    for res in await gather(*workers, return_exceptions=True):
+        if isinstance(res, Ok):
+            stats.merge(res.ok_value)
+        elif isinstance(res, Err):
+            stats.merge(res.err_value)
+            ret_val = 1
+        elif isinstance(res, BaseException):
+            raise res
+        else:
+            raise ValueError(f"unknown return value: {res}")
+    return stats, ret_val
 
 
 @app.async_command()
@@ -162,6 +169,8 @@ async def decode(
     debug(
         f"starting: --replace={replace} --mirror-from={mirror_from} --mirror-to={mirror_to}"
     )
+    ret_val: int
+    ret_val = 0
     try:
         fq = FileQueue(
             filter="*.dvpl",
@@ -193,12 +202,14 @@ async def decode(
         await wait([scanner])
         debug("Processing files")
         await fq.join()
-        await stats.gather_stats(workers, merge_child=False, cancel=False)
+        stats, ret_val = await _gather_results(workers, stats, ret_val)
+
         message(stats.print(do_print=False))
 
     except Exception as err:
         error(str(err))
-        Exit(code=2)
+        raise Exit(code=2)
+    raise Exit(code=ret_val)
 
 
 @app.async_command()
@@ -233,6 +244,8 @@ async def encode(
     debug(
         f"starting: --replace={replace} --mirror-from={mirror_from} --mirror-to={mirror_to}"
     )
+    ret_val: int
+    ret_val = 0
     try:
         fq = FileQueue(
             filter="*.dvpl",
@@ -267,12 +280,13 @@ async def encode(
         await wait([scanner])
         debug("Processing files")
         await fq.join()
-        await stats.gather_stats(workers, merge_child=False, cancel=False)
+        stats, ret_val = await _gather_results(workers, stats, ret_val)
         message(stats.print(do_print=False))
 
     except Exception as err:
         error(str(err))
-        Exit(code=2)
+        raise Exit(code=2)
+    raise Exit(code=ret_val)
 
 
 @app.async_command()
@@ -287,6 +301,8 @@ async def verify(
 ) -> None:
     """verify DVPL files"""
     debug(f"starting")
+    ret_val: int
+    ret_val = 0
     try:
         fq = FileQueue(
             filter="*.dvpl",
@@ -313,12 +329,14 @@ async def verify(
         await wait([scanner])
         debug("Processing files")
         await fq.join()
-        await stats.gather_stats(workers, merge_child=False, cancel=False)
+        stats, ret_val = await _gather_results(workers, stats, ret_val)
         message(stats.print(do_print=False))
-
+        print(f"exit value={ret_val}")
     except Exception as err:
         error(str(err))
-        Exit(code=4)
+        raise Exit(code=4)
+
+    raise Exit(code=ret_val)
 
 
 async def process_files(
@@ -329,7 +347,7 @@ async def process_files(
     mirror_from: Path | None = None,
     mirror_to: Path = Path("."),
     compression: Compression = DEFAULT_COMPRESSION,
-) -> EventCounter:
+) -> Result[EventCounter, EventCounter]:
     stats = EventCounter("Files processed")
     try:
         # assert fileQ is not None and args is not None, "parameters must not be None"
@@ -343,6 +361,7 @@ async def process_files(
             "decode": "Decoded",
             "verify": "Verified",
         }
+        res_ok: bool = True
 
         if mirror_from is not None:
             src_root = mirror_from
@@ -391,19 +410,26 @@ async def process_files(
                     stats.log(f"{action[mode]} OK")
                 else:
                     stats.log(f"{action[mode]} FAILED")
+                    res_ok = False
 
                 if result and replace and mode != "verify":
                     debug(f"Removing source file: {src_file}")
                     remove(src_file)
             except Exception as err:
                 stats.log("Errors")
+                res_ok = False
                 error(f"{str(err)} : {src_file}")
 
     except CancelledError:
         debug("Worker cancelled")
+        res_ok = False
     except Exception as err:
         error(str(err))
-    return stats
+        res_ok = False
+    if res_ok:
+        return Ok(stats)
+    else:
+        return Err(stats)
 
 
 async def decode_dvpl_file(dvpl_fn: Path, output_fn: Path, force: bool = False) -> bool:
@@ -450,7 +476,7 @@ async def decode_dvpl_file(dvpl_fn: Path, output_fn: Path, force: bool = False) 
     return False
 
 
-def decode_dvpl(input: bytes, quiet: bool = False) -> Result[bytes, str]:
+def decode_dvpl(input: bytes) -> Result[bytes, str]:
     """Decode a DVPL bytearray"""
 
     assert input is not None, f"input value is None"
@@ -513,7 +539,7 @@ async def encode_dvpl_file(
 
     assert input_fn is not None, f"input file name is None"
     assert dvpl_fn is not None, f"DVPL file name is None"
-    assert compression in COMPRESSIONS, f"Unknown compression: {compression}"
+    assert isinstance(compression, Compression), f"Unknown compression: {compression}"
     assert force is not None, f"--force is None"
 
     try:
@@ -551,29 +577,24 @@ async def encode_dvpl_file(
 
 
 def encode_dvpl(
-    input: bytes, compression: Compression = DEFAULT_COMPRESSION, quiet: bool = False
+    input: bytes, compression: Compression = DEFAULT_COMPRESSION
 ) -> Result[bytes, str]:
     """Encode data to a DVPL format"""
 
     assert isinstance(input, bytes), f"input needs to be bytes, got {type(input)}"
     assert input is not None, f"input is None"
-    assert compression in COMPRESSIONS, f"Unknown compression: {compression}"
+    assert isinstance(compression, Compression), f"Unknown compression: {compression}"
 
     try:
         output: bytes | None = None
         d_size = len(input)
-        mode: str = "default"
-        match compression:
-            case "lz4_hc":
-                mode = "high_compression"
-            case "lz4":
-                mode = "default"
-            case "rfc1951":
-                raise NotImplementedError("RFC1951 compression is not supported")
-            case "none":
-                pass
 
-        if compression != "none":
+        mode: str = compression.name
+
+        if mode == Compression.RFC1951:
+            raise NotImplementedError("RFC1951 compression is not supported")
+
+        if compression != Compression.none:
             output = compress(input, mode=mode, store_size=False)
         else:
             output = input
@@ -610,7 +631,7 @@ async def verify_dvpl_file(dvpl_fn: Path) -> bool:
         result: Result[bytes, str]
         async with aiofiles.open(dvpl_fn, mode="rb") as ifp:
             debug(f"reading file: {dvpl_fn}")
-            result = decode_dvpl(await ifp.read(), quiet=True)
+            result = decode_dvpl(await ifp.read())
         if isinstance(result, Err):
             message(f"{dvpl_fn} : ERROR: {result.err_value}")
         elif isinstance(result, Ok):
@@ -629,7 +650,7 @@ def make_dvpl_footer(encoded: bytes, d_size: int, compression: str) -> Optional[
     """Make a 20-byte DVPL footer"""
 
     assert isinstance(encoded, bytes), f"input needs to be bytes, got {type(encoded)}"
-    assert compression in COMPRESSIONS, f"Unknown compression: {compression}"
+    assert isinstance(compression, Compression), f"Unknown compression: {compression}"
 
     try:
         """Makes DVPL footer for the encoded (compressed) input"""
@@ -697,9 +718,9 @@ def read_dvpl_footer(data: bytes) -> tuple[dict, bytes]:
     result["e_size"] = f_e_size
     result["e_crc"] = f_crc32
     assert f_compression >= 0 and f_compression < len(
-        COMPRESSIONS
+        Compression
     ), "unknown compression in DVPL footer"
-    result["e_type"] = COMPRESSIONS[f_compression]
+    result["e_type"] = list(Compression)[f_compression]
 
     if logger.getEffectiveLevel() == logging.DEBUG:
         debug("decoded size: " + str(result["d_size"]))
