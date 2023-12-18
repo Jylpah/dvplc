@@ -1,12 +1,12 @@
 ![CI](https://github.com/Jylpah/dvplc/actions/workflows/python-package.yml/badge.svg)
 
-# NAME
+# dvplc
 
-`dvplc` - encode/decode/verify Dava game engine's SmartDLC DVPL files. The file format is used in [Wargaming's](https://wargaming.net) [World of Tanks Blitz mobile](https://wotblitz.com/) game. 
+`dvplc` - [Python](https://python.org) app to encode/decode/verify Dava game engine's SmartDLC DVPL files. The file format is used in [Wargaming's](https://wargaming.net) [World of Tanks Blitz mobile](https://wotblitz.com/) game. 
 
 # STATUS
 
-Tested on Linux & Working :-) 
+Tested on Linux & working :-) 
 
 ## TODO
 
@@ -15,7 +15,7 @@ Tested on Linux & Working :-)
 
 # Installation 
 
-*Python 3.10+ is required*
+*Python 3.11 is required*
 
 ```
 pip install git+https://github.com/Jylpah/dvplc.git
@@ -30,58 +30,90 @@ or
 pip install --upgrade --force-reinstall git+https://github.com/Jylpah/dvplc.git
 ```
 
-# SYNOPSIS
 
-`dvplc [OPTIONS] MODE FILE | DIR [FILE | DIR] ...`
+## `dvplc` usage
 
-# DESCRIPTION
+```
+Usage: dvplc [OPTIONS] COMMAND [ARGS]...
 
-## MODE
+  Encoder/decoder for SmartDLC DVPL files used e.g. in Wargaming's games
 
-`encode` - Encode source files to DVPL format
+Options:
+  -v, --verbose                   verbose logging
+  --debug                         debug logging
+  --silent                        silent logging
+  --force / --no-force            Overwrite existing files
+  --threads INTEGER               Set number of asynchronous threads  [default:
+                                  5]
+  --log FILE                      log to FILE
+  --install-completion [bash|zsh|fish|powershell|pwsh]
+                                  Install completion for the specified shell.
+  --show-completion [bash|zsh|fish|powershell|pwsh]
+                                  Show completion for the specified shell, to
+                                  copy it or customize the installation.
+  --help                          Show this message and exit.
 
-`decode` - Decode DVPL files to source files
+Commands:
+  decode  decode DVPL files
+  encode  encode DVPL files
+  verify  verify DVPL files
 
-`verify` - Verify DVPL files
+```
+### `dvplc encode` usage
 
-## GENERAL OPTIONS
+```
+Usage: dvplc encode [OPTIONS] FILES
 
-`--verbose` Verbose logging messages
+  encode DVPL files
 
-`--debug` Show debug logging messages 
+Arguments:
+  FILES  FILES to encode  [required]
 
-`--silent` Silence logging messages
+Options:
+  --compression [none|lz4|lz4_hc|rfc1951]
+                                  Select compression to use when encoding
+                                  [default: lz4]
+  --replace / --no-replace        Delete source files after successful encoding
+                                  [default: no-replace]
+  --mirror-from DIR               mirror FILES from
+  --mirror-to DIR                 Mirror converted files to DIR. Default is
+                                  current dir.
+  --help                          Show this message and exit.
 
-`--force` Overwrite files, default is `False`
+```
+### `dvplc decode` usage
 
-`--threads` `INT` Number of worker threads. By default the number of threads are defined automatically. 
+```
+Usage: dvplc decode [OPTIONS] FILES
 
-`--keep` Place converted files to the same directory as source files (default)
+  decode DVPL files
 
-`--replace` Delete source files after conversion
+Arguments:
+  FILES  FILES to decode  [required]
 
-`--mirror` `DIR` Mirror source tree structure to DIR and place converted files there. All source files have to be under working dir. 
+Options:
+  --replace / --no-replace  Delete source files after successful conversion
+                            [default: no-replace]
+  --mirror-from DIR         Base DIR to mirror from
+  --mirror-to DIR           Mirror converted files to DIR. Default is current
+                            dir.
+  --help                    Show this message and exit.
 
-## `encode` OPTIONS
+```
+### `dvplc verify` usage
 
-`--compression` `lz4` | `lz4_hc` | `rfc1951` | `none`
+```
+Usage: dvplc verify [OPTIONS] FILES
 
-# DVPL File format
+  verify DVPL files
 
-*Credits [Maddoxkkm](https://github.com/Maddoxkkm)*
+Arguments:
+  FILES  FILES to decode  [required]
 
-UINT32LE compression Type
+Options:
+  --help  Show this message and exit.
 
-0: no compression (format used in all uncompressed .dvpl files from SmartDLC)
+```
 
-1: LZ4 (not observed but handled by this decompressor)
 
-2: LZ4_HC (format used in all compressed .dvpl files from SmartDLC)
 
-3: RFC1951 (not implemented in this decompressor since it's not observed)
-=======
-UINT32LE compression Type:
-* 0: no compression (format used in all uncompressed .dvpl files from SmartDLC)
-* 1: LZ4 (not observed but handled by this decompressor)
-* 2: LZ4_HC (format used in all compressed .dvpl files from SmartDLC)
-* 3: RFC1951 (not implemented in this decompressor since it's not observed)
