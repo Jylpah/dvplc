@@ -1,4 +1,4 @@
-![CI](https://github.com/Jylpah/dvplc/actions/workflows/python-package.yml/badge.svg)
+![CI](https://github.com/Jylpah/dvplc/actions/workflows/python-package.yml/badge.svg) [![codecov](https://codecov.io/gh/Jylpah/dvplc/graph/badge.svg?token=IDH9SJB44Q)](https://codecov.io/gh/Jylpah/dvplc)
 
 # dvplc
 
@@ -6,7 +6,7 @@
 
 # STATUS
 
-Tested on Linux & working :-) 
+Tested on Linux & Working :-) 
 
 ## TODO
 
