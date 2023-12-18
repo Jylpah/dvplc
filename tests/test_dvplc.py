@@ -125,6 +125,7 @@ async def test_1_dvpl_encode_decode_compressions(
         (["encode"], True),
         (["--debug", "encode", "--replace"], True),
         (["-v", "--threads", "3", "encode"], True),
+        (["--silent", "--force", "encode"], True),
     ],
 )
 @SOURCE_FILES
