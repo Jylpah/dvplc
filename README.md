@@ -1,4 +1,4 @@
-![CI](https://github.com/Jylpah/dvplc/actions/workflows/python-package.yml/badge.svg) [![codecov](https://codecov.io/gh/Jylpah/dvplc/graph/badge.svg?token=IDH9SJB44Q)](https://codecov.io/gh/Jylpah/dvplc)
+![CI](https://github.com/Jylpah/dvplc/actions/workflows/python-package.yml/badge.svg) [![codecov](https://codecov.io/gh/Jylpah/dvplc/graph/badge.svg?token=IDH9SJB44Q)](https://codecov.io/gh/Jylpah/dvplc)  [![CodeQL](https://github.com/Jylpah/dvplc/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/Jylpah/dvplc/actions/workflows/github-code-scanning/codeql)
 
 # dvplc
 
