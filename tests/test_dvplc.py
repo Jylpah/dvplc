@@ -1,7 +1,5 @@
-import sys
 import pytest  # type: ignore
 from pytest import Config
-from asyncio.log import logger
 from os.path import dirname, realpath, join as pjoin
 from pathlib import Path
 from result import Ok, Result
@@ -10,24 +8,19 @@ from click.testing import Result as ClickResult
 from typing import List
 import logging
 
+from dvplc import (
+    Compression,
+    encode_dvpl,
+    decode_dvpl,
+)
+from dvplc.dvplc import app
+
 logger = logging.getLogger()
 error = logger.error
 message = logger.warning
 verbose = logger.info
 debug = logger.debug
 
-sys.path.insert(0, str(Path(__file__).parent.parent.resolve() / "src"))
-
-from dvplc import (
-    DEFAULT_COMPRESSION,
-    Compression,
-    encode_dvpl,
-    decode_dvpl,
-    encode_dvpl_file,
-    verify_dvpl_file,
-    decode_dvpl_file,
-)
-from dvplc.dvplc import app
 
 ## Test plan
 # 1) mypy static typing
@@ -113,7 +106,7 @@ async def test_1_dvpl_encode_decode_compressions(
 
     if isinstance(res, Ok):
         res = decode_dvpl(res.ok_value)
-        assert isinstance(res, Ok), f"decoding failed"
+        assert isinstance(res, Ok), "decoding failed"
         assert (
             res.ok_value == test_source_data_0
         ), f"decoding encoded data did not return the original data, compression={compression}"
@@ -145,7 +138,7 @@ def test_2_encode_verify_file(datafiles: Path, args: list[str], ok: bool) -> Non
     assert (result.exit_code == 0) == ok, f"dvplc {' '.join(args)} failed"
 
     result = CliRunner().invoke(app, ["verify"] + output_files)
-    assert (result.exit_code == 0) == ok, f"dvplc verify failed"
+    assert (result.exit_code == 0) == ok, "dvplc verify failed"
 
 
 @pytest.mark.parametrize(
@@ -166,7 +159,7 @@ def test_3_decode_file(datafiles: Path, args: list[str], ok: bool) -> None:
         output_files.append(str(input.resolve().with_suffix("")))
 
     result: ClickResult = CliRunner().invoke(app, ["verify"] + output_files)
-    assert (result.exit_code == 0) == ok, f"dvplc verify failed"
+    assert (result.exit_code == 0) == ok, "dvplc verify failed"
 
     args = args + input_files
     debug("running: dvplc %s", " ".join(args))

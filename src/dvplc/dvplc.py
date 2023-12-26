@@ -5,8 +5,7 @@ from typing import Optional, Union, Dict, Annotated, List, Literal, TypeAlias, T
 import logging
 
 # import argparse
-from os import cpu_count, sep, remove, makedirs, path
-import sys
+from os import remove, makedirs, path
 from asyncio import Task, create_task, wait, CancelledError, gather
 import aiofiles
 from lz4.block import compress, decompress, LZ4BlockError  # type:ignore
@@ -17,7 +16,7 @@ from result import Ok, Err, Result, UnwrapError
 from enum import StrEnum
 
 from pyutils import FileQueue, EventCounter, AsyncTyper
-from pyutils.multilevelformatter import set_mlevel_logging, MultilevelFormatter
+from pyutils.multilevelformatter import MultilevelFormatter
 
 logging.getLogger("asyncio").setLevel(logging.WARNING)
 logger = logging.getLogger(__name__)
@@ -300,7 +299,7 @@ async def verify(
     ),
 ) -> None:
     """verify DVPL files"""
-    debug(f"starting")
+    debug("starting")
     ret_val: int
     ret_val = 0
     try:
@@ -435,13 +434,12 @@ async def process_files(
 async def decode_dvpl_file(dvpl_fn: Path, output_fn: Path, force: bool = False) -> bool:
     """Encode a source file to a DVPL file"""
 
-    assert dvpl_fn is not None, f"DVPL file name is None"
-    assert output_fn is not None, f"output file name is None"
-    assert force is not None, f"--force value is None"
+    assert dvpl_fn is not None, "DVPL file name is None"
+    assert output_fn is not None, "output file name is None"
+    assert force is not None, "--force value is None"
 
     try:
         output: bytes = bytes()
-        status = ""
 
         if not dvpl_fn.is_file():
             raise FileNotFoundError(f"Source file not found: {dvpl_fn}")
@@ -469,7 +467,7 @@ async def decode_dvpl_file(dvpl_fn: Path, output_fn: Path, force: bool = False) 
         return True
     except UnwrapError as err:
         error(f"could not decode file: {dvpl_fn}: {err}")
-    except CancelledError as err:
+    except CancelledError:
         verbose("Cancelled")
     except Exception as err:
         error(str(err))
@@ -479,7 +477,7 @@ async def decode_dvpl_file(dvpl_fn: Path, output_fn: Path, force: bool = False) 
 def decode_dvpl(input: bytes) -> Result[bytes, str]:
     """Decode a DVPL bytearray"""
 
-    assert input is not None, f"input value is None"
+    assert input is not None, "input value is None"
     assert isinstance(input, bytes), f"input needs to be bytes, got {type(input)}"
 
     try:
@@ -514,7 +512,7 @@ def decode_dvpl(input: bytes) -> Result[bytes, str]:
 
         if output is None:
             raise ValueError(
-                f"DVPL decoding gave no output"
+                "DVPL decoding gave no output"
             )  # what if the encoded file is NULL size?
         if not isinstance(output, bytes):
             raise TypeError(f"Output needs to be bytes, got {type(input)}")
@@ -537,10 +535,10 @@ async def encode_dvpl_file(
 ) -> bool:
     """Encode a source file to a DVPL file"""
 
-    assert input_fn is not None, f"input file name is None"
-    assert dvpl_fn is not None, f"DVPL file name is None"
+    assert input_fn is not None, "input file name is None"
+    assert dvpl_fn is not None, "DVPL file name is None"
     assert isinstance(compression, Compression), f"Unknown compression: {compression}"
-    assert force is not None, f"--force is None"
+    assert force is not None, "--force is None"
 
     try:
         output: Optional[bytes] = None
@@ -569,7 +567,7 @@ async def encode_dvpl_file(
         return True
     except UnwrapError as err:
         error(f"could not encode file: {dvpl_fn}: {err}")
-    except CancelledError as err:
+    except CancelledError:
         verbose("Cancelled")
     except Exception as err:
         error(str(err))
@@ -582,7 +580,7 @@ def encode_dvpl(
     """Encode data to a DVPL format"""
 
     assert isinstance(input, bytes), f"input needs to be bytes, got {type(input)}"
-    assert input is not None, f"input is None"
+    assert input is not None, "input is None"
     assert isinstance(compression, Compression), f"Unknown compression: {compression}"
 
     try:
@@ -605,7 +603,7 @@ def encode_dvpl(
             if footer is not None:
                 return Ok(output + footer)
 
-    except LZ4BlockError as err:
+    except LZ4BlockError:
         # if not quiet:
         #     error("LZ4 encoding error")
         return Err("LZ4 encoding error")
@@ -619,7 +617,7 @@ def encode_dvpl(
 async def verify_dvpl_file(dvpl_fn: Path) -> bool:
     """Verify a DVPL file"""
 
-    assert dvpl_fn is not None, f"input file name is None type"
+    assert dvpl_fn is not None, "input file name is None type"
 
     try:
         if not path.isfile(dvpl_fn):
@@ -639,7 +637,7 @@ async def verify_dvpl_file(dvpl_fn: Path) -> bool:
             return True
         else:
             error("unknown error")
-    except CancelledError as err:
+    except CancelledError:
         verbose("Cancelled")
     except Exception as err:
         error(str(err))
@@ -680,7 +678,7 @@ def make_dvpl_footer(encoded: bytes, d_size: int, compression: str) -> Optional[
         footer += f_compression  # output type as UInt32LE
         footer += DVPL_MARKER.encode(encoding="utf-8", errors="strict")
 
-        assert len(footer) == 20, f"Footer size != 20"
+        assert len(footer) == 20, "Footer size != 20"
         return bytes(footer)
     except Exception as err:
         error(str(err))

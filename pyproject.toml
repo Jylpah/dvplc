@@ -32,6 +32,7 @@ dev = [
 	"pytest-datafiles",
     "pytest-cov>=4.1.0",
 	"pytest-mypy",
+    "ruff>=0.1.9",
 	"types-aiofiles>=23.1.0.1",
 ]
 
@@ -66,8 +67,9 @@ include = '\.pyi?$'
 omit= ['tests/*']
 
 [tool.pytest.ini_options]
-minversion = "7.0"
+minversion = "7.4"
 addopts = "-v --cov=src"
+pythonpath = "src" # avoid import path append in test files
 filterwarnings = [
 	'ignore:Inheritance class ThrottledClientSession from ClientSession is discouraged:DeprecationWarning',
 ]
