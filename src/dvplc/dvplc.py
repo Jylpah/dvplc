@@ -440,7 +440,6 @@ async def decode_dvpl_file(dvpl_fn: Path, output_fn: Path, force: bool = False) 
 
     try:
         output: bytes = bytes()
-        status = ""
 
         if not dvpl_fn.is_file():
             raise FileNotFoundError(f"Source file not found: {dvpl_fn}")
