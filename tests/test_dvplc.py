@@ -12,6 +12,7 @@ from dvplc import (
     Compression,
     encode_dvpl,
     decode_dvpl,
+    open_dvpl_or_file,
 )
 from dvplc.dvplc import app
 
@@ -37,6 +38,14 @@ SOURCE_FILES = pytest.mark.datafiles(
 )
 
 DVPL_FILES = pytest.mark.datafiles(
+    pjoin(FIXTURE_DIR, "03_source.txt.dvpl"),
+    pjoin(FIXTURE_DIR, "04_source.bin.dvpl"),
+    on_duplicate="overwrite",
+)
+
+OPEN_OR_DVPL_FILES = pytest.mark.datafiles(
+    pjoin(FIXTURE_DIR, "01_source.txt"),
+    pjoin(FIXTURE_DIR, "02_source.bin"),
     pjoin(FIXTURE_DIR, "03_source.txt.dvpl"),
     pjoin(FIXTURE_DIR, "04_source.bin.dvpl"),
     on_duplicate="overwrite",
@@ -178,3 +187,13 @@ def test_4_verify_file_fails(datafiles: Path) -> None:
     assert (
         result.exit_code != 0
     ), f"dvpl verification failed (false positive): {' '.join([ Path(file).name for file in input_files]) }"
+
+@pytest.mark.asyncio
+@OPEN_OR_DVPL_FILES
+async def test_5_open_dvpl_or_file(datafiles: Path) -> None:
+    for filename in datafiles.iterdir():
+        debug(f"opening '{filename}'")
+        assert (_ := await open_dvpl_or_file(filename)).is_ok, f"could not open file: {filename}" 
+        if filename.suffix == '.dvpl':
+            debug(f"opening  '{filename}' without suffix")
+            assert (_ := await open_dvpl_or_file(filename.with_suffix(''))).is_ok, f"could not open file: {filename} without .dvpl suffix"
