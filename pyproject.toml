@@ -2,7 +2,7 @@
 name = "dvplc"
 description = "CLI app to convert Dava SmartDLC .dvpl files used in Wargaming.net's World of Tanks Bliz MMO game"
 readme = "README.md"
-version = "0.3.1"
+version = "0.3.2"
 authors = [{ name = "Jylpah", email = "jylpah@gmail.com" }]
 license = { text = "MIT License" }
 requires-python = ">=3.10"
