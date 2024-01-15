@@ -17,6 +17,7 @@ from enum import StrEnum
 
 from pyutils import FileQueue, EventCounter, AsyncTyper
 from pyutils.multilevelformatter import MultilevelFormatter
+from pyutils.utils import add_suffix
 
 logging.getLogger("asyncio").setLevel(logging.WARNING)
 logger = logging.getLogger(__name__)
@@ -526,6 +527,21 @@ def decode_dvpl(input: bytes) -> Result[bytes, str]:
     except Exception as err:
         return Err(str(err))
 
+async def open_dvpl_or_file(filename: Path) -> Result[bytes, str]:
+    """Open 'filename', DVPL or not"""
+    try:
+        if filename.is_file() or (filename := add_suffix(filename, ".dvpl")).is_file():
+            pass
+        else:
+            raise FileNotFoundError(f"could not find file: {filename}")
+        async with aiofiles.open(filename, "br") as file:
+            if filename.suffix.lower() == ".dvpl":
+                return decode_dvpl(await file.read())
+            else:
+                return Ok(await file.read())
+    except Exception as err:
+        return Err(f"could not open file: {filename}: {err}")
+    
 
 async def encode_dvpl_file(
     input_fn: Path,

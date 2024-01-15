@@ -4,6 +4,7 @@ from .dvplc import (
     encode_dvpl_file as encode_dvpl_file,
     decode_dvpl_file as decode_dvpl_file,
     verify_dvpl_file as verify_dvpl_file,
+    open_dvpl_or_file as open_dvpl_or_file,
     DEFAULT_COMPRESSION as DEFAULT_COMPRESSION,
     COMPRESSION_TYPE as COMPRESSION_TYPE,
     Compression as Compression,
