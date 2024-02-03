@@ -6,12 +6,16 @@
 
 # STATUS
 
-Tested on Linux & Working :-) 
+Tested on Linux, Mac and Windows OK 
 
 ## TODO
 
-- [ ] Test on other platforms
 - [ ] Provide a proper Python package
+
+### Done
+
+- [x] Test on other platforms: CI testing pipeline configured for MacOS and Windows
+
 
 # Installation 
 

@@ -1,0 +1,43 @@
+<root>
+	<nextAvailableId>206</nextAvailableId>
+	<ids>
+		<Small>201</Small>
+		<Average>203</Average>
+		<Heavy>204</Heavy>
+		<Large>205</Large>
+	</ids>
+	<shared>
+		<Small>
+			<tags> </tags>
+			<price>100</price>
+			<weight>200</weight>
+			<maxHealth>100</maxHealth>
+			<maxRegenHealth>40</maxRegenHealth>
+			<repairCost>0</repairCost>
+			</Small>
+		<Average>
+			<tags> </tags>
+			<price>100</price>
+			<weight>250</weight>
+			<maxHealth>150</maxHealth>
+			<maxRegenHealth>50</maxRegenHealth>
+			<repairCost>0</repairCost>
+			</Average>
+		<Heavy>
+			<tags> </tags>
+			<price>100</price>
+			<weight>275</weight>
+			<maxHealth>175</maxHealth>
+			<maxRegenHealth>70</maxRegenHealth>
+			<repairCost>0</repairCost>
+			</Heavy>
+		<Large>
+			<tags> </tags>
+			<price>100</price>
+			<weight>300</weight>
+			<maxHealth>200</maxHealth>
+			<maxRegenHealth>70</maxRegenHealth>
+			<repairCost>0</repairCost>
+			</Large>
+	</shared>
+</root>

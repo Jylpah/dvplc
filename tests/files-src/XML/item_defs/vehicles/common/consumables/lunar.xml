@@ -1,0 +1,27 @@
+<root>
+	<gravityJump>
+		<id>44</id>
+		<userString>#artefacts:jump/name</userString>
+		<description>#artefacts:jump/descr</description>
+		<icon>jump</icon>
+		<category>common</category>
+		<tags>trigger</tags>
+		<isAbility/>
+		<gameModeFilter>
+			<Lunar/>
+			<tournament_lunar/>
+			<quick_tournament_lunar/>
+		</gameModeFilter>
+		<vehicleFilter>
+			<include>
+				<vehicle>
+					<minLevel>5</minLevel>
+					<maxLevel>10</maxLevel>
+				</vehicle>
+			</include>
+		</vehicleFilter>
+		<script>GravityJump<acceleration>4</acceleration>
+			<cooldown>25</cooldown>
+		</script>
+	</gravityJump>
+</root>

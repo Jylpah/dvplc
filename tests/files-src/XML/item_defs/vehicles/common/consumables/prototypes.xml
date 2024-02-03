@@ -1,0 +1,22 @@
+<root>
+	<makeContusion>
+		<id>31</id>
+		<userString>consumables/makeContusion/Name</userString>
+		<description>consumables/makeContusion/Description</description>
+		<icon>contusion</icon>
+		<category>radical</category>
+		<tags>trigger</tags>
+		<vehicleFilter>
+			<include>
+				<vehicle>
+					<minLevel>10</minLevel>
+					<maxLevel>1</maxLevel>
+				</vehicle>
+			</include>
+		</vehicleFilter>
+		<script>MakeContusion<contusionChances>1.0 0.6 0.3</contusionChances>
+			<duration>15</duration>
+			<cooldown>75</cooldown>
+		</script>
+	</makeContusion>
+</root>

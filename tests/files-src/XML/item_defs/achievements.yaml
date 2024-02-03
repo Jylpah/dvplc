@@ -1,0 +1,466 @@
+rareAchievements:
+    supremacyVeteran:
+        id: 1
+        title: "#achievements:supremacyVeteran"
+        descr: "#achievements:supremacyVeteran_descr"
+        condition: "#achievements:supremacyVeteran_condition"
+        icon: "~res:/Gfx/Lobby/medals/supremacyVeteran"
+    supremacyLegend:
+        id: 2
+        title: "#achievements:supremacyLegend"
+        descr: "#achievements:supremacyLegend_descr"
+        condition: "#achievements:supremacyLegend_condition"
+        icon: "~res:/Gfx/Lobby/medals/supremacyLegend"
+    supremacyHunter:
+        id: 3
+        title: "#achievements:supremacyHunter"
+        descr: "#achievements:supremacyHunter_descr"
+        condition: "#achievements:supremacyHunter_condition"
+        icon: "~res:/Gfx/Lobby/medals/supremacyHunter"
+    medalCommunityChampion:
+        id: 4
+        title: "#achievements:medalCommunityChampion"
+        descr: "#achievements:medalCommunityChampion_descr"
+        condition: "#achievements:medalCommunityChampion_condition"
+        icon: "~res:/Gfx/Lobby/medals/medalCommunityChampion"
+        countable: true
+    masterofContinents:
+        id: 5
+        title: "#achievements:masterofContinents"
+        descr: "#achievements:masterofContinents_descr"
+        condition: "#achievements:masterofContinents_condition"
+        icon: "~res:/Gfx/Lobby/medals/masterofContinents"
+    continentalViceChampion:
+        id: 6
+        title: "#achievements:continentalViceChampion"
+        descr: "#achievements:continentalViceChampion_descr"
+        condition: "#achievements:continentalViceChampion_condition"
+        icon: "~res:/Gfx/Lobby/medals/continentalViceChampion"
+    continentalContender:
+        id: 7
+        title: "#achievements:continentalContender"
+        descr: "#achievements:continentalContender_descr"
+        condition: "#achievements:continentalContender_condition"
+        icon: "~res:/Gfx/Lobby/medals/continentalContender"
+    continentalCompetitor:
+        id: 8
+        title: "#achievements:continentalCompetitor"
+        descr: "#achievements:continentalCompetitor_descr"
+        condition: "#achievements:continentalCompetitor_condition"
+        icon: "~res:/Gfx/Lobby/medals/continentalCompetitor"
+    creative:
+        id: 9
+        title: "#achievements:creative"
+        descr: "#achievements:creative_descr"
+        condition: "#achievements:creative_condition"
+        icon: "~res:/Gfx/Lobby/medals/creative"
+    olimpicBronze:
+        id: 10
+        title: "#achievements:olimpicBronze"
+        descr: "#achievements:olimpicBronze_descr"
+        condition: "#achievements:olimpicBronze_condition"
+        icon: "~res:/Gfx/Lobby/medals/olimpicBronze"
+    olimpicSilver:
+        id: 11
+        title: "#achievements:olimpicSilver"
+        descr: "#achievements:olimpicSilver_descr"
+        condition: "#achievements:olimpicSilver_condition"
+        icon: "~res:/Gfx/Lobby/medals/olimpicSilver"
+    olimpicGolden:
+        id: 12
+        title: "#achievements:olimpicGolden"
+        descr: "#achievements:olimpicGolden_descr"
+        condition: "#achievements:olimpicGolden_condition"
+        icon: "~res:/Gfx/Lobby/medals/olimpicGolden"
+    MarkI:
+        id: 13
+        title: "#achievements:MarkI"
+        descr: "#achievements:MarkI_descr"
+        condition: "#achievements:MarkI_condition"
+        icon: "~res:/Gfx/Lobby/medals/MarkI"
+    eSport:
+        id: 14
+        title: "#achievements:eSport"
+        descr: "#achievements:eSport_descr"
+        condition: "#achievements:eSport_condition"
+        icon: "~res:/Gfx/Lobby/medals/eSport"
+    eSportQualification:
+        id: 15
+        title: "#achievements:eSportQualification"
+        descr: "#achievements:eSportQualification_descr"
+        condition: "#achievements:eSportQualification_condition"
+        icon: "~res:/Gfx/Lobby/medals/eSportQualification"
+        countable: true
+    eSportFinal:
+        id: 16
+        title: "#achievements:eSportFinal"
+        descr: "#achievements:eSportFinal_descr"
+        condition: "#achievements:eSportFinal_condition"
+        icon: "~res:/Gfx/Lobby/medals/eSportFinal"
+        countable: true
+    participantofNewStart:
+        id: 17
+        title: "#achievements:participantofNewStart"
+        descr: "#achievements:participantofNewStart_descr"
+        condition: "#achievements:participantofNewStart_condition"
+        icon: "~res:/Gfx/Lobby/medals/participantofNewStart"
+    championofNewStart:
+        id: 18
+        title: "#achievements:championofNewStart"
+        descr: "#achievements:championofNewStart_descr"
+        condition: "#achievements:championofNewStart_condition"
+        icon: "~res:/Gfx/Lobby/medals/championofNewStart"
+    collectorGuP:
+        id: 19
+        title: "#achievements:collectorGuP"
+        descr: "#achievements:collectorGuP_descr"
+        condition: "#achievements:collectorGuP_condition"
+        icon: "~res:/Gfx/Lobby/medals/collectorGuP"
+    participantofWGFest2017:
+        id: 20
+        title: "#achievements:participantofWGFest2017"
+        descr: "#achievements:participantofWGFest2017_descr"
+        condition: "#achievements:participantofWGFest2017_condition"
+        icon: "~res:/Gfx/Lobby/medals/participantofWGFest2017"
+    diamondTwisterMedal:
+        id: 21
+        title: "#achievements:diamondTwisterMedal"
+        descr: "#achievements:commonTwister_descr"
+        condition: "#achievements:diamondTwisterMedal_condition"
+        icon: "~res:/Gfx/Lobby/medals/diamondTwisterMedal"
+        countable: true
+    platinumTwisterMedalRU:
+        id: 22
+        title: "#achievements:platinumTwisterMedal"
+        descr: "#achievements:commonTwister_descr"
+        condition: "#achievements:platinumTwisterMedalRU_condition"
+        icon: "~res:/Gfx/Lobby/medals/platinumTwisterMedal"
+        countable: true
+    goldTwisterMedalRU:
+        id: 23
+        title: "#achievements:goldTwisterMedal"
+        descr: "#achievements:commonTwister_descr"
+        condition: "#achievements:goldTwisterMedalRU_condition"
+        icon: "~res:/Gfx/Lobby/medals/goldTwisterMedal"
+        countable: true
+    diamondTwisterMark:
+        id: 24
+        title: "#achievements:diamondTwisterMark"
+        descr: "#achievements:commonTwister_descr"
+        condition: "#achievements:diamondTwisterMark_condition"
+        icon: "~res:/Gfx/Lobby/medals/diamondTwisterMark"
+        countable: true
+    platinumTwisterMark:
+        id: 25
+        title: "#achievements:platinumTwisterMark"
+        descr: "#achievements:commonTwister_descr"
+        condition: "#achievements:platinumTwisterMark_condition"
+        icon: "~res:/Gfx/Lobby/medals/platinumTwisterMark"
+        countable: true
+    goldTwisterMark:
+        id: 26
+        title: "#achievements:goldTwisterMark"
+        descr: "#achievements:commonTwister_descr"
+        condition: "#achievements:goldTwisterMark_condition"
+        icon: "~res:/Gfx/Lobby/medals/goldTwisterMark"
+        countable: true
+    diamondClanRibbon:
+        id: 27
+        title: "#achievements:diamondClanRibbon"
+        descr: "#achievements:commonTwister_descr"
+        condition: "#achievements:diamondClanRibbon_condition"
+        icon: "~res:/Gfx/Lobby/medals/diamondClanRibbon"
+        countable: true
+    platinumClanRibbonRU:
+        id: 28
+        title: "#achievements:platinumClanRibbon"
+        descr: "#achievements:commonTwister_descr"
+        condition: "#achievements:platinumClanRibbonRU_condition"
+        icon: "~res:/Gfx/Lobby/medals/platinumClanRibbon"
+        countable: true
+    goldClanRibbonRU:
+        id: 29
+        title: "#achievements:goldClanRibbon"
+        descr: "#achievements:commonTwister_descr"
+        condition: "#achievements:goldClanRibbonRU_condition"
+        icon: "~res:/Gfx/Lobby/medals/goldClanRibbon"
+        countable: true
+    platinumTwisterMedalEU:
+        id: 31
+        title: "#achievements:platinumTwisterMedal"
+        descr: "#achievements:commonTwister_descr"
+        condition: "#achievements:platinumTwisterMedalEU_condition"
+        icon: "~res:/Gfx/Lobby/medals/platinumTwisterMedal"
+        countable: true
+    goldTwisterMedalEU:
+        id: 32
+        title: "#achievements:goldTwisterMedal"
+        descr: "#achievements:commonTwister_descr"
+        condition: "#achievements:goldTwisterMedalEU_condition"
+        icon: "~res:/Gfx/Lobby/medals/goldTwisterMedal"
+        countable: true
+    platinumClanRibbonEU:
+        id: 33
+        title: "#achievements:platinumClanRibbon"
+        descr: "#achievements:commonTwister_descr"
+        condition: "#achievements:platinumClanRibbonEU_condition"
+        icon: "~res:/Gfx/Lobby/medals/platinumClanRibbon"
+        countable: true
+    goldClanRibbonEU:
+        id: 34
+        title: "#achievements:goldClanRibbon"
+        descr: "#achievements:commonTwister_descr"
+        condition: "#achievements:goldClanRibbonEU_condition"
+        icon: "~res:/Gfx/Lobby/medals/goldClanRibbon"
+        countable: true
+    platinumTwisterMedalNA:
+        id: 35
+        title: "#achievements:platinumTwisterMedal"
+        descr: "#achievements:commonTwister_descr"
+        condition: "#achievements:platinumTwisterMedalNA_condition"
+        icon: "~res:/Gfx/Lobby/medals/platinumTwisterMedal"
+        countable: true
+    goldTwisterMedalNA:
+        id: 36
+        title: "#achievements:goldTwisterMedal"
+        descr: "#achievements:commonTwister_descr"
+        condition: "#achievements:goldTwisterMedalNA_condition"
+        icon: "~res:/Gfx/Lobby/medals/goldTwisterMedal"
+        countable: true
+    platinumClanRibbonNA:
+        id: 37
+        title: "#achievements:platinumClanRibbon"
+        descr: "#achievements:commonTwister_descr"
+        condition: "#achievements:platinumClanRibbonNA_condition"
+        icon: "~res:/Gfx/Lobby/medals/platinumClanRibbon"
+        countable: true
+    goldClanRibbonNA:
+        id: 38
+        title: "#achievements:goldClanRibbon"
+        descr: "#achievements:commonTwister_descr"
+        condition: "#achievements:goldClanRibbonNA_condition"
+        icon: "~res:/Gfx/Lobby/medals/goldClanRibbon"
+        countable: true
+    platinumTwisterMedalSEA:
+        id: 39
+        title: "#achievements:platinumTwisterMedal"
+        descr: "#achievements:commonTwister_descr"
+        condition: "#achievements:platinumTwisterMedalSEA_condition"
+        icon: "~res:/Gfx/Lobby/medals/platinumTwisterMedal"
+        countable: true
+    goldTwisterMedalSEA:
+        id: 40
+        title: "#achievements:goldTwisterMedal"
+        descr: "#achievements:commonTwister_descr"
+        condition: "#achievements:goldTwisterMedalSEA_condition"
+        icon: "~res:/Gfx/Lobby/medals/goldTwisterMedal"
+        countable: true
+    platinumClanRibbonSEA:
+        id: 41
+        title: "#achievements:platinumClanRibbon"
+        descr: "#achievements:commonTwister_descr"
+        condition: "#achievements:platinumClanRibbonSEA_condition"
+        icon: "~res:/Gfx/Lobby/medals/platinumClanRibbon"
+        countable: true
+    goldClanRibbonSEA:
+        id: 42
+        title: "#achievements:goldClanRibbon"
+        descr: "#achievements:commonTwister_descr"
+        condition: "#achievements:goldClanRibbonSEA_condition"
+        icon: "~res:/Gfx/Lobby/medals/goldClanRibbon"
+        countable: true
+    collectorWarhammer:
+        id: 43
+        title: "#achievements:collectorWarhammer"
+        descr: "#achievements:collectorWarhammer_descr"
+        condition: "#achievements:collectorWarhammer_condition"
+        icon: "~res:/Gfx/Lobby/medals/collectorWarhammer"
+    medalTournamentOffseason1:
+        id: 44
+        title: "#achievements:medalTournamentOffseason"
+        descr: "#achievements:medalTournamentOffseason_descr"
+        condition: "#achievements:medalTournamentOffseason_condition"
+        icon: "~res:/Gfx/Lobby/medals/medalTournamentOffseason1"
+    medalTournamentOffseason2:
+        id: 45
+        title: "#achievements:medalTournamentOffseason"
+        descr: "#achievements:medalTournamentOffseason_descr"
+        condition: "#achievements:medalTournamentOffseason_condition"
+        icon: "~res:/Gfx/Lobby/medals/medalTournamentOffseason2"
+    medalTournamentOffseason3:
+        id: 46
+        title: "#achievements:medalTournamentOffseason"
+        descr: "#achievements:medalTournamentOffseason_descr"
+        condition: "#achievements:medalTournamentOffseason_condition"
+        icon: "~res:/Gfx/Lobby/medals/medalTournamentOffseason3"
+    medalTournamentOffseason4:
+        id: 47
+        title: "#achievements:medalTournamentOffseason"
+        descr: "#achievements:medalTournamentOffseason_descr"
+        condition: "#achievements:medalTournamentOffseason_condition"
+        icon: "~res:/Gfx/Lobby/medals/medalTournamentOffseason4"
+    medalTournamentSpringSeason:
+        id: 48
+        title: "#achievements:medalTournamentSpringSeason"
+        descr: "#achievements:medalTournamentSpringSeason_descr"
+        condition: "#achievements:medalTournamentSpringSeason_condition"
+        icon: "~res:/Gfx/Lobby/medals/medalTournamentSpringSeason"
+        countable: true
+    medalTournamentProfessional:
+        id: 49
+        title: "#achievements:medalTournamentProfessional"
+        descr: "#achievements:medalTournamentProfessional_descr"
+        condition: "#achievements:medalTournamentProfessional_condition"
+        icon: "~res:/Gfx/Lobby/medals/medalTournamentProfessional"
+        countable: true
+    ChristmasTreeLevelUpNY2019:
+        id: 50
+        title: "#achievements:ChristmasTreeLevelUpNY2019"
+        descr: "#achievements:ChristmasTreeLevelUpNY2019_descr"
+        condition: "#achievements:ChristmasTreeLevelUpNY2019_condition"
+        icon: "~res:/Gfx/Lobby/medals/ChristmasTreeLevelUpNY2019"
+    medalWGfestTicket:
+        id: 51
+        title: "#achievements:medalWGfestTicket"
+        descr: "#achievements:medalWGfestTicket_descr"
+        condition: "#achievements:medalWGfestTicket_condition"
+        icon: "~res:/Gfx/Lobby/medals/medalWGfestTicket"
+    medalTwitch:
+        id: 52
+        title: "#achievements:medalTwitch"
+        descr: "#achievements:medalTwitch_descr"
+        condition: "#achievements:medalTwitch_condition"
+        icon: "~res:/Gfx/Lobby/medals/medalTwitch"
+    medalTournamentSummerSeason:
+        id: 53
+        title: "#achievements:SummerChampionshipMedal"
+        descr: "#achievements:SummerChampionshipMedal_descr"
+        condition: "#achievements:SummerChampionshipMedal_condition"
+        icon: "~res:/Gfx/Lobby/medals/2020-tournament-summer-season"
+        countable: true
+    medalAtgm:
+        id: 54
+        title: "#achievements:ATGMPlayer"
+        descr: "#achievements:ATGMPlayer_descr"
+        condition: "#achievements:ATGMPlayer_condition"
+        icon: "~res:/Gfx/Lobby/medals/atgm"
+    newbieShermanWin:
+        id: 55
+        title: "#achievements:newbieShermanWin"
+        descr: "#achievements:newbieShermanWin_descr"
+        condition: "#achievements:newbieShermanWin_condition"
+        icon: "~res:/Gfx/Lobby/medals/newbieShermanWin"
+    newbieTigerWin:
+        id: 56
+        title: "#achievements:newbieTigerWin"
+        descr: "#achievements:newbieTigerWin_descr"
+        condition: "#achievements:newbieTigerWin_condition"
+        icon: "~res:/Gfx/Lobby/medals/newbieTigerWin"
+    newbieT3485Win:
+        id: 57
+        title: "#achievements:newbieT3485Win"
+        descr: "#achievements:newbieT3485Win_descr"
+        condition: "#achievements:newbieT3485Win_condition"
+        icon: "~res:/Gfx/Lobby/medals/newbieT3485Win"
+    newbieDoubleWin:
+        id: 58
+        title: "#achievements:newbieDoubleWin"
+        descr: "#achievements:newbieDoubleWin_descr"
+        condition: "#achievements:newbieDoubleWin_condition"
+        icon: "~res:/Gfx/Lobby/medals/newbieDoubleWin"
+    newbieTrippleWin:
+        id: 59
+        title: "#achievements:newbieTrippleWin"
+        descr: "#achievements:newbieTrippleWin_descr"
+        condition: "#achievements:newbieTrippleWin_condition"
+        icon: "~res:/Gfx/Lobby/medals/newbieTrippleWin"
+    newbieType58TUWin:
+        id: 60
+        title: "#achievements:newbieType58TUWin"
+        descr: "#achievements:newbieType58TU_descr"
+        condition: "#achievements:newbieType58TU_condition"
+        icon: "~res:/Gfx/Lobby/medals/newbieType58TUWin"
+    medalTournamentAutumnSeason:
+        id: 61
+        title: "#achievements:AutumnChampionshipMedal"
+        descr: "#achievements:AutumnChampionshipMedal_descr"
+        condition: "#achievements:AutumnChampionshipMedal_condition"
+        icon: "~res:/Gfx/Lobby/medals/tournament-autumn-season"
+        countable: true
+    medalTournamentWinterSeason:
+        id: 62
+        title: "#achievements:WinterChampionshipMedal"
+        descr: "#achievements:WinterChampionshipMedal_descr"
+        condition: "#achievements:WinterChampionshipMedal_condition"
+        icon: "~res:/Gfx/Lobby/medals/tournament-winter-season"
+        countable: true
+    medalBlitzMasters:
+        id: 63
+        title: "#achievements:BlitzMastersMedal"
+        descr: "#achievements:BlitzMastersMedal_descr"
+        icon: "~res:/Gfx/Lobby/medals/WoTB_masters"
+    medalRatingBattleYoutuberTournament:
+        id: 64
+        title: "#achievements:RatingBattleYoutuberTournament"
+        descr: "#achievements:RatingBattleYoutuberTournament_descr"
+        icon: "~res:/Gfx/Lobby/medals/ratingBattleYoutuberTournament"
+dependecies:
+    titleSniper:
+    - maxSniperSeries
+    invincible:
+    - maxInvincibleSeries
+    diehard:
+    - maxDiehardSeries
+    handOfDeath:
+    - maxKillingSeries
+    armorPiercer:
+    - maxPiercingSeries
+    medalKay:
+    - battleHeroes
+    medalCarius:
+    - frags
+    medalKnispel:
+    - damageDealt
+    - damageReceived
+    medalPoppel:
+    - spotted
+    medalAbrams:
+    - winAndSurvived
+    medalLeClerc:
+    - capturePoints
+    medalLavrinenko:
+    - droppedCapturePoints
+    medalEkins:
+    - frags8p
+    medalSupremacy:
+    - winPointsEarned
+    jointVictory:
+    - jointVictoryCount
+    punisher:
+    - punisherCount
+    beasthunter:
+    - fragsBeast
+    sinai:
+    - fragsSinai
+    pattonValley:
+    - fragsPatton
+    tankExpert:
+    - tankExpertStrg
+    mousebane:
+    - vehTypeFrags
+    tankExpert0:
+    - vehTypeFrags
+    tankExpert1:
+    - vehTypeFrags
+    tankExpert2:
+    - vehTypeFrags
+    tankExpert3:
+    - vehTypeFrags
+    tankExpert4:
+    - vehTypeFrags
+    tankExpert5:
+    - vehTypeFrags
+    tankExpert6:
+    - vehTypeFrags
+    tankExpert8:
+    - vehTypeFrags

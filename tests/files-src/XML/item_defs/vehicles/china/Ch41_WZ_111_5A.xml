@@ -1,0 +1,319 @@
+<root>
+	<crew>
+		<commander>radioman</commander>
+		<gunner/>
+		<driver/>
+		<loader/>
+	</crew>
+	<isUnlocked>true</isUnlocked>
+	<speedLimits>
+		<forward>45</forward>
+		<backward>15</backward>
+	</speedLimits>
+	<invisibility>
+		<moving>0.057</moving>
+		<still>0.113</still>
+		<firePenalty>0.17</firePenalty>
+	</invisibility>
+	<repairCost>0</repairCost>
+	<crewXpFactor>1.0</crewXpFactor>
+	<optDevicePreset>defaultPreset</optDevicePreset>
+	<consumableSlots>3</consumableSlots>
+	<provisionSlots>3</provisionSlots>
+	<enrichmentBoost>0.0</enrichmentBoost>
+	<turretBlowEnabled>true</turretBlowEnabled>
+	<effects>
+		<destruction>mediumDestruction</destruction>
+		<explosion>mediumExplosion</explosion>
+		<flaming>mediumFlaming</flaming>
+		<collision/>
+		<damagedStateGroup>small</damagedStateGroup>
+	</effects>
+	<camouflage>
+		<priceFactor>1.0</priceFactor>
+		<tiling>1 1 0 0</tiling>
+		<exclusionMask/>
+	</camouflage>
+	<emblems>
+		<default>china_star</default>
+		<lodDist>MEDIUM</lodDist>
+		<alpha>0.1</alpha>
+	</emblems>
+	<horns>
+		<priceFactor>1</priceFactor>
+		<distanceFactor>1</distanceFactor>
+		<volumeFactor>1</volumeFactor>
+	</horns>
+	<hull>
+		<swinging>
+			<lodDist>FAR</lodDist>
+			<pitchParams>0.28 34.00 0.42 1.00 0.05 0.30</pitchParams>
+			<rollParams>1.00 0.28 34.00 0.42 1.00 0.05 0.30</rollParams>
+			<sensitivityToImpulse>0.59</sensitivityToImpulse>
+		</swinging>
+		<models>
+			<undamaged>vehicles/chinese/Ch41_WZ_111_5A/normal/lod0/Hull.model</undamaged>
+			<destroyed>vehicles/chinese/Ch41_WZ_111_5A/crash/lod0/Hull.model</destroyed>
+			<exploded>vehicles/chinese/Ch41_WZ_111_5A/crash/lod0/Hull.model</exploded>
+		</models>
+		<exhaust>
+			<pixie/>
+			<nodes/>
+			<rates>5.0 10.0 25.0</rates>
+		</exhaust>
+		<turretPositions>
+			<turret>-0.004689 1.561097 0.702696</turret>
+		</turretPositions>
+		<hitTester>
+			<collisionModel>vehicles/chinese/Ch41_WZ_111_5A/collision/Hull.model</collisionModel>
+		</hitTester>
+		<armor>
+			<armor_1>117</armor_1>
+			<armor_2>142</armor_2>
+			<armor_3>120</armor_3>
+			<armor_4>60</armor_4>
+			<armor_5>25</armor_5>
+			<armor_6>20</armor_6>
+			<armor_7>80</armor_7>
+			<armor_8>0</armor_8>
+			<armor_9>30<vehicleDamageFactor>0.0</vehicleDamageFactor>
+			</armor_9>
+			<armor_10>85</armor_10>
+			<armor_16>85</armor_16>
+		</armor>
+		<primaryArmor>armor_1 armor_3 armor_4</primaryArmor>
+		<weight>20525</weight>
+		<maxHealth>1840</maxHealth>
+		<ammoBayHealth>
+			<maxHealth>240</maxHealth>
+			<maxRegenHealth>160</maxRegenHealth>
+			<repairCost>0</repairCost>
+			</ammoBayHealth>
+		<emblemSlots>
+			<clan>
+				<rayStart>0.1 0.1 1.0</rayStart>
+				<rayEnd>0.1 0.1 1.0</rayEnd>
+				<rayUp>0.0 1.0 0.0</rayUp>
+				<size>0.1</size>
+				<hideIfDamaged>true</hideIfDamaged>
+			</clan>
+			<inscription>
+				<rayStart>0.1 0.1 1.0</rayStart>
+				<rayEnd>0.1 0.1 1.0</rayEnd>
+				<rayUp>0.0 1.0 0.0</rayUp>
+				<size>0.1</size>
+				<hideIfDamaged>true</hideIfDamaged>
+			</inscription>
+		</emblemSlots>
+	</hull>
+	<chassis>
+		<Chassis_Ch41_WZ_111_5A>
+			<userString>#china_vehicles:Chassis_Ch41_WZ_111_5A</userString>
+			<shortUserString>#china_vehicles:Chassis_Ch41_WZ_111_5A_short</shortUserString>
+			<description>#china_vehicles:Chassis_Ch41_WZ_111_5A_descr</description>
+			<tags/>
+			<level>10</level>
+			<price>0</price>
+			<models>
+				<undamaged>vehicles/chinese/Ch41_WZ_111_5A/normal/lod0/Chassis.model</undamaged>
+				<destroyed>vehicles/chinese/Ch41_WZ_111_5A/crash/lod0/Chassis.model</destroyed>
+				<exploded>vehicles/chinese/Ch41_WZ_111_5A/crash/lod0/Chassis.model</exploded>
+			</models>
+			<traces>
+				<lodDist/>
+				<bufferPrefs/>
+				<textureSet/>
+				<size>0.1 0.1</size>
+			</traces>
+			<tracks>
+				<lodDist>MEDIUM</lodDist>
+				<leftMaterial>track_mat_L_skinned</leftMaterial>
+				<rightMaterial>track_mat_R_skinned</rightMaterial>
+			</tracks>
+			<wheels>
+				<lodDist>MEDIUM</lodDist>
+				<wheel>
+					<isLeft>true</isLeft>
+					<name>WD_L0</name>
+					<radius>0.1</radius>
+				</wheel>
+				<wheel>
+					<isLeft>false</isLeft>
+					<name>WD_R0</name>
+					<radius>0.1</radius>
+				</wheel>
+				<group>
+					<isLeft>true</isLeft>
+					<template>W_L</template>
+					<radius>0.1</radius>
+					<startIndex>0</startIndex>
+					<count>1</count>
+				</group>
+				<group>
+					<isLeft>false</isLeft>
+					<template>W_R</template>
+					<radius>0.1</radius>
+					<startIndex>0</startIndex>
+					<count>1</count>
+				</group>
+			</wheels>
+			<drivingWheels>WD_L0 WD_R0</drivingWheels>
+			<effects>
+				<lodDist>MEDIUM</lodDist>
+				<dust>mediumTankDust</dust>
+				<mud>mediumTankMud</mud>
+			</effects>
+			<sound/>
+			<hullPosition>0.0 0.0 0.0</hullPosition>
+			<hitTester>
+				<collisionModel>vehicles/chinese/Ch41_WZ_111_5A/collision/Chassis.model</collisionModel>
+			</hitTester>
+			<armor>
+				<leftTrack>20</leftTrack>
+				<rightTrack>20</rightTrack>
+			</armor>
+			<topRightCarryingPoint>1.323 2.37015</topRightCarryingPoint>
+			<maxClimbAngle>25</maxClimbAngle>
+			<navmeshGirth>6.0</navmeshGirth>
+			<weight>10000</weight>
+			<maxLoad>55000</maxLoad>
+			<terrainResistance>1 1.3 1.7</terrainResistance>
+			<brakeForce>50000</brakeForce>
+			<rotationIsAroundCenter>false</rotationIsAroundCenter>
+			<rotationSpeed>25</rotationSpeed>
+			<shotDispersionFactors>
+				<vehicleMovement>0.18</vehicleMovement>
+				<vehicleRotation>0.18</vehicleRotation>
+			</shotDispersionFactors>
+			<bulkHealthFactor>3.0</bulkHealthFactor>
+			<maxHealth>250</maxHealth>
+			<maxRegenHealth>190</maxRegenHealth>
+			<repairCost>0</repairCost>
+			</Chassis_Ch41_WZ_111_5A>
+	</chassis>
+	<turrets0>
+		<Turret_1_Ch41_WZ_111_5A>
+			<userString>#china_vehicles:Turret_1_Ch41_WZ_111_5A</userString>
+			<description>#china_vehicles:Turret_1_Ch41_WZ_111_5A_descr</description>
+			<tags/>
+			<level>10</level>
+			<price>0</price>
+			<hitTester>
+				<collisionModel>vehicles/chinese/Ch41_WZ_111_5A/collision/Turret_01.model</collisionModel>
+			</hitTester>
+			<models>
+				<undamaged>vehicles/chinese/Ch41_WZ_111_5A/normal/lod0/Turret_01.model</undamaged>
+				<destroyed>vehicles/chinese/Ch41_WZ_111_5A/crash/lod0/Turret_01.model</destroyed>
+				<exploded>vehicles/chinese/Ch41_WZ_111_5A/crash/lod0/Turret_01.model</exploded>
+			</models>
+			<yawLimits>-180 180</yawLimits>
+			<gunPosition>-0.005686 0.303062 1.289840</gunPosition>
+			<armor>
+				<armor_1>248</armor_1>
+				<armor_2>230</armor_2>
+				<armor_3>130</armor_3>
+				<armor_4>60</armor_4>
+				<armor_5>55</armor_5>
+				<armor_6>30</armor_6>
+				<armor_7>100</armor_7>
+				<armor_8>0</armor_8>
+				<armor_9>150</armor_9>
+				<armor_10>180</armor_10>
+				<armor_16>180</armor_16>
+			</armor>
+			<primaryArmor>armor_1 armor_10 armor_4</primaryArmor>
+			<weight>15000</weight>
+			<maxHealth>460</maxHealth>
+			<rotationSpeed>20</rotationSpeed>
+			<turretRotatorHealth>
+				<maxHealth>170</maxHealth>
+				<maxRegenHealth>85</maxRegenHealth>
+				<repairCost>0</repairCost>
+				</turretRotatorHealth>
+			<circularVisionRadius>250</circularVisionRadius>
+			<surveyingDeviceHealth>
+				<maxHealth>120</maxHealth>
+				<maxRegenHealth>60</maxRegenHealth>
+				<repairCost>0</repairCost>
+				</surveyingDeviceHealth>
+			<guns>
+				<_130mm_59_130TA>shared<maxAmmo>40</maxAmmo>
+					<hitTester>
+						<collisionModel>vehicles/chinese/Ch41_WZ_111_5A/collision/Gun_01.model</collisionModel>
+					</hitTester>
+					<models>
+						<undamaged>vehicles/chinese/Ch41_WZ_111_5A/normal/lod0/Gun_01.model</undamaged>
+						<destroyed>vehicles/chinese/Ch41_WZ_111_5A/crash/lod0/Gun_01.model</destroyed>
+						<exploded>vehicles/chinese/Ch41_WZ_111_5A/crash/lod0/Gun_01.model</exploded>
+					</models>
+					<armor>
+						<armor_1>272<vehicleDamageFactor>0.0</vehicleDamageFactor>
+						</armor_1>
+						<armor_3>100<vehicleDamageFactor>0.0</vehicleDamageFactor>
+						</armor_3>
+						<armor_4>0<vehicleDamageFactor>0.0</vehicleDamageFactor>
+						</armor_4>
+						<armor_9>150<vehicleDamageFactor>0.0</vehicleDamageFactor>
+						</armor_9>
+						<gun>50</gun>
+					</armor>
+					<shotDispersionRadius>0.39</shotDispersionRadius>
+					<aimingTime>2.2</aimingTime>
+					<reloadTime>10.6</reloadTime>
+					<shotDispersionFactors>
+						<turretRotation>0.08</turretRotation>
+						<afterShot>4</afterShot>
+						<whileGunDamaged>2.0</whileGunDamaged>
+					</shotDispersionFactors>
+					<invisibilityFactorAtShot>0.153</invisibilityFactorAtShot>
+					<pitchLimits>-23 7</pitchLimits>
+					<extraPitchLimits>
+						<back>-23 1 25</back>
+					</extraPitchLimits>
+					<shots>
+						<_130mm_AP_WZ>
+							<shell>shared<price>0</price>
+							</shell>
+						</_130mm_AP_WZ>
+						<_130mm_HEAT_WZ>
+							<shell>shared<price>11<gold/>
+								</price>
+							</shell>
+						</_130mm_HEAT_WZ>
+						<_130mm_HE_WZ>
+							<shell>shared<price>0</price>
+							</shell>
+						</_130mm_HE_WZ>
+					</shots>
+				</_130mm_59_130TA>
+			</guns>
+			<emblemSlots>
+				<player>
+					<rayStart>-1.14052 0.501314 -1.84861</rayStart>
+					<rayEnd>-0.947969 0.447255 -1.84803</rayEnd>
+					<rayUp>0.000000 1 0.000000</rayUp>
+					<size>0.8</size>
+					<hideIfDamaged>false</hideIfDamaged>
+				</player>
+				<inscription>
+					<rayStart>-1.11845 0.493689 -1.01991</rayStart>
+					<rayEnd>-0.930106 0.426732 -1.02643</rayEnd>
+					<rayUp>0.000000 1 0.000000</rayUp>
+					<size>0.1</size>
+					<hideIfDamaged>true</hideIfDamaged>
+				</inscription>
+			</emblemSlots>
+			<showEmblemsOnGun>false</showEmblemsOnGun>
+			<physicsShape>0.941 -0.118 1.000 0.000 0.426 0.294 0.000 0.493 0.265 0.588 0.228 0.500 0.132 0.779 0.000</physicsShape>
+		</Turret_1_Ch41_WZ_111_5A>
+	</turrets0>
+	<engines>
+		<_V-2-54SCB>shared</_V-2-54SCB>
+	</engines>
+	<fuelTanks>
+		<Large>shared</Large>
+	</fuelTanks>
+	<radios>
+		<A-220B_1>shared</A-220B_1>
+	</radios>
+</root>

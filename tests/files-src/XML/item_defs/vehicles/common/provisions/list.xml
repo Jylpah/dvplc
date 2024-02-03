@@ -1,0 +1,10 @@
+<root>
+	<nextAvailableId>121</nextAvailableId>
+    <items path="common.xml"/>
+    <items path="prototypes.xml"/>
+    <items path="madgames.xml"/>
+    <items path="hellgames.xml"/>
+    <items path="vampiric.xml"/>
+    <items path="bossmode.xml"/>
+    <items path="gravitizing.xml"/>
+</root>

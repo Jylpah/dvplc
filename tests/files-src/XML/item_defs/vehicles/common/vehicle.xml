@@ -1,0 +1,752 @@
+<root>
+	<balance>
+		<byVehicleModule>
+		</byVehicleModule>
+		<byComponentLevels>2.0 3.0 5.0 8.0 12.0 18.0 27.0 40.0 60.0 100.0</byComponentLevels>
+		<byVehicleClasses>
+			<lightTank>1.0</lightTank>
+			<mediumTank>1.0</mediumTank>
+			<heavyTank>1.0</heavyTank>
+			<AT-SPG>1.0</AT-SPG>
+			<SPG>1.25</SPG>
+		</byVehicleClasses>
+		<modulesWeightMultipliers>
+			<vehicle>1.0</vehicle>
+			<gun>0.0</gun>
+			<turret>0.0</turret>
+			<engine>0.0</engine>
+			<chassis>0.0</chassis>
+		</modulesWeightMultipliers>
+	</balance>
+	<lodLevels>
+		<NEAR>30</NEAR>
+		<MEDIUM>70</MEDIUM>
+		<FAR>120</FAR>
+	</lodLevels>
+	<miscParams>
+		<projectileSpeedFactor>0.8</projectileSpeedFactor>
+		<highExplosiveLargeCaliber>130.0</highExplosiveLargeCaliber>
+		<minFireStartingDamage>21</minFireStartingDamage>
+		<hornCooldown>
+			<window>25</window>
+			<clientWindowExpansion>5</clientWindowExpansion>
+			<maxSignals>3</maxSignals>
+		</hornCooldown>
+		<collisionEffectVelocities>
+			<hull>1.4 4.5</hull>
+			<track>2.0 2.0</track>
+			<waterContact>5.5 7.0</waterContact>
+			<ramming>2.1</ramming>
+		</collisionEffectVelocities>
+	</miscParams>
+	<defaultVehicleEffects>
+		<destruction>mediumDestruction</destruction>
+		<explosion>mediumExplosion</explosion>
+		<flaming>mediumFlaming</flaming>
+		<collisionVehicle>collision</collisionVehicle>
+		<groundCollisionLight>groundCollisionLight</groundCollisionLight>
+		<groundCollisionHeavy>groundCollisionHeavy</groundCollisionHeavy>
+		<sandCollisionLight>sandCollisionLight</sandCollisionLight>
+		<sandCollisionHeavy>sandCollisionHeavy</sandCollisionHeavy>
+		<snowCollisionLight>snowCollisionLight</snowCollisionLight>
+		<snowCollisionHeavy>snowCollisionHeavy</snowCollisionHeavy>
+		<stoneCollisionLight>stoneCollisionLight</stoneCollisionLight>
+		<stoneCollisionHeavy>stoneCollisionHeavy</stoneCollisionHeavy>
+		<woodCollisionLight>woodCollisionLight</woodCollisionLight>
+		<woodCollisionHeavy>woodCollisionHeavy</woodCollisionHeavy>
+		<metalCollisionLight>metalCollisionLight</metalCollisionLight>
+		<metalCollisionHeavy>metalCollisionHeavy</metalCollisionHeavy>
+		<waterCollisionLight>waterCollisionLight</waterCollisionLight>
+		<waterCollisionHeavy>waterCollisionHeavy</waterCollisionHeavy>
+	</defaultVehicleEffects>
+<extras>
+		<shoot index="1">ShowShooting : None</shoot>
+		<noAmmo index="2">NoneExtra : None</noAmmo>
+		<gunReload index="3">NoneExtra : None</gunReload>
+		<fire index="4">Fire : Fire<sounds>
+				<fireStarted>fire_started</fireStarted>
+				<fireStopped>fire_stopped</fireStopped>
+			</sounds>
+		</fire>
+		<sixthSense index="5">NoneExtra : SixthSense<delay>3.0</delay>
+		</sixthSense>
+		<stereoscope index="6">NoneExtra : Stereoscope</stereoscope>
+		<camouflageNet index="7">NoneExtra : CamouflageNet</camouflageNet>
+		<autoExtinguisher index="8">NoneExtra : Extinguisher</autoExtinguisher>
+		<berserk index="9">NoneExtra : Berserk</berserk>
+		<afterburning index="10">NoneExtra : Afterburning</afterburning>
+		<largeRecoverkit index="11">NoneExtra : Recoverkit</largeRecoverkit>
+		<largeMedkit index="12">NoneExtra : Repairkit</largeMedkit>
+		<largeRepairkit index="13">NoneExtra : Repairkit</largeRepairkit>
+		<chocolate index="14">NoneExtra : Stimulator</chocolate>
+		<cocacola index="15">NoneExtra : Stimulator</cocacola>
+		<ration index="16">NoneExtra : Stimulator</ration>
+		<ration_uk index="17">NoneExtra : Stimulator</ration_uk>
+		<ration_japan index="18">NoneExtra : Stimulator</ration_japan>
+		<ration_china index="19">NoneExtra : Stimulator</ration_china>
+		<hot_coffee index="20">NoneExtra : Stimulator</hot_coffee>
+		<chocolate_bar index="21">NoneExtra : Stimulator</chocolate_bar>
+		<cocacola_can index="22">NoneExtra : Stimulator</cocacola_can>
+		<condensed_milk index="23">NoneExtra : Stimulator</condensed_milk>
+		<black_tea index="24">NoneExtra : Stimulator</black_tea>
+		<white_rice index="25">NoneExtra : Stimulator</white_rice>
+		<regular_ration index="26">NoneExtra : Stimulator</regular_ration>
+		<pasty index="27">NoneExtra : Stimulator</pasty>
+		<regular_fuel index="28">NoneExtra : Fuel</regular_fuel>
+		<improved_fuel index="29">NoneExtra : Fuel</improved_fuel>
+		<safety_set index="30">NoneExtra : SafetySet</safety_set>
+		<engineHealth index="31">DamageMarker : EngineHealth<sounds>
+				<critical>engine_damaged</critical>
+				<destroyed>engine_destroyed</destroyed>
+				<functional>engine_functional</functional>
+			</sounds>
+			<deviceUserString>#ingame_gui:devices/engine</deviceUserString>
+		</engineHealth>
+		<ammoBayHealth index="32">DamageMarker : AmmoBayHealth<sounds>
+				<critical>ammo_bay_damaged</critical>
+			</sounds>
+			<deviceUserString>#ingame_gui:devices/ammo_bay</deviceUserString>
+		</ammoBayHealth>
+		<fuelTankHealth index="33">DamageMarker : FuelTankHealth<sounds>
+				<critical>fuel_tank_damaged</critical>
+			</sounds>
+			<deviceUserString>#ingame_gui:devices/fuel_tank</deviceUserString>
+		</fuelTankHealth>
+		<leftTrackHealth index="34">TrackHealth : TrackHealth<isLeft>true</isLeft>
+			<sounds>
+				<destroyed>track_destroyed</destroyed>
+				<critical>track_damaged</critical>
+				<functional>track_functional</functional>
+				<functionalCanMove>track_functional_can_move</functionalCanMove>
+				<cut>track_cut</cut>
+			</sounds>
+			<deviceUserString>#ingame_gui:devices/left_track</deviceUserString>
+		</leftTrackHealth>
+		<rightTrackHealth index="35">TrackHealth : TrackHealth<isLeft>false</isLeft>
+			<sounds>
+				<destroyed>track_destroyed</destroyed>
+				<critical>track_damaged</critical>
+				<functional>track_functional</functional>
+				<functionalCanMove>track_functional_can_move</functionalCanMove>
+				<cut>track_cut</cut>
+			</sounds>
+			<deviceUserString>#ingame_gui:devices/right_track</deviceUserString>
+		</rightTrackHealth>
+		<gunHealth index="36">DamageMarker : GunHealth<sounds>
+				<critical>gun_damaged</critical>
+				<destroyed>gun_destroyed</destroyed>
+				<functional>gun_functional</functional>
+			</sounds>
+			<deviceUserString>#ingame_gui:devices/gun</deviceUserString>
+		</gunHealth>
+		<turretRotatorHealth index="37">DamageMarker : TurretRotatorHealth<sounds>
+				<critical>turret_rotator_damaged</critical>
+				<destroyed>turret_rotator_destroyed</destroyed>
+				<functional>turret_rotator_functional</functional>
+			</sounds>
+			<deviceUserString>#ingame_gui:devices/turret_rotator</deviceUserString>
+		</turretRotatorHealth>
+		<surveyingDeviceHealth index="38">DamageMarker : SurveyingDeviceHealth<sounds>
+				<critical>surveying_devices_damaged</critical>
+				<destroyed>surveying_devices_destroyed</destroyed>
+				<functional>surveying_devices_functional</functional>
+			</sounds>
+			<deviceUserString>#ingame_gui:devices/surveing_device</deviceUserString>
+		</surveyingDeviceHealth>
+		<commanderHealth index="39">DamageMarker : TankmanHealth<tankmanRole>commander</tankmanRole>
+			<indexInRole>1</indexInRole>
+			<sounds>
+				<critical>commander_killed</critical>
+				<destroyed>commander_killed</destroyed>
+			</sounds>
+			<deviceUserString>#ingame_gui:tankmen/commander</deviceUserString>
+		</commanderHealth>
+		<driverHealth index="40">DamageMarker : TankmanHealth<tankmanRole>driver</tankmanRole>
+			<indexInRole>1</indexInRole>
+			<sounds>
+				<critical>driver_killed</critical>
+				<destroyed>driver_killed</destroyed>
+			</sounds>
+			<deviceUserString>#ingame_gui:tankmen/driver</deviceUserString>
+		</driverHealth>
+		<gunner1Health index="41">DamageMarker : TankmanHealth<tankmanRole>gunner</tankmanRole>
+			<indexInRole>1</indexInRole>
+			<sounds>
+				<critical>gunner_killed</critical>
+				<destroyed>gunner_killed</destroyed>
+			</sounds>
+			<deviceUserString>#ingame_gui:tankmen/gunner</deviceUserString>
+		</gunner1Health>
+		<gunner2Health index="42">DamageMarker : TankmanHealth<tankmanRole>gunner</tankmanRole>
+			<indexInRole>2</indexInRole>
+			<sounds>
+				<critical>gunner_killed</critical>
+				<destroyed>gunner_killed</destroyed>
+			</sounds>
+			<deviceUserString>#ingame_gui:tankmen/gunner</deviceUserString>
+		</gunner2Health>
+		<loader1Health index="43">DamageMarker : TankmanHealth<tankmanRole>loader</tankmanRole>
+			<indexInRole>1</indexInRole>
+			<sounds>
+				<critical>loader_killed</critical>
+				<destroyed>loader_killed</destroyed>
+			</sounds>
+			<deviceUserString>#ingame_gui:tankmen/loader</deviceUserString>
+		</loader1Health>
+		<loader2Health index="44">DamageMarker : TankmanHealth<tankmanRole>loader</tankmanRole>
+			<indexInRole>2</indexInRole>
+			<sounds>
+				<critical>loader_killed</critical>
+				<destroyed>loader_killed</destroyed>
+			</sounds>
+			<deviceUserString>#ingame_gui:tankmen/loader</deviceUserString>
+		</loader2Health>
+		<ration_other index="45">NoneExtra : Stimulator</ration_other>
+		<regular_ration_other index="46">NoneExtra : Stimulator</regular_ration_other>
+		<battleBoosters index="47">NoneExtra : Boosters</battleBoosters>
+		<lifesteal_heal index="48">NoneExtra: LifestealHeal</lifesteal_heal>
+		<dash index="49">NoneExtra: Dash</dash>
+		<antiHighExplosive index="50">NoneExtra : AntiHighExplosive</antiHighExplosive>
+		<ramming_damage index="51">NoneExtra: RammingDamage</ramming_damage>
+		<ally_buff index="52">NoneExtra: AllyBuff</ally_buff>
+		<sacrifice index="53">NoneExtra : Sacrifice</sacrifice>
+		<shield index="54">NoneExtra: ShieldAbility</shield>
+		<afterburner_ability index="55">NoneExtra: AfterburnerAbility</afterburner_ability>
+		<stealth index="56">NoneExtra: Stealth</stealth>
+		<moonwalk index="57">NoneExtra: Moonwalk</moonwalk>
+		<hunters_mark index="58">NoneExtra: HuntersMark</hunters_mark>
+		<hunters_mark_effect index="59">HuntersMarkEffect: HuntersMarkEffect</hunters_mark_effect>
+		<makeContusion index="60">NoneExtra : MakeContusion</makeContusion>
+		<improvedAfterburning index="61">NoneExtra : ImprovedAfterburning</improvedAfterburning>
+		<fireControlSystem index="62">NoneExtra : FireControlSystem</fireControlSystem>
+		<newAutoloader index="63">NoneExtra : NewAutoloader</newAutoloader>
+		<camouflagePaint index="64">NoneExtra : CamouflagePaint</camouflagePaint>
+		<healingKit index="65">HealingKit : None</healingKit>
+		<shieldKit index="66">NoneExtra : ShieldKit</shieldKit>
+		<comeBackKit index="67">NoneExtra : ComeBackKit</comeBackKit>
+		<smallHPStock index="68">NoneExtra : SmallHPStock</smallHPStock>
+		<largeHPStock index="69">NoneExtra : SmallHPStock</largeHPStock>
+		<ration_european_hq index="70">NoneExtra : Stimulator</ration_european_hq>
+		<ration_european_regular index="71">NoneExtra : Stimulator</ration_european_regular>
+		<ration_swedish_regular index="72">NoneExtra : Stimulator</ration_swedish_regular>
+		<ration_swedish_hq index="73">NoneExtra : Stimulator</ration_swedish_hq>
+		<ration_czech_hq index="74">NoneExtra : Stimulator</ration_czech_hq>
+		<ration_czech_regular index="75">NoneExtra : Stimulator</ration_czech_regular>
+		<engineBoost index="76">NoneExtra : EngineAndSpeedBoost</engineBoost>
+		<damageBoost index="77">NoneExtra : AttributesModifier</damageBoost>
+		<reloadBoost index="78">NoneExtra : AttributesModifier</reloadBoost>
+		<enemyReloadTime index="79">NoneExtra : EnemyReloadTime</enemyReloadTime>
+		<duplet index="80">NoneExtra : Duplet</duplet>
+		<splash index="81">NoneExtra : SplashAbility</splash>
+		<lightning index="82">NoneExtra : LightningAbility</lightning>
+		<ghost index="83">NoneExtra : Stealth</ghost>
+		<ramming index="84">NoneExtra : RammingDamage</ramming>
+		<curse index="85">NoneExtra: Curse</curse>
+		<curse_effect index="86">CurseEffect: CurseEffect</curse_effect>
+		<returnInTime index="87">NoneExtra : ReturnInTimeAbility</returnInTime>
+		<pretendDead index="88">NoneExtra : PretendDead</pretendDead>
+		<damageBoostII index="89">DamageBoostII : AttributesModifier</damageBoostII>
+		<reloadBoostII index="90">ReloadBoostII : AttributesModifier</reloadBoostII>
+		<engineBoostII index="91">EngineBoostII : EngineAndSpeedBoost</engineBoostII>
+		<rammingII index="92">RammingII : RammingDamage</rammingII>
+		<lightningII index="93">LightingII : LightningAbility</lightningII>
+		<respawnMoonwalk index="94">RespawnMoonwalk: Moonwalk</respawnMoonwalk>
+		<moonwalkHellgames index="95">MoonwalkHellgames: Moonwalk</moonwalkHellgames>
+		<huntersMarkHellgames index="96">HuntersMarkHellgames: HuntersMark</huntersMarkHellgames>
+		<tornadoHellgames index="97">TornadoHellgames: TornadoAbility</tornadoHellgames>
+		<huntersMarkHellgamesEffect index="98">HuntersMarkHellgamesEffect: HuntersMarkHellgamesEffect</huntersMarkHellgamesEffect>
+		<vampiricBoost index="99">VampiricBoost: VampiricBoost</vampiricBoost>
+		<vampiricLifesteal index="100">NoneExtra: LifestealHeal</vampiricLifesteal>
+		<vampiricCurseMedium index="101">VampiricCurse: VampiricCurse</vampiricCurseMedium>
+		<botFate index="102">BotFate: BotFate</botFate>
+		<gravityJump index="103">GravityJump: GravityJumpAbility</gravityJump>
+		<godMode index="104">GodMode: GodMode</godMode>
+		<tungstenTip index="105">TungstenTip: TungstenTip</tungstenTip>
+		<gearOil index="106">NoneExtra: GearOil</gearOil>
+		<improvedGearOil index="107">NoneExtra: GearOil</improvedGearOil>
+		<gunPowder index="108">GunPowder: GunPowder</gunPowder>
+		<ration_polish_hq index="109">NoneExtra : Stimulator</ration_polish_hq>
+		<ration_polish_regular index="110">NoneExtra : Stimulator</ration_polish_regular>
+		<armorsStatesController index="111">NoneExtra: ArmorsStatesController</armorsStatesController>
+		<gravityBurst index="112">NoneExtra : GravityBurst</gravityBurst>
+		<bossRole index="113">NoneExtra : BossRole</bossRole>
+		<healerRole index="114">NoneExtra : HealerRole</healerRole>
+		<killerRole index="115">NoneExtra : KillerRole</killerRole>
+		<kamikazeRole index="116">NoneExtra : KamikazeRole</kamikazeRole>
+		<poisonEffectsStack index="117">NoneExtra : PoisonEffectsStack</poisonEffectsStack>
+		<healingAuraL1 index="118">HealingAura : HealingAura</healingAuraL1>
+		<healingAuraL2 index="119">HealingAura : HealingAura</healingAuraL2>
+		<healingAuraL3 index="120">HealingAura : HealingAura</healingAuraL3>
+		<healingAuraL4 index="121">HealingAura : HealingAura</healingAuraL4>
+		<healingAuraL5 index="122">HealingAura : HealingAura</healingAuraL5>
+		<poisonedShellL1 index="123">PoisonedShell : PoisonedShell</poisonedShellL1>
+		<poisonedShellL2 index="124">PoisonedShell : PoisonedShell</poisonedShellL2>
+		<poisonedShellL3 index="125">PoisonedShell : PoisonedShell</poisonedShellL3>
+		<poisonedShellL4 index="126">PoisonedShell : PoisonedShell</poisonedShellL4>
+		<poisonedShellL5 index="127">PoisonedShell : PoisonedShell</poisonedShellL5>
+		<railgunCharger index="128">RailgunCharger : RailgunCharger</railgunCharger>
+		<bigBoss index="129">BigBoss : BigBoss</bigBoss>
+		<oneShotShield index="130">OneShotShield: OneShotShield</oneShotShield>
+		<shieldGiverAbilityL1 index="131">NoneExtra: ShieldGiverAbility</shieldGiverAbilityL1>
+		<shieldGiverAbilityL2 index="132">NoneExtra: ShieldGiverAbility</shieldGiverAbilityL2>
+		<shieldGiverAbilityL3 index="133">NoneExtra: ShieldGiverAbility</shieldGiverAbilityL3>
+		<shieldGiverAbilityL4 index="134">NoneExtra: ShieldGiverAbility</shieldGiverAbilityL4>
+		<shieldGiverAbilityL5 index="135">NoneExtra: ShieldGiverAbility</shieldGiverAbilityL5>
+		<kamikazeAbilityL1 index="136">NoneExtra : KamikazeAbility</kamikazeAbilityL1>
+		<kamikazeAbilityL2 index="137">NoneExtra : KamikazeAbility</kamikazeAbilityL2>
+		<kamikazeAbilityL3 index="138">NoneExtra : KamikazeAbility</kamikazeAbilityL3>
+		<kamikazeAbilityL4 index="139">NoneExtra : KamikazeAbility</kamikazeAbilityL4>
+		<kamikazeAbilityL5 index="140">NoneExtra : KamikazeAbility</kamikazeAbilityL5>
+		<gravitonRole index="141">NoneExtra : GravitonRole</gravitonRole>
+		<gravityShotL1 index="142">NoneExtra : GravityShot</gravityShotL1>
+		<gravityShotL2 index="143">NoneExtra : GravityShot</gravityShotL2>
+		<gravityShotL3 index="144">NoneExtra : GravityShot</gravityShotL3>
+		<gravityShotL4 index="145">NoneExtra : GravityShot</gravityShotL4>
+		<gravityShotL5 index="146">NoneExtra : GravityShot</gravityShotL5>
+		<permanentDamageShieldL1 index="147">NoneExtra : PermanentDamageShield</permanentDamageShieldL1>
+		<permanentDamageShieldL2 index="148">NoneExtra : PermanentDamageShield</permanentDamageShieldL2>
+		<permanentDamageShieldL3 index="149">NoneExtra : PermanentDamageShield</permanentDamageShieldL3>
+		<permanentDamageShieldL4 index="150">NoneExtra : PermanentDamageShield</permanentDamageShieldL4>
+		<permanentDamageShieldL5 index="151">NoneExtra : PermanentDamageShield</permanentDamageShieldL5>
+		<healingShotL1 index="152">NoneExtra : LifestealHeal</healingShotL1>
+		<healingShotL2 index="153">NoneExtra : LifestealHeal</healingShotL2>
+		<healingShotL3 index="154">NoneExtra : LifestealHeal</healingShotL3>
+		<healingShotL4 index="155">NoneExtra : LifestealHeal</healingShotL4>
+		<healingShotL5 index="156">NoneExtra : LifestealHeal</healingShotL5>
+		<gravityAttractorEffect index="157">NoneExtra : GravityAttractorEffect</gravityAttractorEffect>
+		<killerPassiveL1 index="158">NoneExtra : AttributesModifier</killerPassiveL1>
+		<killerPassiveL2 index="159">NoneExtra : AttributesModifier</killerPassiveL2>
+		<killerPassiveL3 index="160">NoneExtra : AttributesModifier</killerPassiveL3>
+		<killerPassiveL4 index="161">NoneExtra : AttributesModifier</killerPassiveL4>
+		<killerPassiveL5 index="162">NoneExtra : AttributesModifier</killerPassiveL5>
+		<kamikazePassiveL1 index="163">NoneExtra : AttributesModifier</kamikazePassiveL1>
+		<kamikazePassiveL2 index="164">NoneExtra : AttributesModifier</kamikazePassiveL2>
+		<kamikazePassiveL3 index="165">NoneExtra : AttributesModifier</kamikazePassiveL3>
+		<kamikazePassiveL4 index="166">NoneExtra : AttributesModifier</kamikazePassiveL4>
+		<kamikazePassiveL5 index="167">NoneExtra : AttributesModifier</kamikazePassiveL5>
+		<improvedDetection index="168">NoneExtra : ImprovedDetection</improvedDetection>
+		<armorMover index="169">NoneExtra : ArmorMover</armorMover>
+		<berserkHellgames index="170">BerserkHellgames : ActiveAttributesModifier</berserkHellgames>
+		<fortuneMedium index="171">NoneExtra : Fortune</fortuneMedium>
+		<fortuneStrong index="172">NoneExtra : Fortune</fortuneStrong>
+		<desertPower index="173">NoneExtra: AttributesModifier</desertPower>
+		<reflectionAbility index="174">ReflectionAbility : Reflection</reflectionAbility>
+		<revengeAbility index="175">NoneExtra : Revenge</revengeAbility>
+		<revengeMark index="176">NoneExtra : RevengeMark</revengeMark>
+		<vampiricCurseWeak index="177">VampiricCurse: VampiricCurse</vampiricCurseWeak>
+		<vampiricDeath index="178">NoneExtra : VampiricDeath</vampiricDeath>
+		<alteredSpotDuration index="179">NoneExtra : AlteredSpotDuration</alteredSpotDuration>
+		<spotEye index="180">NoneExtra : SpotEye</spotEye>
+		<shotDispersionStabilizator index="181">NoneExtra: ShotDispersionStabilizator</shotDispersionStabilizator>
+		<gravitizing_splash index="182">NoneExtra: SplashAbility</gravitizing_splash>
+		<gravitizing_curse index="183">NoneExtra: Curse</gravitizing_curse>
+		<gravitizing_duplet index="184">NoneExtra: Duplet</gravitizing_duplet>
+		<gravitizing_engineBoost index="185">NoneExtra: EngineAndSpeedBoost</gravitizing_engineBoost>
+		<gravitizing_engineBoostII index="186">NoneExtra: EngineAndSpeedBoost</gravitizing_engineBoostII>
+		<moonwalkGravitizing index="187">NoneExtra: Moonwalk</moonwalkGravitizing>
+		<respawnMoonwalkGravitizing index="188">NoneExtra: Moonwalk</respawnMoonwalkGravitizing>
+	</extras>
+	<deviceExtras>
+		<devices>
+			<engineHealth>engine</engineHealth>
+			<ammoBayHealth>ammoBay</ammoBayHealth>
+			<fuelTankHealth>fuelTank</fuelTankHealth>
+			<leftTrackHealth>track</leftTrackHealth>
+			<rightTrackHealth>track</rightTrackHealth>
+			<gunHealth>gun</gunHealth>
+			<turretRotatorHealth>turretRotator</turretRotatorHealth>
+			<surveyingDeviceHealth>surveyingDevice</surveyingDeviceHealth>
+		</devices>
+		<tankmen>
+			<commanderHealth>commander</commanderHealth>
+			<driverHealth>driver</driverHealth>
+			<gunner1Health>gunner</gunner1Health>
+			<gunner2Health>gunner</gunner2Health>
+			<loader1Health>loader</loader1Health>
+			<loader2Health>loader</loader2Health>
+		</tankmen>
+	</deviceExtras>
+	<materials>
+		<armor_1>
+			<vehicleDamageFactor>1.0</vehicleDamageFactor>
+			<useArmorHomogenization>true</useArmorHomogenization>
+			<useHitAngle>true</useHitAngle>
+			<useAntifragmentationLining>true</useAntifragmentationLining>
+			<mayRicochet>true</mayRicochet>
+			<collideOnceOnly>false</collideOnceOnly>
+		</armor_1>
+		<armor_2>
+			<vehicleDamageFactor>1.0</vehicleDamageFactor>
+			<useArmorHomogenization>true</useArmorHomogenization>
+			<useHitAngle>true</useHitAngle>
+			<useAntifragmentationLining>true</useAntifragmentationLining>
+			<mayRicochet>true</mayRicochet>
+			<collideOnceOnly>false</collideOnceOnly>
+		</armor_2>
+		<armor_3>
+			<vehicleDamageFactor>1.0</vehicleDamageFactor>
+			<useArmorHomogenization>true</useArmorHomogenization>
+			<useHitAngle>true</useHitAngle>
+			<useAntifragmentationLining>true</useAntifragmentationLining>
+			<mayRicochet>true</mayRicochet>
+			<collideOnceOnly>false</collideOnceOnly>
+		</armor_3>
+		<armor_4>
+			<vehicleDamageFactor>1.0</vehicleDamageFactor>
+			<useArmorHomogenization>true</useArmorHomogenization>
+			<useHitAngle>true</useHitAngle>
+			<useAntifragmentationLining>true</useAntifragmentationLining>
+			<mayRicochet>true</mayRicochet>
+			<collideOnceOnly>false</collideOnceOnly>
+		</armor_4>
+		<armor_5>
+			<vehicleDamageFactor>1.0</vehicleDamageFactor>
+			<useArmorHomogenization>true</useArmorHomogenization>
+			<useHitAngle>true</useHitAngle>
+			<useAntifragmentationLining>true</useAntifragmentationLining>
+			<mayRicochet>true</mayRicochet>
+			<collideOnceOnly>false</collideOnceOnly>
+		</armor_5>
+		<armor_6>
+			<vehicleDamageFactor>1.0</vehicleDamageFactor>
+			<useArmorHomogenization>true</useArmorHomogenization>
+			<useHitAngle>true</useHitAngle>
+			<useAntifragmentationLining>true</useAntifragmentationLining>
+			<mayRicochet>true</mayRicochet>
+			<collideOnceOnly>false</collideOnceOnly>
+		</armor_6>
+		<armor_7>
+			<vehicleDamageFactor>1.0</vehicleDamageFactor>
+			<useArmorHomogenization>true</useArmorHomogenization>
+			<useHitAngle>true</useHitAngle>
+			<useAntifragmentationLining>true</useAntifragmentationLining>
+			<mayRicochet>true</mayRicochet>
+			<collideOnceOnly>false</collideOnceOnly>
+		</armor_7>
+		<armor_8>
+			<vehicleDamageFactor>1.0</vehicleDamageFactor>
+			<useArmorHomogenization>true</useArmorHomogenization>
+			<useHitAngle>true</useHitAngle>
+			<useAntifragmentationLining>true</useAntifragmentationLining>
+			<mayRicochet>true</mayRicochet>
+			<collideOnceOnly>false</collideOnceOnly>
+		</armor_8>
+		<armor_9>
+			<vehicleDamageFactor>1.0</vehicleDamageFactor>
+			<useArmorHomogenization>true</useArmorHomogenization>
+			<useHitAngle>true</useHitAngle>
+			<useAntifragmentationLining>true</useAntifragmentationLining>
+			<mayRicochet>true</mayRicochet>
+			<collideOnceOnly>false</collideOnceOnly>
+		</armor_9>
+		<armor_10>
+			<vehicleDamageFactor>1.0</vehicleDamageFactor>
+			<useArmorHomogenization>true</useArmorHomogenization>
+			<useHitAngle>true</useHitAngle>
+			<useAntifragmentationLining>true</useAntifragmentationLining>
+			<mayRicochet>true</mayRicochet>
+			<collideOnceOnly>false</collideOnceOnly>
+		</armor_10>
+		<armor_11>
+			<vehicleDamageFactor>1.0</vehicleDamageFactor>
+			<useArmorHomogenization>true</useArmorHomogenization>
+			<useHitAngle>true</useHitAngle>
+			<useAntifragmentationLining>true</useAntifragmentationLining>
+			<mayRicochet>true</mayRicochet>
+			<collideOnceOnly>false</collideOnceOnly>
+		</armor_11>
+		<armor_12>
+			<vehicleDamageFactor>1.0</vehicleDamageFactor>
+			<useArmorHomogenization>true</useArmorHomogenization>
+			<useHitAngle>true</useHitAngle>
+			<useAntifragmentationLining>true</useAntifragmentationLining>
+			<mayRicochet>true</mayRicochet>
+			<collideOnceOnly>false</collideOnceOnly>
+		</armor_12>
+		<armor_13>
+			<vehicleDamageFactor>1.0</vehicleDamageFactor>
+			<useArmorHomogenization>true</useArmorHomogenization>
+			<useHitAngle>true</useHitAngle>
+			<useAntifragmentationLining>true</useAntifragmentationLining>
+			<mayRicochet>true</mayRicochet>
+			<collideOnceOnly>false</collideOnceOnly>
+		</armor_13>
+		<armor_14>
+			<vehicleDamageFactor>1.0</vehicleDamageFactor>
+			<useArmorHomogenization>true</useArmorHomogenization>
+			<useHitAngle>true</useHitAngle>
+			<useAntifragmentationLining>true</useAntifragmentationLining>
+			<mayRicochet>true</mayRicochet>
+			<collideOnceOnly>false</collideOnceOnly>
+		</armor_14>
+		<armor_15>
+			<vehicleDamageFactor>1.0</vehicleDamageFactor>
+			<useArmorHomogenization>true</useArmorHomogenization>
+			<useHitAngle>true</useHitAngle>
+			<useAntifragmentationLining>true</useAntifragmentationLining>
+			<mayRicochet>true</mayRicochet>
+			<collideOnceOnly>false</collideOnceOnly>
+		</armor_15>
+		<armor_16>
+			<vehicleDamageFactor>1.0</vehicleDamageFactor>
+			<useArmorHomogenization>true</useArmorHomogenization>
+			<useHitAngle>true</useHitAngle>
+			<useAntifragmentationLining>true</useAntifragmentationLining>
+			<mayRicochet>true</mayRicochet>
+			<collideOnceOnly>false</collideOnceOnly>
+		</armor_16>
+		<engine>
+			<extra>engineHealth</extra>
+			<vehicleDamageFactor>1.0</vehicleDamageFactor>
+			<useArmorHomogenization>false</useArmorHomogenization>
+			<useHitAngle>false</useHitAngle>
+			<useAntifragmentationLining>false</useAntifragmentationLining>
+			<mayRicochet>false</mayRicochet>
+			<collideOnceOnly>true</collideOnceOnly>
+			<damageKind>device</damageKind>
+			<chanceToHitByProjectile>0.45</chanceToHitByProjectile>
+			<chanceToHitByExplosion>0.45</chanceToHitByExplosion>
+			<increasedVulnerabilityFactor>1.1</increasedVulnerabilityFactor>
+			<continueTraceIfNoHit>false</continueTraceIfNoHit>
+		</engine>
+		<transmission>
+			<extra>engineHealth</extra>
+			<vehicleDamageFactor>1.0</vehicleDamageFactor>
+			<useArmorHomogenization>false</useArmorHomogenization>
+			<useHitAngle>false</useHitAngle>
+			<useAntifragmentationLining>false</useAntifragmentationLining>
+			<mayRicochet>false</mayRicochet>
+			<collideOnceOnly>true</collideOnceOnly>
+			<damageKind>device</damageKind>
+			<chanceToHitByProjectile>0.45</chanceToHitByProjectile>
+			<chanceToHitByExplosion>0.45</chanceToHitByExplosion>
+			<chanceToHitByExplosion>0.45</chanceToHitByExplosion>
+			<increasedVulnerabilityFactor>1.1</increasedVulnerabilityFactor>
+			<continueTraceIfNoHit>false</continueTraceIfNoHit>
+			<incombustible/>
+		</transmission>
+		<ammoBay>
+			<extra>ammoBayHealth</extra>
+			<vehicleDamageFactor>1.0</vehicleDamageFactor>
+			<useArmorHomogenization>false</useArmorHomogenization>
+			<useHitAngle>false</useHitAngle>
+			<useAntifragmentationLining>false</useAntifragmentationLining>
+			<mayRicochet>false</mayRicochet>
+			<collideOnceOnly>true</collideOnceOnly>
+			<damageKind>device</damageKind>
+			<chanceToHitByProjectile>0.27</chanceToHitByProjectile>
+			<chanceToHitByExplosion>0.27</chanceToHitByExplosion>
+			<increasedVulnerabilityFactor>1.1</increasedVulnerabilityFactor>
+			<continueTraceIfNoHit>false</continueTraceIfNoHit>
+		</ammoBay>
+		<fuelTank>
+			<extra>fuelTankHealth</extra>
+			<vehicleDamageFactor>1.0</vehicleDamageFactor>
+			<useArmorHomogenization>false</useArmorHomogenization>
+			<useHitAngle>false</useHitAngle>
+			<useAntifragmentationLining>false</useAntifragmentationLining>
+			<mayRicochet>false</mayRicochet>
+			<collideOnceOnly>true</collideOnceOnly>
+			<damageKind>device</damageKind>
+			<chanceToHitByProjectile>0.45</chanceToHitByProjectile>
+			<chanceToHitByExplosion>0.45</chanceToHitByExplosion>
+			<increasedVulnerabilityFactor>1.1</increasedVulnerabilityFactor>
+			<continueTraceIfNoHit>false</continueTraceIfNoHit>
+		</fuelTank>
+		<radio>
+			<armor>0</armor>
+			<vehicleDamageFactor>1.0</vehicleDamageFactor>
+			<useArmorHomogenization>false</useArmorHomogenization>
+			<useHitAngle>false</useHitAngle>
+			<useAntifragmentationLining>false</useAntifragmentationLining>
+			<mayRicochet>false</mayRicochet>
+			<collideOnceOnly>true</collideOnceOnly>
+		</radio>
+		<leftTrack>
+			<extra>leftTrackHealth</extra>
+			<vehicleDamageFactor>0.0</vehicleDamageFactor>
+			<useArmorHomogenization>false</useArmorHomogenization>
+			<useHitAngle>false</useHitAngle>
+			<useAntifragmentationLining>false</useAntifragmentationLining>
+			<mayRicochet>false</mayRicochet>
+			<collideOnceOnly>true</collideOnceOnly>
+			<damageKind>auto</damageKind>
+			<chanceToHitByProjectile>1.0</chanceToHitByProjectile>
+			<chanceToHitByExplosion>1.0</chanceToHitByExplosion>
+			<increasedVulnerabilityFactor>1.1</increasedVulnerabilityFactor>
+			<continueTraceIfNoHit>false</continueTraceIfNoHit>
+		</leftTrack>
+		<rightTrack>
+			<extra>rightTrackHealth</extra>
+			<vehicleDamageFactor>0.0</vehicleDamageFactor>
+			<useArmorHomogenization>false</useArmorHomogenization>
+			<useHitAngle>false</useHitAngle>
+			<useAntifragmentationLining>false</useAntifragmentationLining>
+			<mayRicochet>false</mayRicochet>
+			<collideOnceOnly>true</collideOnceOnly>
+			<damageKind>auto</damageKind>
+			<chanceToHitByProjectile>1.0</chanceToHitByProjectile>
+			<chanceToHitByExplosion>1.0</chanceToHitByExplosion>
+			<increasedVulnerabilityFactor>1.1</increasedVulnerabilityFactor>
+			<continueTraceIfNoHit>false</continueTraceIfNoHit>
+		</rightTrack>
+		<gun>
+			<extra>gunHealth</extra>
+			<vehicleDamageFactor>0.0</vehicleDamageFactor>
+			<useArmorHomogenization>false</useArmorHomogenization>
+			<useHitAngle>false</useHitAngle>
+			<useAntifragmentationLining>false</useAntifragmentationLining>
+			<mayRicochet>true</mayRicochet>
+			<collideOnceOnly>true</collideOnceOnly>
+			<damageKind>device</damageKind>
+			<chanceToHitByProjectile>0.33</chanceToHitByProjectile>
+			<chanceToHitByExplosion>0.33</chanceToHitByExplosion>
+			<increasedVulnerabilityFactor>1.1</increasedVulnerabilityFactor>
+			<continueTraceIfNoHit>true</continueTraceIfNoHit>
+		</gun>
+		<gunBreech>
+			<extra>gunHealth</extra>
+			<vehicleDamageFactor>1.0</vehicleDamageFactor>
+			<useArmorHomogenization>true</useArmorHomogenization>
+			<useHitAngle>true</useHitAngle>
+			<useAntifragmentationLining>false</useAntifragmentationLining>
+			<mayRicochet>true</mayRicochet>
+			<collideOnceOnly>false</collideOnceOnly>
+			<damageKind>device</damageKind>
+			<chanceToHitByProjectile>1.0</chanceToHitByProjectile>
+			<chanceToHitByExplosion>1.0</chanceToHitByExplosion>
+			<increasedVulnerabilityFactor>1.1</increasedVulnerabilityFactor>
+			<continueTraceIfNoHit>true</continueTraceIfNoHit>
+		</gunBreech>
+		<turretRotator>
+			<extra>turretRotatorHealth</extra>
+			<vehicleDamageFactor>1.0</vehicleDamageFactor>
+			<useArmorHomogenization>false</useArmorHomogenization>
+			<useHitAngle>false</useHitAngle>
+			<useAntifragmentationLining>false</useAntifragmentationLining>
+			<mayRicochet>false</mayRicochet>
+			<collideOnceOnly>true</collideOnceOnly>
+			<damageKind>device</damageKind>
+			<chanceToHitByProjectile>0.45</chanceToHitByProjectile>
+			<chanceToHitByExplosion>0.45</chanceToHitByExplosion>
+			<increasedVulnerabilityFactor>1.1</increasedVulnerabilityFactor>
+			<continueTraceIfNoHit>false</continueTraceIfNoHit>
+		</turretRotator>
+		<surveyingDevice>
+			<extra>surveyingDeviceHealth</extra>
+			<vehicleDamageFactor>0.0</vehicleDamageFactor>
+			<useArmorHomogenization>false</useArmorHomogenization>
+			<useHitAngle>false</useHitAngle>
+			<useAntifragmentationLining>false</useAntifragmentationLining>
+			<mayRicochet>false</mayRicochet>
+			<collideOnceOnly>true</collideOnceOnly>
+			<damageKind>device</damageKind>
+			<chanceToHitByProjectile>0.45</chanceToHitByProjectile>
+			<chanceToHitByExplosion>0.45</chanceToHitByExplosion>
+			<increasedVulnerabilityFactor>1.1</increasedVulnerabilityFactor>
+			<continueTraceIfNoHit>true</continueTraceIfNoHit>
+		</surveyingDevice>
+		<commander>
+			<extra>commanderHealth</extra>
+			<vehicleDamageFactor>0.0</vehicleDamageFactor>
+			<useArmorHomogenization>false</useArmorHomogenization>
+			<useHitAngle>false</useHitAngle>
+			<useAntifragmentationLining>false</useAntifragmentationLining>
+			<mayRicochet>false</mayRicochet>
+			<collideOnceOnly>true</collideOnceOnly>
+			<damageKind>device</damageKind>
+			<chanceToHitByProjectile>0.33</chanceToHitByProjectile>
+			<chanceToHitByExplosion>0.15</chanceToHitByExplosion>
+			<increasedVulnerabilityFactor>1.1</increasedVulnerabilityFactor>
+			<continueTraceIfNoHit>true</continueTraceIfNoHit>
+		</commander>
+		<driver>
+			<extra>driverHealth</extra>
+			<vehicleDamageFactor>0.0</vehicleDamageFactor>
+			<useArmorHomogenization>false</useArmorHomogenization>
+			<useHitAngle>false</useHitAngle>
+			<useAntifragmentationLining>false</useAntifragmentationLining>
+			<mayRicochet>false</mayRicochet>
+			<collideOnceOnly>true</collideOnceOnly>
+			<damageKind>device</damageKind>
+			<chanceToHitByProjectile>0.33</chanceToHitByProjectile>
+			<chanceToHitByExplosion>0.15</chanceToHitByExplosion>
+			<increasedVulnerabilityFactor>1.1</increasedVulnerabilityFactor>
+			<continueTraceIfNoHit>true</continueTraceIfNoHit>
+		</driver>
+		<radioman_1>
+			<armor>0</armor>
+			<vehicleDamageFactor>1.0</vehicleDamageFactor>
+			<useArmorHomogenization>false</useArmorHomogenization>
+			<useHitAngle>false</useHitAngle>
+			<useAntifragmentationLining>false</useAntifragmentationLining>
+			<mayRicochet>false</mayRicochet>
+			<collideOnceOnly>true</collideOnceOnly>
+		</radioman_1>
+		<radioman_2>
+			<armor>0</armor>
+			<vehicleDamageFactor>1.0</vehicleDamageFactor>
+			<useArmorHomogenization>false</useArmorHomogenization>
+			<useHitAngle>false</useHitAngle>
+			<useAntifragmentationLining>false</useAntifragmentationLining>
+			<mayRicochet>false</mayRicochet>
+			<collideOnceOnly>true</collideOnceOnly>
+		</radioman_2>
+		<gunner_1>
+			<extra>gunner1Health</extra>
+			<vehicleDamageFactor>0.0</vehicleDamageFactor>
+			<useArmorHomogenization>false</useArmorHomogenization>
+			<useHitAngle>false</useHitAngle>
+			<useAntifragmentationLining>false</useAntifragmentationLining>
+			<mayRicochet>false</mayRicochet>
+			<collideOnceOnly>true</collideOnceOnly>
+			<damageKind>device</damageKind>
+			<chanceToHitByProjectile>0.33</chanceToHitByProjectile>
+			<chanceToHitByExplosion>0.15</chanceToHitByExplosion>
+			<increasedVulnerabilityFactor>1.1</increasedVulnerabilityFactor>
+			<continueTraceIfNoHit>true</continueTraceIfNoHit>
+		</gunner_1>
+		<gunner_2>
+			<extra>gunner2Health</extra>
+			<vehicleDamageFactor>0.0</vehicleDamageFactor>
+			<useArmorHomogenization>false</useArmorHomogenization>
+			<useHitAngle>false</useHitAngle>
+			<useAntifragmentationLining>false</useAntifragmentationLining>
+			<mayRicochet>false</mayRicochet>
+			<collideOnceOnly>true</collideOnceOnly>
+			<damageKind>device</damageKind>
+			<chanceToHitByProjectile>0.33</chanceToHitByProjectile>
+			<chanceToHitByExplosion>0.15</chanceToHitByExplosion>
+			<increasedVulnerabilityFactor>1.1</increasedVulnerabilityFactor>
+			<continueTraceIfNoHit>true</continueTraceIfNoHit>
+		</gunner_2>
+		<loader_1>
+			<extra>loader1Health</extra>
+			<vehicleDamageFactor>0.0</vehicleDamageFactor>
+			<useArmorHomogenization>false</useArmorHomogenization>
+			<useHitAngle>false</useHitAngle>
+			<useAntifragmentationLining>false</useAntifragmentationLining>
+			<mayRicochet>false</mayRicochet>
+			<collideOnceOnly>true</collideOnceOnly>
+			<damageKind>device</damageKind>
+			<chanceToHitByProjectile>0.33</chanceToHitByProjectile>
+			<chanceToHitByExplosion>0.15</chanceToHitByExplosion>
+			<increasedVulnerabilityFactor>1.1</increasedVulnerabilityFactor>
+			<continueTraceIfNoHit>true</continueTraceIfNoHit>
+		</loader_1>
+		<loader_2>
+			<extra>loader2Health</extra>
+			<vehicleDamageFactor>0.0</vehicleDamageFactor>
+			<useArmorHomogenization>false</useArmorHomogenization>
+			<useHitAngle>false</useHitAngle>
+			<useAntifragmentationLining>false</useAntifragmentationLining>
+			<mayRicochet>false</mayRicochet>
+			<collideOnceOnly>true</collideOnceOnly>
+			<damageKind>device</damageKind>
+			<chanceToHitByProjectile>0.33</chanceToHitByProjectile>
+			<chanceToHitByExplosion>0.15</chanceToHitByExplosion>
+			<increasedVulnerabilityFactor>1.1</increasedVulnerabilityFactor>
+			<continueTraceIfNoHit>true</continueTraceIfNoHit>
+		</loader_2>
+	</materials>
+</root>

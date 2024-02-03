@@ -1,0 +1,7 @@
+<root>
+	<economicBooster.creditsBoostFactor>50</economicBooster.creditsBoostFactor>
+	<economicBooster.xpFreeBoostFactor>550</economicBooster.xpFreeBoostFactor>
+	<economicBooster.xpAvBoostFactor>300</economicBooster.xpAvBoostFactor>
+	<economicBooster.xpBoostFactor>140</economicBooster.xpBoostFactor>
+	<battleBooster.reloadEqFactor>30</battleBooster.reloadEqFactor>
+</root>

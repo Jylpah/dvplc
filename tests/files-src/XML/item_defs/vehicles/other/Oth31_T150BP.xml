@@ -1,0 +1,315 @@
+<root>
+	<crew>
+		<commander/>
+		<gunner/>
+		<driver/>
+		<radioman/>
+		<loader/>
+	</crew>
+	<isUnlocked>true</isUnlocked>
+	<speedLimits>
+		<forward>35</forward>
+		<backward>11</backward>
+	</speedLimits>
+	<invisibility>
+		<moving>0.083</moving>
+		<still>0.145</still>
+		<firePenalty>0.208</firePenalty>
+	</invisibility>
+	<repairCost>0</repairCost>
+	<crewXpFactor>1.0</crewXpFactor>
+	<consumableSlots>3</consumableSlots>
+	<provisionSlots>3</provisionSlots>
+	<optDevicePreset>HEprotectionPreset</optDevicePreset>
+	<enrichmentBoost>0.00</enrichmentBoost>
+	<turretBlowEnabled>true</turretBlowEnabled>
+	<effects>
+		<destruction>mediumDestruction</destruction>
+		<explosion>mediumExplosion</explosion>
+		<flaming>mediumFlaming</flaming>
+		<collision/>
+		<damagedStateGroup>small</damagedStateGroup>
+	</effects>
+	<camouflage>
+		<priceFactor>1.0</priceFactor>
+		<tiling>1 1 0 0</tiling>
+		<exclusionMask/>
+	</camouflage>
+	<emblems>
+		<default>germany_cross</default>
+		<lodDist>MEDIUM</lodDist>
+		<alpha>0.1</alpha>
+	</emblems>
+	<horns>
+		<priceFactor>1</priceFactor>
+		<distanceFactor>1</distanceFactor>
+		<volumeFactor>1</volumeFactor>
+	</horns>
+	<hull>
+		<swinging>
+			<lodDist>FAR</lodDist>
+			<pitchParams>0.28 34.00 0.42 1.00 0.05 0.30</pitchParams>
+			<rollParams>1.00 0.28 34.00 0.42 1.00 0.05 0.30</rollParams>
+			<sensitivityToImpulse>0.59</sensitivityToImpulse>
+		</swinging>
+		<models>
+			<undamaged>vehicles/other/Oth31_T150BP/normal/lod0/Hull.model</undamaged>
+			<destroyed>vehicles/other/Oth31_T150BP/crash/lod0/Hull.model</destroyed>
+			<exploded>vehicles/other/Oth31_T150BP/crash/lod0/Hull.model</exploded>
+		</models>
+		<exhaust>
+			<pixie/>
+			<nodes/>
+			<rates>5.0 10.0 25.0</rates>
+		</exhaust>
+		<turretPositions>
+			<turret>0.004299 1.624805 0.431308</turret>
+		</turretPositions>
+		<hitTester>
+			<collisionModel>vehicles/other/Oth31_T150BP/collision/Hull.model</collisionModel>
+		</hitTester>
+		<armor>
+			<armor_1>90</armor_1>
+			<armor_2>86</armor_2>
+			<armor_3>90</armor_3>
+			<armor_4>75</armor_4>
+			<armor_5>10<vehicleDamageFactor>0.0</vehicleDamageFactor>
+			</armor_5>
+			<armor_6>40</armor_6>
+			<armor_7>30</armor_7>
+			<armor_8>40</armor_8>
+			<armor_9>30</armor_9>
+			<armor_10>150</armor_10>
+			<armor_16>90</armor_16>
+		</armor>
+		<primaryArmor>armor_1 armor_3 armor_4</primaryArmor>
+		<weight>30200</weight>
+		<maxHealth>960</maxHealth>
+		<ammoBayHealth>
+			<maxHealth>160</maxHealth>
+			<maxRegenHealth>100</maxRegenHealth>
+			<repairCost>0</repairCost>
+			</ammoBayHealth>
+		<emblemSlots>
+			<clan>
+				<rayStart>0.1 0.1 1.0</rayStart>
+				<rayEnd>0.1 0.1 1.0</rayEnd>
+				<rayUp>0.0 1.0 0.0</rayUp>
+				<size>0.1</size>
+				<hideIfDamaged>true</hideIfDamaged>
+			</clan>
+			<inscription>
+				<rayStart>0.1 0.1 1.0</rayStart>
+				<rayEnd>0.1 0.1 1.0</rayEnd>
+				<rayUp>0.0 1.0 0.0</rayUp>
+				<size>0.1</size>
+				<hideIfDamaged>true</hideIfDamaged>
+			</inscription>
+		</emblemSlots>
+	</hull>
+	<chassis>
+		<Chassis_Oth31_T150BP>
+			<userString>#other_vehicles:Chassis_Oth31_T150BP</userString>
+			<shortUserString>#other_vehicles:Chassis_Oth31_T150BP_short</shortUserString>
+			<description>#other_vehicles:Chassis_Oth31_T150BP_descr</description>
+			<tags/>
+			<level>6</level>
+			<price>0</price>
+			<models>
+				<undamaged>vehicles/other/Oth31_T150BP/normal/lod0/Chassis.model</undamaged>
+				<destroyed>vehicles/other/Oth31_T150BP/crash/lod0/Chassis.model</destroyed>
+				<exploded>vehicles/other/Oth31_T150BP/crash/lod0/Chassis.model</exploded>
+			</models>
+			<traces>
+				<lodDist/>
+				<bufferPrefs/>
+				<textureSet/>
+				<size>0.1 0.1</size>
+			</traces>
+			<tracks>
+				<lodDist>MEDIUM</lodDist>
+				<leftMaterial>track_mat_L_skinned</leftMaterial>
+				<rightMaterial>track_mat_R_skinned</rightMaterial>
+			</tracks>
+			<wheels>
+				<lodDist>MEDIUM</lodDist>
+				<wheel>
+					<isLeft>true</isLeft>
+					<name>WD_L0</name>
+					<radius>0.1</radius>
+				</wheel>
+				<wheel>
+					<isLeft>false</isLeft>
+					<name>WD_R0</name>
+					<radius>0.1</radius>
+				</wheel>
+				<group>
+					<isLeft>true</isLeft>
+					<template>W_L</template>
+					<radius>0.1</radius>
+					<startIndex>0</startIndex>
+					<count>1</count>
+				</group>
+				<group>
+					<isLeft>false</isLeft>
+					<template>W_R</template>
+					<radius>0.1</radius>
+					<startIndex>0</startIndex>
+					<count>1</count>
+				</group>
+			</wheels>
+			<drivingWheels>WD_L0 WD_R0</drivingWheels>
+			<effects>
+				<lodDist>MEDIUM</lodDist>
+				<dust>mediumTankDust</dust>
+				<mud>mediumTankMud</mud>
+			</effects>
+			<sound/>
+			<hullPosition>0.0 0.0 0.0</hullPosition>
+			<hitTester>
+				<collisionModel>vehicles/other/Oth31_T150BP/collision/Chassis.model</collisionModel>
+			</hitTester>
+			<armor>
+				<leftTrack>20</leftTrack>
+				<rightTrack>20</rightTrack>
+			</armor>
+			<topRightCarryingPoint>1.3143 2.26729</topRightCarryingPoint>
+			<maxClimbAngle>25</maxClimbAngle>
+			<navmeshGirth>6.0</navmeshGirth>
+			<weight>10600</weight>
+			<maxLoad>58800</maxLoad>
+			<terrainResistance>1.2 1.5 2.1</terrainResistance>
+			<brakeForce>45500</brakeForce>
+			<rotationIsAroundCenter>false</rotationIsAroundCenter>
+			<rotationSpeed>24</rotationSpeed>
+			<shotDispersionFactors>
+				<vehicleMovement>0.25</vehicleMovement>
+				<vehicleRotation>0.25</vehicleRotation>
+			</shotDispersionFactors>
+			<bulkHealthFactor>3.0</bulkHealthFactor>
+			<maxHealth>140</maxHealth>
+			<maxRegenHealth>105</maxRegenHealth>
+			<repairCost>0</repairCost>
+			</Chassis_Oth31_T150BP>
+	</chassis>
+	<turrets0>
+		<Turret_1_Oth31_T150BP>
+			<userString>#other_vehicles:Turret_1_Oth31_T150BP</userString>
+			<description>#other_vehicles:Turret_1_Oth31_T150BP_descr</description>
+			<tags/>
+			<level>6</level>
+			<price>0</price>
+			<hitTester>
+				<collisionModel>vehicles/other/Oth31_T150BP/collision/Turret_01.model</collisionModel>
+			</hitTester>
+			<models>
+				<undamaged>vehicles/other/Oth31_T150BP/normal/lod0/Turret_01.model</undamaged>
+				<destroyed>vehicles/other/Oth31_T150BP/crash/lod0/Turret_01.model</destroyed>
+				<exploded>vehicles/other/Oth31_T150BP/crash/lod0/Turret_01.model</exploded>
+			</models>
+			<yawLimits>-180 180</yawLimits>
+			<gunPosition>0.000835 0.553958 1.149800</gunPosition>
+			<armor>
+				<armor_1>150</armor_1>
+				<armor_3>100</armor_3>
+				<armor_4>75</armor_4>
+				<armor_5>30</armor_5>
+				<armor_6>86</armor_6>
+				<armor_8>30</armor_8>
+				<armor_9>25</armor_9>
+				<armor_10>100</armor_10>
+				<armor_11>140</armor_11>
+				<armor_12>90</armor_12>
+				<armor_16>100</armor_16>
+			</armor>
+			<primaryArmor>armor_1 armor_3 armor_4</primaryArmor>
+			<weight>10000</weight>
+			<maxHealth>240</maxHealth>
+			<rotationSpeed>20</rotationSpeed>
+			<turretRotatorHealth>
+				<maxHealth>130</maxHealth>
+				<maxRegenHealth>65</maxRegenHealth>
+				<repairCost>0</repairCost>
+				</turretRotatorHealth>
+			<circularVisionRadius>230</circularVisionRadius>
+			<surveyingDeviceHealth>
+				<maxHealth>80</maxHealth>
+				<maxRegenHealth>40</maxRegenHealth>
+				<repairCost>0</repairCost>
+				</surveyingDeviceHealth>
+			<guns>
+				<_85mm_ZiS_S-53BP>shared<maxAmmo>90</maxAmmo>
+					<hitTester>
+						<collisionModel>vehicles/other/Oth31_T150BP/collision/Gun_01.model</collisionModel>
+					</hitTester>
+					<models>
+						<undamaged>vehicles/other/Oth31_T150BP/normal/lod0/Gun_01.model</undamaged>
+						<destroyed>vehicles/other/Oth31_T150BP/crash/lod0/Gun_01.model</destroyed>
+						<exploded>vehicles/other/Oth31_T150BP/crash/lod0/Gun_01.model</exploded>
+					</models>
+					<armor>
+						<armor_1>100<vehicleDamageFactor>0.0</vehicleDamageFactor>
+						</armor_1>
+						<armor_2>90<vehicleDamageFactor>0.0</vehicleDamageFactor>
+						</armor_2>
+						<armor_3>90<vehicleDamageFactor>0.0</vehicleDamageFactor>
+						</armor_3>
+						<gun>30</gun>
+					</armor>
+					<shotDispersionRadius>0.4</shotDispersionRadius>
+					<aimingTime>2.5</aimingTime>
+					<reloadTime>7.6</reloadTime>
+					<shotDispersionFactors>
+						<turretRotation>0.12</turretRotation>
+						<afterShot>4</afterShot>
+						<whileGunDamaged>2.0</whileGunDamaged>
+					</shotDispersionFactors>
+					<invisibilityFactorAtShot>0.225</invisibilityFactorAtShot>
+					<pitchLimits>-20 7</pitchLimits>
+					<shots>
+						<_85mm_UBR-367BP>
+							<shell>shared<price>0</price>
+							</shell>
+						</_85mm_UBR-367BP>
+						<_85mm_UBR-367P_BP>
+							<shell>shared<price>7<gold/>
+								</price>
+							</shell>
+						</_85mm_UBR-367P_BP>
+						<_85mm_UO-367BP>
+							<shell>shared<price>0</price>
+							</shell>
+						</_85mm_UO-367BP>
+					</shots>
+				</_85mm_ZiS_S-53BP>
+			</guns>
+			<emblemSlots>
+				<player>
+					<rayStart>-1.14052 0.501314 -1.84861</rayStart>
+					<rayEnd>-0.947969 0.447255 -1.84803</rayEnd>
+					<rayUp>0.000000 1 0.000000</rayUp>
+					<size>0.8</size>
+					<hideIfDamaged>false</hideIfDamaged>
+				</player>
+				<inscription>
+					<rayStart>-1.11845 0.493689 -1.01991</rayStart>
+					<rayEnd>-0.930106 0.426732 -1.02643</rayEnd>
+					<rayUp>0.000000 1 0.000000</rayUp>
+					<size>0.1</size>
+					<hideIfDamaged>true</hideIfDamaged>
+				</inscription>
+			</emblemSlots>
+			<showEmblemsOnGun>false</showEmblemsOnGun>
+			<physicsShape>0.941 -0.118 1.000 0.000 0.426 0.294 0.000 0.493 0.265 0.588 0.228 0.500 0.132 0.779 0.000</physicsShape>
+		</Turret_1_Oth31_T150BP>
+	</turrets0>
+	<engines>
+		<V-5BP>shared</V-5BP>
+	</engines>
+	<fuelTanks>
+		<Average>shared</Average>
+	</fuelTanks>
+	<radios>
+		<_10R_BP>shared</_10R_BP>
+	</radios>
+</root>

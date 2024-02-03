@@ -1,0 +1,76 @@
+<root>
+	<armorColor>15 36 36 0</armorColor>
+	<inscriptionColors>
+		<c0>0 0 0 4</c0>
+		<c1>0 0 0 5</c1>
+		<c2>0 0 0 6</c2>
+		<c3>0 0 0 0</c3>
+		<c4>0 0 0 0</c4>
+		<c5>0 0 0 0</c5>
+		<c6>0 0 0 0</c6>
+		<c7>0 0 0 0</c7>
+		<c8>0 0 0 0</c8>
+		<c9>0 0 0 0</c9>
+		<c10>0 0 0 0</c10>
+		<c11>0 0 0 0</c11>
+		<c12>0 0 0 0</c12>
+		<c13>0 0 0 0</c13>
+		<c14>0 0 0 0</c14>
+		<c15>0 0 0 0</c15>
+	</inscriptionColors>
+	<inscriptions>
+		<japan>
+			<userString>#vehicle_customization:inscription/historical</userString>
+			<priceFactor>1.0</priceFactor>
+			<inscriptions>
+				<inscription>
+					<id>1</id>
+					<texName>gui/maps/vehicles/decals/inscriptions/japan/inscription_01.dds</texName>
+					<userString>#vehicle_customization:inscription/japan/shield</userString>
+				</inscription>
+				<inscription>
+					<id>2</id>
+					<texName>gui/maps/vehicles/decals/inscriptions/japan/inscription_02.dds</texName>
+					<userString>#vehicle_customization:inscription/japan/patriotism</userString>
+				</inscription>
+				<inscription>
+					<id>3</id>
+					<texName>gui/maps/vehicles/decals/inscriptions/japan/inscription_03.dds</texName>
+					<userString>#vehicle_customization:inscription/japan/taku</userString>
+				</inscription>
+				<inscription>
+					<id>4</id>
+					<texName>gui/maps/vehicles/decals/inscriptions/japan/inscription_04.dds</texName>
+					<userString>#vehicle_customization:inscription/japan/attack</userString>
+				</inscription>
+				<inscription>
+					<id>5</id>
+					<texName>gui/maps/vehicles/decals/inscriptions/japan/inscription_05.dds</texName>
+					<userString>#vehicle_customization:inscription/japan/waterfall</userString>
+				</inscription>
+				<inscription>
+					<id>6</id>
+					<texName>gui/maps/vehicles/decals/inscriptions/japan/inscription_06.dds</texName>
+					<userString>#vehicle_customization:inscription/japan/steel</userString>
+				</inscription>
+				<inscription>
+					<id>7</id>
+					<texName>gui/maps/vehicles/decals/inscriptions/japan/inscription_07.dds</texName>
+					<userString>#vehicle_customization:inscription/japan/commandos</userString>
+				</inscription>
+				<inscription>
+					<id>8</id>
+					<texName>gui/maps/vehicles/decals/inscriptions/japan/inscription_08.dds</texName>
+					<userString>#vehicle_customization:inscription/japan/spirit</userString>
+				</inscription>
+				<inscription>
+					<id>9</id>
+					<texName>gui/maps/vehicles/decals/inscriptions/japan/inscription_09.dds</texName>
+					<userString>#vehicle_customization:inscription/japan/blow</userString>
+				</inscription>
+			</inscriptions>
+		</japan>
+	</inscriptions>
+	<camouflageGroups>
+	</camouflageGroups>
+</root>

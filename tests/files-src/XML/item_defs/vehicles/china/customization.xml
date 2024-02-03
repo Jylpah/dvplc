@@ -1,0 +1,146 @@
+<root>
+	<armorColor>61 62 42 0</armorColor>
+	<inscriptionColors>
+		<c0>0 0 0 4</c0>
+		<c1>0 0 0 5</c1>
+		<c2>0 0 0 6</c2>
+		<c3>0 0 0 0</c3>
+		<c4>0 0 0 0</c4>
+		<c5>0 0 0 0</c5>
+		<c6>0 0 0 0</c6>
+		<c7>0 0 0 0</c7>
+		<c8>0 0 0 0</c8>
+		<c9>0 0 0 0</c9>
+		<c10>0 0 0 0</c10>
+		<c11>0 0 0 0</c11>
+		<c12>0 0 0 0</c12>
+		<c13>0 0 0 0</c13>
+		<c14>0 0 0 0</c14>
+		<c15>0 0 0 0</c15>
+	</inscriptionColors>
+	<inscriptions>
+		<china>
+			<userString>#vehicle_customization:inscription/historical</userString>
+			<priceFactor>1.0</priceFactor>
+			<inscriptions>
+				<inscription>
+					<id>1</id>
+					<texName>gui/maps/vehicles/decals/inscriptions/china/inscription_01.dds</texName>
+					<userString>#vehicle_customization:inscription/china/pain</userString>
+				</inscription>
+				<inscription>
+					<id>2</id>
+					<texName>gui/maps/vehicles/decals/inscriptions/china/inscription_02.dds</texName>
+					<userString>#vehicle_customization:inscription/china/help</userString>
+				</inscription>
+				<inscription>
+					<id>3</id>
+					<texName>gui/maps/vehicles/decals/inscriptions/china/inscription_03.dds</texName>
+					<userString>#vehicle_customization:inscription/china/war</userString>
+				</inscription>
+				<inscription>
+					<id>4</id>
+					<texName>gui/maps/vehicles/decals/inscriptions/china/inscription_04.dds</texName>
+					<userString>#vehicle_customization:inscription/china/light</userString>
+				</inscription>
+				<inscription>
+					<id>5</id>
+					<texName>gui/maps/vehicles/decals/inscriptions/china/inscription_05.dds</texName>
+					<userString>#vehicle_customization:inscription/china/wish</userString>
+				</inscription>
+				<inscription>
+					<id>6</id>
+					<texName>gui/maps/vehicles/decals/inscriptions/china/inscription_06.dds</texName>
+					<userString>#vehicle_customization:inscription/china/success</userString>
+				</inscription>
+				<inscription>
+					<id>7</id>
+					<texName>gui/maps/vehicles/decals/inscriptions/china/inscription_07.dds</texName>
+					<userString>#vehicle_customization:inscription/china/harm</userString>
+				</inscription>
+				<inscription>
+					<id>8</id>
+					<texName>gui/maps/vehicles/decals/inscriptions/china/inscription_08.dds</texName>
+					<userString>#vehicle_customization:inscription/china/sun</userString>
+				</inscription>
+				<inscription>
+					<id>9</id>
+					<texName>gui/maps/vehicles/decals/inscriptions/china/inscription_09.dds</texName>
+					<userString>#vehicle_customization:inscription/china/myself</userString>
+				</inscription>
+				<inscription>
+					<id>10</id>
+					<texName>gui/maps/vehicles/decals/inscriptions/china/inscription_10.dds</texName>
+					<userString>#vehicle_customization:inscription/china/blood</userString>
+				</inscription>
+				<inscription>
+					<id>11</id>
+					<texName>gui/maps/vehicles/decals/inscriptions/china/inscription_11.dds</texName>
+					<userString>#vehicle_customization:inscription/china/firm</userString>
+				</inscription>
+				<inscription>
+					<id>12</id>
+					<texName>gui/maps/vehicles/decals/inscriptions/china/inscription_12.dds</texName>
+					<userString>#vehicle_customization:inscription/china/better</userString>
+				</inscription>
+				<inscription>
+					<id>13</id>
+					<texName>gui/maps/vehicles/decals/inscriptions/china/inscription_13.dds</texName>
+					<userString>#vehicle_customization:inscription/china/destiny</userString>
+				</inscription>
+				<inscription>
+					<id>14</id>
+					<texName>gui/maps/vehicles/decals/inscriptions/china/inscription_14.dds</texName>
+					<userString>#vehicle_customization:inscription/china/fight</userString>
+				</inscription>
+				<inscription>
+					<id>15</id>
+					<texName>gui/maps/vehicles/decals/inscriptions/china/inscription_15.dds</texName>
+					<userString>#vehicle_customization:inscription/china/action</userString>
+				</inscription>
+				<inscription>
+					<id>16</id>
+					<texName>gui/maps/vehicles/decals/inscriptions/china/inscription_16.dds</texName>
+					<userString>#vehicle_customization:inscription/china/hero</userString>
+				</inscription>
+				<inscription>
+					<id>17</id>
+					<texName>gui/maps/vehicles/decals/inscriptions/china/inscription_17.dds</texName>
+					<userString>#vehicle_customization:inscription/china/difficult</userString>
+				</inscription>
+				<inscription>
+					<id>18</id>
+					<texName>gui/maps/vehicles/decals/inscriptions/china/inscription_18.dds</texName>
+					<userString>#vehicle_customization:inscription/china/faith</userString>
+				</inscription>
+				<inscription>
+					<id>19</id>
+					<texName>gui/maps/vehicles/decals/inscriptions/china/inscription_19.dds</texName>
+					<userString>#vehicle_customization:inscription/china/people</userString>
+				</inscription>
+				<inscription>
+					<id>20</id>
+					<texName>gui/maps/vehicles/decals/inscriptions/china/inscription_20.dds</texName>
+					<userString>#vehicle_customization:inscription/china/united</userString>
+				</inscription>
+				<inscription>
+					<id>21</id>
+					<texName>gui/maps/vehicles/decals/inscriptions/china/inscription_21.dds</texName>
+					<userString>#vehicle_customization:inscription/china/walk_alone</userString>
+				</inscription>
+				<inscription>
+					<id>22</id>
+					<texName>gui/maps/vehicles/decals/inscriptions/china/inscription_22.dds</texName>
+					<userString>#vehicle_customization:inscription/china/Fen</userString>
+				</inscription>
+				<inscription>
+					<id>23</id>
+					<texName>gui/maps/vehicles/decals/inscriptions/china/inscription_23.dds</texName>
+					<userString>#vehicle_customization:inscription/china/knock_down</userString>
+				</inscription>
+			</inscriptions>
+		</china>
+	</inscriptions>
+	<camouflageGroups>
+	</camouflageGroups>
+</root>
