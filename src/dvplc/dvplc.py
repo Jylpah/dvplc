@@ -30,6 +30,7 @@ debug = logger.debug
 MODES = ["encode", "decode", "verify"]
 Mode: TypeAlias = Literal["encode", "decode", "verify"]
 
+
 # fmt: off
 class Compression(StrEnum):
     none            = "none"
@@ -120,10 +121,6 @@ def cli(
         raise Exit(code=1)
 
 
-def callback_paths(value: Optional[list[Path]]) -> list[Path]:
-    return value if value is not None else []
-
-
 async def _gather_results(
     workers: List[Task], stats: EventCounter, ret_val: int = 0
 ) -> Tuple[EventCounter, int]:
@@ -162,7 +159,6 @@ async def decode(
         help="FILES to decode",
         metavar="FILES",
         show_default=False,
-        callback=callback_paths,
     ),
 ) -> None:
     """decode DVPL files"""
@@ -237,7 +233,6 @@ async def encode(
         help="FILES to encode",
         metavar="FILES",
         show_default=False,
-        callback=callback_paths,
     ),
 ) -> None:
     """encode DVPL files"""
@@ -296,7 +291,6 @@ async def verify(
         help="FILES to decode",
         metavar="FILES",
         show_default=False,
-        callback=callback_paths,
     ),
 ) -> None:
     """verify DVPL files"""
@@ -331,7 +325,7 @@ async def verify(
         await fq.join()
         stats, ret_val = await _gather_results(workers, stats, ret_val)
         message(stats.print(do_print=False))
-        print(f"exit value={ret_val}")
+        # print(f"exit value={ret_val}")
     except Exception as err:
         error(str(err))
         raise Exit(code=4)
@@ -527,6 +521,7 @@ def decode_dvpl(input: bytes) -> Result[bytes, str]:
     except Exception as err:
         return Err(str(err))
 
+
 async def open_dvpl_or_file(filename: Path) -> Result[bytes, str]:
     """Open 'filename', DVPL or not"""
     try:
@@ -544,7 +539,7 @@ async def open_dvpl_or_file(filename: Path) -> Result[bytes, str]:
                 return Ok(await file.read())
     except Exception as err:
         return Err(f"could not open file: {filename}: {err}")
-    
+
 
 async def encode_dvpl_file(
     input_fn: Path,
