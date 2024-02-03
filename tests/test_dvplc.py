@@ -1,12 +1,18 @@
 import pytest  # type: ignore
 from pytest import Config
-from os.path import dirname, realpath, join as pjoin
+from os.path import dirname, realpath
+from asyncio import run
+from shutil import rmtree
 from pathlib import Path
 from result import Ok, Result
 from typer.testing import CliRunner
 from click.testing import Result as ClickResult
-from typing import List
+from typing import List, Dict
+from hashlib import sha256
+
 import logging
+
+from pyutils import FileQueue
 
 from dvplc import (
     Compression,
@@ -29,41 +35,67 @@ debug = logger.debug
 # 3) test verify
 # 4) test decoding
 
-FIXTURE_DIR = dirname(realpath(__file__))
+FIXTURE_DIR = Path(dirname(realpath(__file__)))
 
 SOURCE_FILES = pytest.mark.datafiles(
-    pjoin(FIXTURE_DIR, "01_source.txt"),
-    pjoin(FIXTURE_DIR, "02_source.bin"),
+    FIXTURE_DIR / "01_source.txt",
+    FIXTURE_DIR / "02_source.bin",
     on_duplicate="overwrite",
 )
+
+SOURCE_DIR: str = "files-src"
+
+SOURCE_SRC_DIR = pytest.mark.datafiles(
+    FIXTURE_DIR / SOURCE_DIR,
+    keep_top_dir=True,
+)
+
 
 DVPL_FILES = pytest.mark.datafiles(
-    pjoin(FIXTURE_DIR, "03_source.txt.dvpl"),
-    pjoin(FIXTURE_DIR, "04_source.bin.dvpl"),
+    FIXTURE_DIR / "03_source.txt.dvpl",
+    FIXTURE_DIR / "04_source.bin.dvpl",
     on_duplicate="overwrite",
 )
 
+DVPL_DIR: str = "files-dvpl"
+
+DVPL_SRC_DIR = pytest.mark.datafiles(
+    FIXTURE_DIR / DVPL_DIR,
+    keep_top_dir=True,
+)
+
+
 OPEN_OR_DVPL_FILES = pytest.mark.datafiles(
-    pjoin(FIXTURE_DIR, "01_source.txt"),
-    pjoin(FIXTURE_DIR, "02_source.bin"),
-    pjoin(FIXTURE_DIR, "03_source.txt.dvpl"),
-    pjoin(FIXTURE_DIR, "04_source.bin.dvpl"),
+    FIXTURE_DIR / "01_source.txt",
+    FIXTURE_DIR / "02_source.bin",
+    FIXTURE_DIR / "03_source.txt.dvpl",
+    FIXTURE_DIR / "04_source.bin.dvpl",
     on_duplicate="overwrite",
 )
 
 VERIFY_FILES = pytest.mark.datafiles(
-    pjoin(FIXTURE_DIR, "05_source.txt_fails_marker.dvpl"),
-    pjoin(FIXTURE_DIR, "06_source.bin_fails_marker.dvpl"),
-    pjoin(FIXTURE_DIR, "07_source.txt_fails_compression.dvpl"),
-    pjoin(FIXTURE_DIR, "08_source.bin_fails_compression.dvpl"),
-    pjoin(FIXTURE_DIR, "09_source.txt_fails_crc.dvpl"),
-    pjoin(FIXTURE_DIR, "10_source.bin_fails_crc.dvpl"),
-    pjoin(FIXTURE_DIR, "11_source.txt_fails_encoded_size.dvpl"),
-    pjoin(FIXTURE_DIR, "12_source.bin_fails_encoded_size.dvpl"),
-    pjoin(FIXTURE_DIR, "13_source.txt_fails_decoded_size.dvpl"),
-    pjoin(FIXTURE_DIR, "14_source.bin_fails_decoded_size.dvpl"),
+    FIXTURE_DIR / "05_source.txt_fails_marker.dvpl",
+    FIXTURE_DIR / "06_source.bin_fails_marker.dvpl",
+    FIXTURE_DIR / "07_source.txt_fails_compression.dvpl",
+    FIXTURE_DIR / "08_source.bin_fails_compression.dvpl",
+    FIXTURE_DIR / "09_source.txt_fails_crc.dvpl",
+    FIXTURE_DIR / "10_source.bin_fails_crc.dvpl",
+    FIXTURE_DIR / "11_source.txt_fails_encoded_size.dvpl",
+    FIXTURE_DIR / "12_source.bin_fails_encoded_size.dvpl",
+    FIXTURE_DIR / "13_source.txt_fails_decoded_size.dvpl",
+    FIXTURE_DIR / "14_source.bin_fails_decoded_size.dvpl",
     on_duplicate="overwrite",
 )
+
+
+async def files_sha256(base: Path) -> dict[Path, str]:
+    fileQ = FileQueue(base, case_sensitive=False)
+    await fileQ.mk_queue([Path(".")])
+    hashdict: Dict[Path, str] = dict()
+    async for fn in fileQ:
+        with open(fn, mode="rb") as file:
+            hashdict[fn.relative_to(base)] = sha256(file.read()).hexdigest()
+    return hashdict
 
 
 def pytest_configure(config: Config):
@@ -188,12 +220,117 @@ def test_4_verify_file_fails(datafiles: Path) -> None:
         result.exit_code != 0
     ), f"dvpl verification failed (false positive): {' '.join([ Path(file).name for file in input_files]) }"
 
+
+@pytest.mark.parametrize(
+    "args",
+    [(["verify", str((FIXTURE_DIR / DVPL_DIR).resolve())])],
+)
+@DVPL_SRC_DIR
+def test_5_verify_tree(tmp_path: Path, datafiles: Path, args: List[str]) -> None:
+    """
+    test decoding a directory
+    """
+
+    result: ClickResult = CliRunner().invoke(app, args)
+
+    assert result.exit_code == 0, "dvplc verify failed"
+
+
+@SOURCE_SRC_DIR
+def test_6_encode_mirror(tmp_path: Path, datafiles: Path) -> None:
+    """
+    test decoding a directory
+    """
+    DST_DIR: Path = tmp_path / "__MIRROR_DST__"
+
+    src_dir: Path = next(datafiles.iterdir())
+    if not src_dir.is_dir():
+        src_dir = src_dir.parent
+
+    chk_sums_org: Dict[Path, str] = run(files_sha256(src_dir))
+
+    args: List[str] = [
+        "--verbose",
+        "encode",
+        "--mirror-from",
+        str(src_dir),
+        "--mirror-to",
+        str(DST_DIR),
+        ".",
+    ]
+    result: ClickResult
+    result = CliRunner().invoke(app, args)
+    assert result.exit_code == 0, "dvplc encode failed"
+
+    args = [
+        "--verbose",
+        "decode",
+        "--replace",
+        str(DST_DIR),
+    ]
+    result = CliRunner().invoke(app, args)
+    assert result.exit_code == 0, "dvplc encode failed"
+
+    chk_sums_res: Dict[Path, str] = run(files_sha256(DST_DIR))
+
+    assert set(chk_sums_org.keys()) == set(
+        chk_sums_res.keys()
+    ), f"all files were not processed: {len(chk_sums_org)} != {len(chk_sums_res)}"
+
+    for fn, chksum in chk_sums_res.items():
+        debug("%s: %s", fn, chksum)
+        assert (
+            chk_sums_org[fn] == chksum
+        ), f"encode-decode checksum does not match: {fn}: {chksum}"
+
+    rmtree(DST_DIR)  # Dangerous
+
+
+@DVPL_SRC_DIR
+def test_7_decode_mirror(tmp_path: Path, datafiles: Path) -> None:
+    """
+    test decoding a directory
+    """
+    DST_DIR: Path = tmp_path / "__MIRROR_DST__"
+
+    args: List[str]
+    args = [
+        "--verbose",
+        "decode",
+        "--mirror-from",
+        str((tmp_path / DVPL_DIR).resolve()),
+        "--mirror-to",
+        str(DST_DIR),
+        ".",
+    ]
+
+    result: ClickResult
+    result = CliRunner().invoke(app, args)
+    assert result.exit_code == 0, "dvplc decode failed"
+
+    args = [
+        "--verbose",
+        "encode",
+        "--replace",
+        str(DST_DIR),
+    ]
+
+    result = CliRunner().invoke(app, args)
+    assert result.exit_code == 0, "dvplc encode failed"
+
+    rmtree(DST_DIR)  # Dangerous
+
+
 @pytest.mark.asyncio
 @OPEN_OR_DVPL_FILES
-async def test_5_open_dvpl_or_file(datafiles: Path) -> None:
+async def test_8_open_dvpl_or_file(datafiles: Path) -> None:
     for filename in datafiles.iterdir():
         debug(f"opening '{filename}'")
-        assert (_ := await open_dvpl_or_file(filename)).is_ok, f"could not open file: {filename}" 
-        if filename.suffix == '.dvpl':
+        assert (
+            _ := await open_dvpl_or_file(filename)
+        ).is_ok, f"could not open file: {filename}"
+        if filename.suffix == ".dvpl":
             debug(f"opening  '{filename}' without suffix")
-            assert (_ := await open_dvpl_or_file(filename.with_suffix(''))).is_ok, f"could not open file: {filename} without .dvpl suffix"
+            assert (
+                _ := await open_dvpl_or_file(filename.with_suffix(""))
+            ).is_ok, f"could not open file: {filename} without .dvpl suffix"
