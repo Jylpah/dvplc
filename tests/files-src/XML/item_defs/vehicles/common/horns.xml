@@ -1,0 +1,12 @@
+<root>
+	<truck_03>
+		<id>52</id>
+		<userString>#vehicle_customization:horns/truck_03</userString>
+		<sound>world_of_ducks/chat_gui/all_chat</sound>
+		<distance>25.0</distance>
+		<vehicleTags>heavyTank mediumTank lightTank SPG AT-SPG</vehicleTags>
+		<mode>continuous</mode>
+		<maxDuration>3</maxDuration>
+		<gold>1000000</gold>
+	</truck_03>
+</root>

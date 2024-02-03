@@ -1,0 +1,357 @@
+<root>
+	<crew>
+		<commander>radioman</commander>
+		<gunner/>
+		<driver/>
+		<loader/>
+		<loader/>
+	</crew>
+	<speedLimits>
+		<forward>38</forward>
+		<backward>12</backward>
+	</speedLimits>
+	<invisibility>
+		<moving>0.02</moving>
+		<still>0.04</still>
+		<firePenalty>0.263</firePenalty>
+	</invisibility>
+	<repairCost>0</repairCost>
+	<crewXpFactor>1.0</crewXpFactor>
+	<consumableSlots>3</consumableSlots>
+	<provisionSlots>3</provisionSlots>
+	<optDevicePreset>defaultPreset</optDevicePreset>
+	<enrichmentBoost>1.7403</enrichmentBoost>
+	<turretBlowEnabled>true</turretBlowEnabled>
+	<effects>
+		<destruction>mediumDestruction</destruction>
+		<explosion>mediumExplosion</explosion>
+		<flaming>largeFlaming</flaming>
+		<collision/>
+		<damagedStateGroup/>
+	</effects>
+	<camouflage>
+		<priceFactor>2.0</priceFactor>
+		<tiling>1 1 0 0</tiling>
+		<exclusionMask>vehicles/british/GB48_FV215b_183/FV215b_183_CM.dds</exclusionMask>
+	</camouflage>
+	<emblems>
+		<default>britain_color</default>
+		<lodDist>MEDIUM</lodDist>
+		<alpha>0.92</alpha>
+	</emblems>
+	<horns>
+		<priceFactor>1</priceFactor>
+		<distanceFactor>1</distanceFactor>
+		<volumeFactor>1</volumeFactor>
+	</horns>
+	<hull>
+		<models>
+			<undamaged>vehicles/british/GB48_FV215b_183/normal/lod0/Hull.model</undamaged>
+			<destroyed>vehicles/british/GB48_FV215b_183/normal/lod0/Hull.model</destroyed>
+			<exploded>vehicles/british/GB48_FV215b_183/normal/lod0/Hull.model</exploded>
+		</models>
+		<swinging>
+			<lodDist>FAR</lodDist>
+			<pitchParams>0.22 36.00 0.36 1.00 0.04 0.26</pitchParams>
+			<rollParams>1.00 0.22 36.00 0.36 1.00 0.04 0.26</rollParams>
+			<sensitivityToImpulse>0.22</sensitivityToImpulse>
+		</swinging>
+		<exhaust>
+			<pixie>particles/Tank/engine_exit_gass.xml</pixie>
+			<nodes>HP_Track_Exhaus_1 HP_Track_Exhaus_2</nodes>
+			<rates>5.0 10.0 25.0</rates>
+		</exhaust>
+		<turretPositions>
+			<turret>0.000000 1.704246 -1.51687</turret>
+		</turretPositions>
+		<hitTester>
+			<collisionModel>vehicles/british/GB48_FV215b_183/collision/Hull.model</collisionModel>
+		</hitTester>
+		<armor>
+			<armor_1>112</armor_1>
+			<armor_2>148</armor_2>
+			<armor_3>52.9</armor_3>
+			<armor_4>79.3</armor_4>
+			<armor_5>33.1</armor_5>
+			<armor_6>37.5</armor_6>
+			<armor_7>79.3</armor_7>
+			<armor_8>0</armor_8>
+			<armor_9>52.9</armor_9>
+			<armor_11>52.9</armor_11>
+			<armor_12>20.8</armor_12>
+			<armor_13>39.7</armor_13>
+			<armor_14>6.3<vehicleDamageFactor>0.0</vehicleDamageFactor>
+			</armor_14>
+			<armor_15>33.1</armor_15>
+			<armor_16>132.1</armor_16>
+		</armor>
+		<primaryArmor>armor_2 armor_3 armor_4</primaryArmor>
+		<weight>24516</weight>
+		<maxHealth>1440</maxHealth>
+		<ammoBayHealth>
+			<maxHealth>260</maxHealth>
+			<maxRegenHealth>180</maxRegenHealth>
+			<repairCost>0</repairCost>
+			</ammoBayHealth>
+		<emblemSlots>
+			<clan>
+				<rayStart>0.894557 0.566352 3.25023</rayStart>
+				<rayEnd>0.894698 0.242169 3.01591</rayEnd>
+				<rayUp>0.000000 0.000000 -1</rayUp>
+				<size>0.28</size>
+				<hideIfDamaged>false</hideIfDamaged>
+			</clan>
+		</emblemSlots>
+	</hull>
+	<chassis>
+		<Chassis_GB48_FV215b_183>
+			<userString>#gb_vehicles:Chassis_GB48_FV215b_183</userString>
+			<tags/>
+			<level>10</level>
+			<price>0</price>
+			<notInShop>true</notInShop>
+			<models>
+				<undamaged>vehicles/british/GB48_FV215b_183/normal/lod0/Chassis.model</undamaged>
+				<destroyed>vehicles/british/GB48_FV215b_183/normal/lod0/Chassis.model</destroyed>
+				<exploded>vehicles/british/GB48_FV215b_183/normal/lod0/Chassis.model</exploded>
+			</models>
+			<traces>
+				<lodDist>FAR</lodDist>
+				<bufferPrefs>largeTank</bufferPrefs>
+				<textureSet>ussr_01</textureSet>
+				<size>0.44 0.7</size>
+			</traces>
+			<tracks>
+				<lodDist>MEDIUM</lodDist>
+				<leftMaterial>track_mat_L_skinned</leftMaterial>
+				<rightMaterial>track_mat_R_skinned</rightMaterial>
+			</tracks>
+			<wheels>
+				<lodDist>MEDIUM</lodDist>
+				<wheel>
+					<isLeft>true</isLeft>
+					<isLeading>false</isLeading>
+					<name>WD_L0</name>
+					<radius>0.433761</radius>
+				</wheel>
+				<group>
+					<isLeft>true</isLeft>
+					<template>WD_L</template>
+					<radius>0.153605</radius>
+					<startIndex>1</startIndex>
+					<count>4</count>
+				</group>
+				<wheel>
+					<isLeft>true</isLeft>
+					<isLeading>false</isLeading>
+					<name>WD_L5</name>
+					<radius>0.449316</radius>
+				</wheel>
+				<group>
+					<isLeft>true</isLeft>
+					<template>W_L</template>
+					<radius>0.240187</radius>
+					<startIndex>0</startIndex>
+					<count>8</count>
+				</group>
+				<wheel>
+					<isLeft>false</isLeft>
+					<isLeading>false</isLeading>
+					<name>WD_R0</name>
+					<radius>0.433761</radius>
+				</wheel>
+				<group>
+					<isLeft>false</isLeft>
+					<template>WD_R</template>
+					<radius>0.153605</radius>
+					<startIndex>1</startIndex>
+					<count>4</count>
+				</group>
+				<wheel>
+					<isLeft>false</isLeft>
+					<isLeading>false</isLeading>
+					<name>WD_R5</name>
+					<radius>0.449316</radius>
+				</wheel>
+				<group>
+					<isLeft>false</isLeft>
+					<template>W_R</template>
+					<radius>0.240187</radius>
+					<startIndex>0</startIndex>
+					<count>8</count>
+				</group>
+			</wheels>
+			<drivingWheels>WD_L0 WD_L5</drivingWheels>
+			<effects>
+				<lodDist>MEDIUM</lodDist>
+				<dust>largeTankDust</dust>
+				<mud>largeTankMud</mud>
+			</effects>
+			<sound>/vehicles/tanks/treads/treads_0</sound>
+			<hullPosition>0.000000 0.000000 -0.000000</hullPosition>
+			<hitTester>
+				<collisionModel>vehicles/british/GB48_FV215b_183/collision/Chassis.model</collisionModel>
+			</hitTester>
+			<armor>
+				<leftTrack>25</leftTrack>
+				<rightTrack>25</rightTrack>
+			</armor>
+			<topRightCarryingPoint>1.435 2.46055</topRightCarryingPoint>
+			<maxClimbAngle>25</maxClimbAngle>
+			<navmeshGirth>6.0</navmeshGirth>
+			<weight>12000</weight>
+			<maxLoad>64000</maxLoad>
+			<terrainResistance>1.8 2 2.5</terrainResistance>
+			<brakeForce>60000</brakeForce>
+			<rotationIsAroundCenter>true</rotationIsAroundCenter>
+			<rotationSpeed>25</rotationSpeed>
+			<shotDispersionFactors>
+				<vehicleMovement>0.2</vehicleMovement>
+				<vehicleRotation>0.2</vehicleRotation>
+			</shotDispersionFactors>
+			<bulkHealthFactor>3.0</bulkHealthFactor>
+			<maxHealth>250</maxHealth>
+			<maxRegenHealth>190</maxRegenHealth>
+			<repairCost>0</repairCost>
+			</Chassis_GB48_FV215b_183>
+	</chassis>
+	<turrets0>
+		<Turret_1_GB48_FV215b_183>
+			<userString>#gb_vehicles:Turret_1_GB48_FV215b_183</userString>
+			<tags/>
+			<level>10</level>
+			<price>0</price>
+			<notInShop>true</notInShop>
+			<models>
+				<undamaged>vehicles/british/GB48_FV215b_183/normal/lod0/Turret_01.model</undamaged>
+				<destroyed>vehicles/british/GB48_FV215b_183/normal/lod0/Turret_01.model</destroyed>
+				<exploded>vehicles/british/GB48_FV215b_183/normal/lod0/Turret_01.model</exploded>
+			</models>
+			<hitTester>
+				<collisionModel>vehicles/british/GB48_FV215b_183/collision/Turret_01.model</collisionModel>
+			</hitTester>
+			<gunPosition>0.000009 0.646893 1.57396</gunPosition>
+			<armor>
+				<armor_1>132.1</armor_1>
+				<armor_2>126</armor_2>
+				<armor_3>105.7</armor_3>
+				<armor_4>79.3</armor_4>
+				<armor_5>46.3</armor_5>
+				<armor_6>79.3</armor_6>
+				<armor_7>100</armor_7>
+				<armor_8>0</armor_8>
+				<armor_9>124</armor_9>
+				<armor_11>10<vehicleDamageFactor>0.0</vehicleDamageFactor>
+				</armor_11>
+				<armor_12>105</armor_12>
+				<armor_13>177</armor_13>
+				<armor_14>139</armor_14>
+				<armor_15>139</armor_15>
+				<armor_16>132</armor_16>
+			</armor>
+			<primaryArmor>armor_1 armor_3 armor_4</primaryArmor>
+			<weight>17000</weight>
+			<maxHealth>360</maxHealth>
+			<rotationSpeed>16</rotationSpeed>
+			<turretRotatorHealth>
+				<maxHealth>170</maxHealth>
+				<maxRegenHealth>85</maxRegenHealth>
+				<repairCost>0</repairCost>
+				</turretRotatorHealth>
+			<circularVisionRadius>250</circularVisionRadius>
+			<surveyingDeviceHealth>
+				<maxHealth>120</maxHealth>
+				<maxRegenHealth>60</maxRegenHealth>
+				<repairCost>0</repairCost>
+				</surveyingDeviceHealth>
+			<emblemSlots>
+				<player>
+					<rayStart>-1.6451 0.852514 -0.748013</rayStart>
+					<rayEnd>-1.24706 0.812908 -0.748013</rayEnd>
+					<rayUp>0.000000 1 0.000000</rayUp>
+					<size>0.28</size>
+					<hideIfDamaged>true</hideIfDamaged>
+				</player>
+				<player>
+					<rayStart>1.6451 0.852514 -0.748013</rayStart>
+					<rayEnd>1.24706 0.812908 -0.748013</rayEnd>
+					<rayUp>0.000000 1 0.000000</rayUp>
+					<size>0.28</size>
+					<hideIfDamaged>false</hideIfDamaged>
+				</player>
+				<inscription>
+					<rayStart>-1.46526 0.38916 0.77198</rayStart>
+					<rayEnd>-1.10052 0.339763 0.615369</rayEnd>
+					<rayUp>0.000000 1 0.000000</rayUp>
+					<size>0.78</size>
+					<hideIfDamaged>true</hideIfDamaged>
+				</inscription>
+				<inscription>
+					<rayStart>1.70194 0.281214 -0.521506</rayStart>
+					<rayEnd>1.30391 0.241608 -0.521506</rayEnd>
+					<rayUp>0.000000 1 0.000000</rayUp>
+					<size>0.78</size>
+					<hideIfDamaged>false</hideIfDamaged>
+				</inscription>
+			</emblemSlots>
+			<guns>
+				<_183mm_AT_Gun>shared<maxAmmo>21</maxAmmo>
+					<models>
+						<undamaged>vehicles/british/GB48_FV215b_183/normal/lod0/Gun_01.model</undamaged>
+						<destroyed>vehicles/british/GB48_FV215b_183/normal/lod0/Gun_01.model</destroyed>
+						<exploded>vehicles/british/GB48_FV215b_183/normal/lod0/Gun_01.model</exploded>
+					</models>
+					<hitTester>
+						<collisionModel>vehicles/british/GB48_FV215b_183/collision/Gun_01.model</collisionModel>
+					</hitTester>
+					<armor>
+						<armor_1>132.1<vehicleDamageFactor>0.0</vehicleDamageFactor>
+						</armor_1>
+						<gun>80</gun>
+					</armor>
+					<shotDispersionRadius>0.45</shotDispersionRadius>
+					<reloadTime>22</reloadTime>
+					<shotDispersionFactors>
+						<turretRotation>0.2</turretRotation>
+						<afterShot>6</afterShot>
+						<whileGunDamaged>2.0</whileGunDamaged>
+					</shotDispersionFactors>
+					<aimingTime>2.6</aimingTime>
+					<invisibilityFactorAtShot>0.05</invisibilityFactorAtShot>
+					<pitchLimits>-15 5</pitchLimits>
+					<turretYawLimits>-45 45</turretYawLimits>
+					<emblemSlots/>
+					<shots>
+						<_183mm_AP_Mk1>
+							<shell>shared<price>0</price>
+							</shell>
+						</_183mm_AP_Mk1>
+						<_183mm_HESH>
+							<shell>shared<price>16<gold/>
+								</price>
+							</shell>
+						</_183mm_HESH>
+						<_183mm_HE_Mk1>
+							<shell>shared<price>0</price>
+							</shell>
+						</_183mm_HE_Mk1>
+					</shots>
+				</_183mm_AT_Gun>
+			</guns>
+			<showEmblemsOnGun>false</showEmblemsOnGun>
+			<physicsShape>1.000 0.000 1.000 0.000 1.000 0.000 0.500 0.100 0.500 0.500 0.500 0.500 0.600 0.100 0.500</physicsShape>
+			<yawLimits>-45 45</yawLimits>
+			<turretRotatorSoundManual/>
+			<turretRotatorSoundGear/>
+		</Turret_1_GB48_FV215b_183>
+	</turrets0>
+	<engines>
+		<Rolls_Royse_Meteor_Mk12>shared</Rolls_Royse_Meteor_Mk12>
+	</engines>
+	<fuelTanks>
+		<Large>shared</Large>
+	</fuelTanks>
+	<radios>
+		<C45>shared</C45>
+	</radios>
+</root>

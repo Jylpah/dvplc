@@ -1,0 +1,29 @@
+<root>
+    <ussr>
+        <id>0</id>
+    </ussr>
+    <germany>
+        <id>1</id>
+    </germany>
+    <usa>
+        <id>2</id>
+    </usa>
+    <china>
+        <id>3</id>
+    </china>
+    <france>
+        <id>4</id>
+    </france>
+    <uk>
+        <id>5</id>
+    </uk>
+    <japan>
+        <id>6</id>
+    </japan>
+    <other>
+        <id>7</id>
+    </other>
+    <european>
+        <id>8</id>
+    </european>
+</root>

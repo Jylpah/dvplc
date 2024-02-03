@@ -1,0 +1,660 @@
+<root>
+	<kind>
+		<id>1</id>
+		<desc>armor_1</desc>
+		<help>Armor group 1.</help>
+	</kind>
+	<kind>
+		<id>2</id>
+		<desc>armor_2</desc>
+		<help>Armor group 2.</help>
+	</kind>
+	<kind>
+		<id>3</id>
+		<desc>armor_3</desc>
+		<help>Armor group 3.</help>
+	</kind>
+	<kind>
+		<id>4</id>
+		<desc>armor_4</desc>
+		<help>Armor group 4.</help>
+	</kind>
+	<kind>
+		<id>5</id>
+		<desc>armor_5</desc>
+		<help>Armor group 5.</help>
+	</kind>
+	<kind>
+		<id>6</id>
+		<desc>armor_6</desc>
+		<help>Armor group 6.</help>
+	</kind>
+	<kind>
+		<id>7</id>
+		<desc>armor_7</desc>
+		<help>Armor group 7.</help>
+	</kind>
+	<kind>
+		<id>8</id>
+		<desc>armor_8</desc>
+		<help>Armor group 8.</help>
+	</kind>
+	<kind>
+		<id>9</id>
+		<desc>armor_9</desc>
+		<help>Armor group 9.</help>
+	</kind>
+	<kind>
+		<id>10</id>
+		<desc>armor_10</desc>
+		<help>Armor group 10.</help>
+	</kind>
+	<kind>
+		<id>11</id>
+		<desc>armor_11</desc>
+		<help>Armor group 11.</help>
+	</kind>
+	<kind>
+		<id>12</id>
+		<desc>armor_12</desc>
+		<help>Armor group 12.</help>
+	</kind>
+	<kind>
+		<id>13</id>
+		<desc>armor_13</desc>
+		<help>Armor group 13.</help>
+	</kind>
+	<kind>
+		<id>14</id>
+		<desc>armor_14</desc>
+		<help>Armor group 14.</help>
+	</kind>
+	<kind>
+		<id>15</id>
+		<desc>armor_15</desc>
+		<help>Armor group 15.</help>
+	</kind>
+	<kind>
+		<id>16</id>
+		<desc>armor_16</desc>
+		<help>Armor group 16.</help>
+	</kind>
+	<kind>
+		<id>21</id>
+		<desc>engine</desc>
+		<help>Vehicle's engine.</help>
+	</kind>
+	<kind>
+		<id>22</id>
+		<desc>ammoBay</desc>
+		<help>Vehicle's ammon bay.</help>
+	</kind>
+	<kind>
+		<id>23</id>
+		<desc>leftTrack</desc>
+		<help>Vehicle's left track.</help>
+	</kind>
+	<kind>
+		<id>24</id>
+		<desc>rightTrack</desc>
+		<help>Vehicle's right track.</help>
+	</kind>
+	<kind>
+		<id>25</id>
+		<desc>gun</desc>
+		<help>Vehicle's gun.</help>
+	</kind>
+	<kind>
+		<id>26</id>
+		<desc>turretRotator</desc>
+		<help>Vehicle's turret rotator.</help>
+	</kind>
+	<kind>
+		<id>28</id>
+		<desc>surveyingDevice</desc>
+		<help>Vehicle's surveying devices.</help>
+	</kind>
+	<kind>
+		<id>29</id>
+		<desc>fuelTank</desc>
+		<help>Vehicle's fuel tank.</help>
+	</kind>
+	<kind>
+		<id>30</id>
+		<desc>radio</desc>
+		<help>Vehicle's radio.</help>
+	</kind>
+	<kind>
+		<id>31</id>
+		<desc>gunBreech</desc>
+		<help>Vehicle's gun breech.</help>
+	</kind>
+	<kind>
+		<id>41</id>
+		<desc>commander</desc>
+		<help>Tankman: commander.</help>
+	</kind>
+	<kind>
+		<id>42</id>
+		<desc>driver</desc>
+		<help>Tankman: driver.</help>
+	</kind>
+	<kind>
+		<id>43</id>
+		<desc>radioman_1</desc>
+		<help>Tankman: radioman 1.</help>
+	</kind>
+	<kind>
+		<id>44</id>
+		<desc>radioman_2</desc>
+		<help>Tankman: radioman 2.</help>
+	</kind>
+	<kind>
+		<id>45</id>
+		<desc>gunner_1</desc>
+		<help>Tankman: gunner 1.</help>
+	</kind>
+	<kind>
+		<id>46</id>
+		<desc>gunner_2</desc>
+		<help>Tankman: gunner 2.</help>
+	</kind>
+	<kind>
+		<id>47</id>
+		<desc>loader_1</desc>
+		<help>Tankman: loader 1.</help>
+	</kind>
+	<kind>
+		<id>48</id>
+		<desc>loader_2</desc>
+		<help>Tankman: loader 2.</help>
+	</kind>
+	<kind>
+		<id>71</id>
+		<desc>speedtree_trunk</desc>
+		<help>SpeedTree: trunk</help>
+	</kind>
+	<kind>
+		<id>72</id>
+		<desc>speedtree_foliage</desc>
+		<help>SpeedTree: foliage</help>
+	</kind>
+	<kind>
+		<id>73</id>
+		<desc>undamaged_1</desc>
+		<help>Undamaged destructible: 1.</help>
+	</kind>
+	<kind>
+		<id>74</id>
+		<desc>undamaged_2</desc>
+		<help>Undamaged destructible: 2.</help>
+	</kind>
+	<kind>
+		<id>75</id>
+		<desc>undamaged_3</desc>
+		<help>Undamaged destructible: 3.</help>
+	</kind>
+	<kind>
+		<id>76</id>
+		<desc>undamaged_4</desc>
+		<help>Undamaged destructible: 4.</help>
+	</kind>
+	<kind>
+		<id>77</id>
+		<desc>undamaged_5</desc>
+		<help>Undamaged destructible: 5.</help>
+	</kind>
+	<kind>
+		<id>78</id>
+		<desc>undamaged_6</desc>
+		<help>Undamaged destructible: 6.</help>
+	</kind>
+	<kind>
+		<id>79</id>
+		<desc>undamaged_7</desc>
+		<help>Undamaged destructible: 7.</help>
+	</kind>
+	<kind>
+		<id>80</id>
+		<desc>undamaged_8</desc>
+		<help>Undamaged destructible: 8.</help>
+	</kind>
+	<kind>
+		<id>81</id>
+		<desc>undamaged_9</desc>
+		<help>Undamaged destructible: 9.</help>
+	</kind>
+	<kind>
+		<id>82</id>
+		<desc>undamaged_10</desc>
+		<help>Undamaged destructible: 10.</help>
+	</kind>
+	<kind>
+		<id>83</id>
+		<desc>undamaged_11</desc>
+		<help>Undamaged destructible: 11.</help>
+	</kind>
+	<kind>
+		<id>84</id>
+		<desc>undamaged_12</desc>
+		<help>Undamaged destructible: 12.</help>
+	</kind>
+	<kind>
+		<id>85</id>
+		<desc>undamaged_13</desc>
+		<help>Undamaged destructible: 13.</help>
+	</kind>
+	<kind>
+		<id>86</id>
+		<desc>undamaged_14</desc>
+		<help>Undamaged destructible: 14.</help>
+	</kind>
+	<kind>
+		<id>87</id>
+		<desc>broken_1</desc>
+		<help>Broken destructible: 1.</help>
+	</kind>
+	<kind>
+		<id>88</id>
+		<desc>broken_2</desc>
+		<help>Broken destructible: 2.</help>
+	</kind>
+	<kind>
+		<id>89</id>
+		<desc>broken_3</desc>
+		<help>Broken destructible: 3.</help>
+	</kind>
+	<kind>
+		<id>90</id>
+		<desc>broken_4</desc>
+		<help>Broken destructible: 4.</help>
+	</kind>
+	<kind>
+		<id>91</id>
+		<desc>broken_5</desc>
+		<help>Broken destructible: 5.</help>
+	</kind>
+	<kind>
+		<id>92</id>
+		<desc>broken_6</desc>
+		<help>Broken destructible: 6.</help>
+	</kind>
+	<kind>
+		<id>93</id>
+		<desc>broken_7</desc>
+		<help>Broken destructible: 7.</help>
+	</kind>
+	<kind>
+		<id>94</id>
+		<desc>broken_8</desc>
+		<help>Broken destructible: 8.</help>
+	</kind>
+	<kind>
+		<id>95</id>
+		<desc>broken_9</desc>
+		<help>Broken destructible: 9.</help>
+	</kind>
+	<kind>
+		<id>96</id>
+		<desc>broken_10</desc>
+		<help>Broken destructible: 10.</help>
+	</kind>
+	<kind>
+		<id>97</id>
+		<desc>broken_11</desc>
+		<help>Broken destructible: 11.</help>
+	</kind>
+	<kind>
+		<id>98</id>
+		<desc>broken_12</desc>
+		<help>Broken destructible: 12.</help>
+	</kind>
+	<kind>
+		<id>99</id>
+		<desc>broken_13</desc>
+		<help>Broken destructible: 13.</help>
+	</kind>
+	<kind>
+		<id>100</id>
+		<desc>broken_14</desc>
+		<help>Broken destructible: 14.</help>
+	</kind>
+	<kind>
+		<id>101</id>
+		<desc>grass</desc>
+		<help>Grass</help>
+		<ground_strength>medium</ground_strength>
+		<effect_material>ground</effect_material>
+		<terrain>maps/landscape/00_AllTiles/grass_12</terrain>
+		<terrain>maps/landscape/00_AllTiles/grass_8</terrain>
+		<terrain>maps/landscape/00_AllTiles/grass_8_Malinovka</terrain>
+		<terrain>maps/landscape/00_AllTiles/grass_8_I</terrain>
+		<terrain>maps/landscape/00_AllTiles/Grass_N_2</terrain>
+		<terrain>maps/landscape/00_AllTiles/Grass_N_3</terrain>
+		<terrain>maps/landscape/00_AllTiles/Grass_N_5</terrain>
+		<terrain>maps/landscape/00_AllTiles/Grass_N_18</terrain>
+		<terrain>maps/landscape/00_AllTiles/Grass_N_15</terrain>
+		<terrain>maps/landscape/00_AllTiles/Grass_N_17</terrain>
+                <terrain>maps/landscape/00_AllTiles/Grass_N_11</terrain>
+		<terrain>maps/landscape/00_AllTiles/Grass_Old_N_1</terrain>
+                <terrain>maps/landscape/00_AllTiles/Ground_N_5</terrain>
+		<terrain>maps/landscape/00_AllTiles/Grass_Old_N_2</terrain>
+		<terrain>maps/landscape/00_AllTiles/Grass_Old_N_3</terrain>
+		<terrain>maps/landscape/00_AllTiles/Grass_N_7</terrain>
+		<terrain>maps/landscape/00_AllTiles/Grass_N_9</terrain>
+		<terrain>maps/landscape/00_AllTiles/Grass_N_4</terrain>
+		<terrain>maps/landscape/00_AllTiles/RockGrassy_N_4</terrain>
+		<terrain>maps/landscape/00_AllTiles/Grass_N_1</terrain>
+		<terrain>maps/landscape/00_AllTiles/Grass_N_1</terrain>
+		<terrain>maps/landscape/00_AllTiles/Grass_N_10</terrain>
+		<terrain>maps/landscape/00_AllTiles/grass_canada_a</terrain>
+                	<terrain>maps/landscape/00_AllTiles/Grass_N_12</terrain>
+                	<terrain>maps/landscape/00_AllTiles/Grass_N_13</terrain>
+		<terrain>maps/landscape/35_steppes/color_Tex</terrain>
+		<terrain>maps/landscape/23_Westfeld/color_Tex</terrain>
+		<terrain>maps/landscape/43_north_america/color_Tex</terrain>
+                	<terrain>maps/landscape/44_north_america/color_tex</terrain>
+                	<terrain>maps/landscape/00_AllTiles/Grass_autumn_2</terrain>
+                	<terrain>maps/landscape/45_north_america/Color_tex</terrain>
+                	<terrain>maps/landscape/00_AllTiles/Leaves_dead_sand_A</terrain>
+               		<terrain>maps/landscape/00_AllTiles/Grass_N_14</terrain>
+                	<terrain>maps/landscape/00_AllTiles/Grass_M_9</terrain>
+                	<terrain>maps/landscape/46_north_america/color_Tex</terrain>
+                	<terrain>maps/landscape/00_AllTiles/GrassDead_M</terrain>
+                        <terrain>maps/landscape/00_AllTiles/Grass_9</terrain>
+                        <terrain>maps/landscape/00_AllTiles/Grass_thick</terrain>
+                        <terrain>maps/landscape/00_AllTiles/Grass_dead_5</terrain>
+                        <terrain>maps/landscape/00_AllTiles/Grass_6</terrain>
+                        <terrain>maps/landscape/00_AllTiles/Grass_rice</terrain>
+                        <terrain>maps/landscape/00_AllTiles/Grass_N_8</terrain>
+	</kind>
+	<kind>
+		<id>102</id>
+		<desc>moss</desc>
+		<help>Moss</help>
+		<ground_strength>soft</ground_strength>
+		<effect_material>ground</effect_material>
+		<terrain>maps/landscape/00_AllTiles/moss</terrain>
+		<terrain>maps/landscape/00_AllTiles/moss_1</terrain>
+		<terrain>maps/landscape/00_AllTiles/moss_2</terrain>
+		<terrain>maps/landscape/00_AllTiles/moss_dark</terrain>
+		<terrain>maps/landscape/00_AllTiles/moss_red</terrain>
+		<terrain>maps/landscape/00_AllTiles/bog</terrain>
+		<terrain>maps/landscape/00_AllTiles/Grass_N_2_low</terrain>
+		<terrain>maps/landscape/00_AllTiles/Ground_wet</terrain>
+		<terrain>maps/landscape/00_AllTiles/Forest_Ground_N_3</terrain>
+                <terrain>maps/landscape/00_AllTiles/Gravel_A_2_low</terrain>
+		<terrain>maps/landscape/00_AllTiles/Mud_1</terrain>
+                <terrain>maps/landscape/41_oregon/color_tex</terrain>
+                <terrain>maps/landscape/55_south_america/Color_tex</terrain>
+                <terrain>maps/landscape/60_asia_miao/Color_tex</terrain>
+		<terrain>maps/landscape/00_AllTiles/Grass_N_5low</terrain>
+	</kind>
+	<kind>
+		<id>103</id>
+		<desc>sand</desc>
+		<help>Sand</help>
+		<ground_strength>medium</ground_strength>
+		<effect_material>sand</effect_material>
+		<terrain>maps/landscape/00_AllTiles/sand_grass</terrain>
+		<terrain>maps/landscape/00_AllTiles/sand_16</terrain>
+		<terrain>maps/landscape/00_AllTiles/rock</terrain>
+		<terrain>maps/landscape/00_AllTiles/rock_2</terrain>
+		<terrain>maps/landscape/00_AllTiles/sand_19</terrain>
+		<terrain>
+			<weight>2.0</weight>  maps/landscape/00_AllTiles/sand_20 </terrain>
+		<terrain>maps/landscape/00_AllTiles/SoilBeach_N_1</terrain>
+		<terrain>maps/landscape/00_AllTiles/SoilBeach_N_2</terrain>
+		<terrain>maps/landscape/00_AllTiles/SoilBeach_A_2</terrain>
+		<terrain>maps/landscape/00_AllTiles/SoilBeach_N_3</terrain>
+		<terrain>maps/landscape/00_AllTiles/SoilBeach_N_4</terrain>
+		<terrain>maps/landscape/00_AllTiles/Rock_4</terrain>
+		<terrain>maps/landscape/00_AllTiles/RoadsDirt_N_1</terrain>
+                	<terrain>maps/landscape/00_AllTiles/RoadsDirt_N_4</terrain>
+		<terrain>maps/landscape/00_AllTiles/Rock_5</terrain>
+		<terrain>maps/landscape/00_AllTiles/rock_6</terrain>
+		<terrain>maps/landscape/00_AllTiles/rock_7</terrain>
+		<terrain>maps/landscape/00_AllTiles/Rock_8</terrain>
+                	<terrain>maps/landscape/00_AllTiles/rock_9</terrain>
+		<terrain>maps/landscape/00_AllTiles/Rock_11</terrain>
+		<terrain>maps/landscape/00_AllTiles/Rock_12</terrain>
+		<terrain>maps/landscape/00_AllTiles/Rock_14</terrain>
+		<terrain>maps/landscape/00_AllTiles/Rock_15</terrain>
+		<terrain>maps/landscape/00_AllTiles/Rock_16</terrain>
+		<terrain>maps/landscape/00_AllTiles/Rock_17</terrain>
+		<terrain>maps/landscape/00_AllTiles/Grass_N_3_africa</terrain>
+		<terrain>maps/landscape/28_Desert/color_tex</terrain>
+		<terrain>maps/landscape/00_AllTiles/Leaves_dead_2</terrain>
+		<terrain>maps/landscape/00_AllTiles/Leaves_dead_sand</terrain>
+                	<terrain>maps/landscape/00_AllTiles/ground_stepp_3</terrain>
+                	<terrain>maps/landscape/00_AllTiles/ground_stepp_4</terrain>
+                	<terrain>maps/landscape/00_AllTiles/ground_stepp_2</terrain>
+	        	<terrain>maps/landscape/00_AllTiles/Gravel_A_2</terrain>
+                	<terrain>maps/landscape/00_AllTiles/Cane_1</terrain>
+                	<terrain>maps/landscape/49_africa/Color_tex</terrain>
+                	<terrain>maps/landscape/00_AllTiles/Grass_dead_3</terrain>
+                	<terrain>maps/landscape/00_AllTiles/GrassGround_M</terrain>
+                	<terrain>maps/landscape/00_AllTiles/GrassGround_M_grey</terrain>
+                        <terrain>maps/landscape/00_AllTiles/Grass_dead_4</terrain>
+                        <terrain>maps/landscape/00_AllTiles/SoilBeach_W_03</terrain>
+                        <terrain>maps/landscape/00_AllTiles/SoilBeach_W_04</terrain>
+                        <terrain>maps/landscape/00_AllTiles/Sand_Au_3</terrain>
+                        <terrain>maps/landscape/00_AllTiles/SoilSand_1</terrain>
+                        <terrain>maps/landscape/00_AllTiles/SoilSand</terrain>
+                        <terrain>maps/landscape/00_AllTiles/SoilBeach</terrain>
+                        <terrain>maps/landscape/52_australia/Color_tex</terrain>
+                        <terrain>maps/landscape/00_AllTiles/Grass_dead_Au</terrain>
+	</kind>
+	<kind>
+		<id>104</id>
+		<desc>forest_ground</desc>
+		<help>Forest ground</help>
+		<ground_strength>medium</ground_strength>
+		<effect_material>ground</effect_material>
+		<terrain>maps/landscape/00_AllTiles/Forest_Ground_N_1</terrain>
+		<terrain>maps/landscape/00_AllTiles/Forest_Ground_N_2</terrain>
+		<terrain>maps/landscape/00_AllTiles/Branch_N_1</terrain>
+	</kind>
+	<kind>
+		<id>105</id>
+		<desc>ground</desc>
+		<help>Ground</help>
+		<ground_strength>medium</ground_strength>
+		<effect_material>ground</effect_material>
+		<terrain>maps/landscape/00_AllTiles/Ground_N_1</terrain>
+		<terrain>maps/landscape/00_AllTiles/Ground_N_2</terrain>
+		<terrain>maps/landscape/00_AllTiles/Ground_N_3</terrain>
+		<terrain>maps/landscape/00_AllTiles/Gravel_N_1</terrain>
+		<terrain>maps/landscape/00_AllTiles/grass_lawn</terrain>
+		<terrain>maps/landscape/05_Prohorovka/Color_Tex</terrain>
+		<terrain>maps/landscape/47_canada_a/color_tex</terrain>
+                <terrain>maps/landscape/53_japan/color_tex</terrain>
+		<terrain>maps/landscape/00_AllTiles/Grass_ground_A_1</terrain>
+		<terrain>maps/landscape/10_hills/color_Tex</terrain>
+		<terrain>maps/landscape/00_AllTiles/Grass_autumn</terrain>
+		<terrain>maps/landscape/00_AllTiles/Grass_dead</terrain>
+		<terrain>maps/landscape/00_AllTiles/grass_8</terrain>
+		<terrain>maps/landscape/00_AllTiles/Leaves_dead</terrain>
+		<terrain>maps/landscape/00_AllTiles/Grass_dead_dark</terrain>
+		<terrain>maps/landscape/13_Erlenberg/color_tex</terrain>
+		<terrain>maps/landscape/15_Komarin/color_tex</terrain>
+		<terrain>maps/landscape/11_Murovanka/color_tex</terrain>
+		<terrain>maps/landscape/00_AllTiles/grass_lavender</terrain>
+		<terrain>maps/landscape/22_Slough/Color_tex</terrain>
+              		 <terrain>maps/landscape/36_fishing_bay/color_tex</terrain>
+		<terrain>maps/landscape/00_AllTiles/RockGrassy_N_3</terrain>
+		<terrain>maps/landscape/00_AllTiles/RockGrassy_N_10</terrain>
+                	<terrain>maps/landscape/00_AllTiles/Rock_Grass_B_3</terrain>
+		<terrain>maps/landscape/37_Caucasus/color_tex</terrain>
+		<terrain>maps/landscape/48_south_america/color_tex</terrain>
+		<terrain>maps/landscape/01_Karelia/Color_Tex</terrain>
+		<terrain>maps/landscape/34_redshire/color_tex</terrain>
+		<terrain>maps/landscape/00_AllTiles/Forest_Ground_N_3</terrain>
+		<terrain>maps/landscape/00_AllTiles/Forest_Ground_N_4</terrain>sd
+                	<terrain>maps/landscape/51_asia/color_tex</terrain>
+                	<terrain>maps/landscape/56_south_america_andes/color_tex</terrain>
+              		 <terrain>maps/landscape/36_fishing_bay/color_tex</terrain>
+                	<terrain>maps/landscape/00_AllTiles/Rock_10</terrain>
+                	<terrain>maps/landscape/00_AllTiles/Cliff_N_1</terrain>
+                	<terrain>maps/landscape/00_AllTiles/Farmland_A_1</terrain>
+                	<terrain>maps/landscape/00_AllTiles/Farmland_A_2</terrain>
+                	<terrain>maps/landscape/00_AllTiles/Farmland_A_3</terrain>
+                	<terrain>maps/landscape/00_AllTiles/Farmland_A_4</terrain>
+                	<terrain>maps/landscape/00_AllTiles/Farmland_A_5</terrain>
+                	<terrain>maps/landscape/00_AllTiles/Farmland_A_6</terrain>
+                	<terrain>maps/landscape/00_AllTiles/Farmland_A_7</terrain>
+                	<terrain>maps/landscape/00_AllTiles/Farmland_A_8</terrain>
+                        <terrain>maps/landscape/00_AllTiles/RockGrassy_M2</terrain>
+                        <terrain>maps/landscape/00_AllTiles/Rock_Sand_medium</terrain>
+                        <terrain>maps/landscape/00_AllTiles/Trash_01</terrain>
+                        <terrain>maps/landscape/42_north_america/color_tex</terrain>
+                        <terrain>maps/landscape/04_Himmelsdorf/Color_Tex</terrain>
+                        <terrain>maps/landscape/14_siegfried_line/Color_Tex</terrain>
+                        <terrain>maps/landscape/00_AllTiles/mud_snow</terrain>
+                        <terrain>maps/landscape/00_AllTiles/Forest_Ground_Snow</terrain>
+                        <terrain>maps/landscape/33_Fjord/Color_Tex</terrain>
+	</kind>
+	<kind>
+		<id>106</id>
+		<desc>block</desc>
+		<help>Block</help>
+		<ground_strength>firm</ground_strength>
+		<effect_material>ground</effect_material>
+		<terrain>maps/landscape/06_Ensk/Color_Tex</terrain>
+	</kind>
+	<kind>
+		<id>107</id>
+		<desc>rock</desc>
+		<help>Rock</help>
+		<ground_strength>firm</ground_strength>
+		<effect_material>ground</effect_material>
+		<terrain>maps/landscape/07_Lakeville/Color_Tex</terrain>
+		<terrain>maps/landscape/02_Malinovka/Color_Tex</terrain>
+		<terrain>maps/landscape/00_AllTiles/rock_moss_1</terrain>
+                <terrain>maps/landscape/00_AllTiles/Ground_Sand_N_5</terrain>
+                <terrain>maps/landscape/00_AllTiles/Ground_Sand_N_8</terrain>
+		<terrain>maps/landscape/00_AllTiles/Rock_Sand_N_1</terrain>
+		<terrain>maps/landscape/00_AllTiles/vert_tex_N_3</terrain>
+		<terrain>maps/landscape/00_AllTiles/vert_tex_usa05</terrain>
+		<terrain>
+			<weight>2.0</weight> maps/landscape/00_AllTiles/Ground_Sand_N_1 </terrain>
+		<terrain>maps/landscape/18_Cliff/color_tex</terrain>
+		<terrain>maps/landscape/19_Kurgan/Color_Tex</terrain>
+		<terrain>maps/landscape/00_AllTiles/Mountain_moss_A_1</terrain>
+		<terrain>maps/landscape/00_AllTiles/RockGrassy_N_6</terrain>
+		<terrain>maps/landscape/00_AllTiles/RockGrassy_N_9</terrain>
+		<terrain>maps/landscape/00_AllTiles/Rock_13</terrain>
+                	<terrain>maps/landscape/00_AllTiles/Mountain_1</terrain>
+                	<terrain>maps/landscape/00_AllTiles/Mountain_2</terrain>
+               		<terrain>maps/landscape/00_AllTiles/RockGrassy_M</terrain>
+               		<terrain>maps/landscape/00_AllTiles/Cliffs_M</terrain>
+                        <terrain>maps/landscape/00_AllTiles/Cliffs_A</terrain>
+                        <terrain>maps/landscape/00_AllTiles/RockGrassy_N_3</terrain> 
+	</kind>
+	<kind>
+		<id>108</id>
+		<desc>wood</desc>jr
+		<help>Wood</help>
+		<ground_strength>medium</ground_strength>
+		<effect_material>wood</effect_material>
+	</kind>
+	<kind>
+		<id>109</id>
+		<desc>firm_road</desc>
+		<help> <terrain>maps/landscape/34_redshire/color_tex</terrain> Road </help>
+		<ground_strength>firm</ground_strength>
+                <effect_material>sand</effect_material>
+		<terrain>maps/landscape/00_AllTiles/ground_5</terrain>
+		<terrain>maps/landscape/08_WinterTown/Color_Tex</terrain>
+		<terrain>maps/landscape/00_AllTiles/Gravel_N_4</terrain>
+		<terrain>maps/landscape/00_AllTiles/sand_17</terrain>
+		<terrain>maps/landscape/00_AllTiles/Ground_N_1_K</terrain>
+		<terrain>maps/landscape/00_AllTiles/Ground_N_4</terrain>
+		<terrain>maps/landscape/00_AllTiles/Rock_3</terrain>
+		<terrain>maps/landscape/00_AllTiles/Ground_Sand_N_2</terrain>
+		<terrain>maps/landscape/00_AllTiles/Ground_Sand_N_3</terrain>
+                <terrain>maps/landscape/00_AllTiles/Ground_Sand_N_4</terrain>
+		<terrain>maps/landscape/00_AllTiles/ground_stepp</terrain>
+		<terrain>maps/landscape/00_AllTiles/sand_20</terrain>
+		<terrain>maps/landscape/00_AllTiles/sand_15</terrain>
+		<terrain>maps/landscape/03_campania/color_tex</terrain>
+                	<terrain>maps/landscape/00_AllTiles/Dirt_road_1</terrain>
+                	<terrain>maps/landscape/00_AllTiles/Dirt_road_3</terrain>
+                	<terrain>maps/landscape/00_AllTiles/Gravel_A_2_firm</terrain>
+                	<terrain>maps/landscape/00_AllTiles/Ground_K_1</terrain>
+                	<terrain>maps/landscape/00_AllTiles/Rock_Sand_N_2</terrain>
+		<terrain>maps/landscape/00_AllTiles/sand_21</terrain>
+                <terrain>maps/landscape/00_AllTiles/Paving_2</terrain>
+	</kind>
+	<kind>
+		<id>110</id>
+		<desc>snow</desc>
+		<help>Snow</help>
+		<ground_strength>medium</ground_strength>
+		<effect_material>snow</effect_material>
+		<terrain>maps/landscape/00_AllTiles/Snow</terrain>
+		<terrain>maps/landscape/00_AllTiles/Snow_grass</terrain>
+		<terrain>maps/landscape/00_AllTiles/Snow_grass_lives</terrain>
+		<terrain>maps/landscape/00_AllTiles/Snow_sand</terrain>
+		<terrain>maps/landscape/00_AllTiles/Snow_Rock_N_2</terrain>
+		<terrain>maps/landscape/38_mannerheim_line/color_tex</terrain>
+		<terrain>maps/landscape/00_AllTiles/Snow_Rock_N_1</terrain>
+		<terrain>maps/landscape/00_AllTiles/frozen_grass</terrain>
+	</kind>
+	<kind>
+		<id>111</id>
+		<desc>stone</desc>
+		<help>Stone</help>
+		<ground_strength>firm</ground_strength>
+		<effect_material>stone</effect_material>
+		<terrain>maps/landscape/00_AllTiles/block_pavement_A_3</terrain>
+		<terrain>maps/landscape/00_AllTiles/block_pavement_In_1</terrain>
+                <terrain>maps/landscape/00_AllTiles/Mountain_canada</terrain>
+                	<terrain>maps/landscape/00_AllTiles/block_pavement_N_1</terrain>
+                	<terrain>maps/landscape/00_AllTiles/block_pavement_N_3</terrain>
+		<terrain>maps/landscape/00_AllTiles/Paving</terrain>
+		<terrain>maps/landscape/00_AllTiles/Paving_dirt</terrain>
+		<terrain>maps/landscape/00_AllTiles/Paving_dirt_light</terrain>
+		<terrain>maps/landscape/00_AllTiles/Paving_snow</terrain>
+		<terrain>maps/landscape/00_AllTiles/Asphalt_N_1</terrain>
+		<terrain>maps/landscape/00_AllTiles/Asphalt_N_2</terrain>
+		<terrain>maps/landscape/00_AllTiles/Asphalt_Damaged_N_1</terrain>
+                	<terrain>maps/landscape/00_AllTiles/borders_1</terrain>
+                	<terrain>maps/landscape/17_Munchen/color_tex</terrain>
+                        <terrain>maps/landscape/00_AllTiles/Asphalt_Damaged_N_2</terrain>
+<terrain>maps/landscape/00_AllTiles/Road</terrain>
+<terrain>maps/landscape/00_AllTiles/Road5</terrain>
+<terrain>maps/landscape/00_AllTiles/Road6</terrain>
+<terrain>maps/landscape/00_AllTiles/Road7</terrain>
+<terrain>maps/landscape/00_AllTiles/Asphalt_Various_01</terrain>
+<terrain>maps/landscape/00_AllTiles/Mountain_In_2</terrain>
+<terrain>maps/landscape/00_AllTiles/Rock_Grass_N_1</terrain>
+<terrain>maps/landscape/00_AllTiles/Rock_Grass_Canada</terrain>
+<terrain>maps/landscape/00_AllTiles/Rock_Grass_N_2</terrain>
+<terrain>maps/landscape/00_AllTiles/Rock_Grass_B_2</terrain>
+	</kind>
+	<kind>
+		<id>112</id>
+		<desc>metal</desc>
+		<help>Metal</help>
+		<ground_strength>firm</ground_strength>
+		<effect_material>metal</effect_material>
+	</kind>
+	<kind>
+		<id>113</id>
+		<desc>sand_road</desc>
+		<help>Firm Road</help>
+		<ground_strength>firm</ground_strength>
+		<effect_material>sand</effect_material>
+		<terrain>maps/landscape/29_El_Hallouf/Color_tex</terrain>
+		<terrain>maps/landscape/00_AllTiles/Gravel0069_S</terrain>
+		<terrain>maps/landscape/00_AllTiles/Gravel0093_M</terrain>
+		<terrain>maps/landscape/00_AllTiles/Gravel0093_M</terrain>
+		<terrain>maps/landscape/31_desert_storm/color_tex</terrain>
+		<terrain>maps/landscape/00_AllTiles/Dirt_road_2</terrain>
+		<terrain>maps/landscape/00_AllTiles/Ground_N_1_A</terrain>
+                <terrain>maps/landscape/00_AllTiles/ground_stepp_5</terrain>
+                <terrain>maps/landscape/00_AllTiles/Gravel_N_2</terrain>
+                <terrain>maps/landscape/00_AllTiles/RockGrassy_N_5</terrain>
+	</kind>
+</root>

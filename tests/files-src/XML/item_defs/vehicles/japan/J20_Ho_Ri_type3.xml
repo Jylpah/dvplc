@@ -1,0 +1,315 @@
+<root>
+	<crew>
+		<commander/>
+		<gunner/>
+		<driver/>
+		<radioman/>
+		<loader/>
+		<loader/>
+	</crew>
+	<speedLimits>
+		<forward>45</forward>
+		<backward>20</backward>
+	</speedLimits>
+	<invisibility>
+		<moving>0.148</moving>
+		<still>0.247</still>
+		<firePenalty>0.08</firePenalty>
+	</invisibility>
+	<repairCost>0</repairCost>
+	<crewXpFactor>1.0</crewXpFactor>
+	<optDevicePreset>defaultPreset</optDevicePreset>
+	<consumableSlots>3</consumableSlots>
+	<provisionSlots>3</provisionSlots>
+	<enrichmentBoost>1.75</enrichmentBoost>
+	<effects>
+		<destruction>mediumDestruction</destruction>
+		<explosion>mediumExplosion</explosion>
+		<flaming>mediumFlaming</flaming>
+		<collision/>
+		<damagedStateGroup>small</damagedStateGroup>
+	</effects>
+	<camouflage>
+		<priceFactor>1.0</priceFactor>
+		<tiling>1 1 0 0</tiling>
+		<exclusionMask/>
+	</camouflage>
+	<emblems>
+		<default>japanese_sun</default>
+		<lodDist>MEDIUM</lodDist>
+		<alpha>0.1</alpha>
+	</emblems>
+	<horns>
+		<priceFactor>1</priceFactor>
+		<distanceFactor>1</distanceFactor>
+		<volumeFactor>1</volumeFactor>
+	</horns>
+	<hull>
+		<swinging>
+			<lodDist>FAR</lodDist>
+			<pitchParams>0.28 34.00 0.42 1.00 0.05 0.30</pitchParams>
+			<rollParams>1.00 0.28 34.00 0.42 1.00 0.05 0.30</rollParams>
+			<sensitivityToImpulse>0.59</sensitivityToImpulse>
+		</swinging>
+		<models>
+			<undamaged>vehicles/japan/J20_Ho_Ri_type3/normal/lod0/Hull.model</undamaged>
+			<destroyed>vehicles/japan/J20_Ho_Ri_type3/crash/lod0/Hull.model</destroyed>
+			<exploded>vehicles/japan/J20_Ho_Ri_type3/crash/lod0/Hull.model</exploded>
+		</models>
+		<exhaust>
+			<pixie/>
+			<nodes/>
+			<rates>5.0 10.0 25.0</rates>
+		</exhaust>
+		<turretPositions>
+			<turret>-0.0512 2.3498 -0.8203</turret>
+		</turretPositions>
+		<fakeTurrets>
+			<lobby>0</lobby>
+			<battle>0</battle>
+		</fakeTurrets>
+		<hitTester>
+			<collisionModel>vehicles/japan/J20_Ho_Ri_type3/collision/Hull.model</collisionModel>
+		</hitTester>
+		<armor>
+			<armor_1>260</armor_1>
+			<armor_2>170</armor_2>
+			<armor_3>100</armor_3>
+			<armor_4>60</armor_4>
+			<armor_5>90</armor_5>
+			<armor_6>267</armor_6>
+			<armor_7>30</armor_7>
+			<armor_8>65</armor_8>
+			<armor_9>200</armor_9>
+			<armor_10>0</armor_10>
+			<armor_11>250</armor_11>
+			<armor_12>30</armor_12>
+			<armor_16>220</armor_16>
+		</armor>
+		<primaryArmor>armor_1 armor_3 armor_4</primaryArmor>
+		<weight>44520</weight>
+		<maxHealth>1520</maxHealth>
+		<ammoBayHealth>
+			<maxHealth>280</maxHealth>
+			<maxRegenHealth>190</maxRegenHealth>
+			<repairCost>0</repairCost>
+			</ammoBayHealth>
+		<emblemSlots>
+			<clan>
+				<rayStart>0.1 0.1 1</rayStart>
+				<rayEnd>0.1 0.1 1</rayEnd>
+				<rayUp>0.000000 1 0.000000</rayUp>
+				<size>0.1</size>
+				<hideIfDamaged>true</hideIfDamaged>
+			</clan>
+			<inscription>
+				<rayStart>0.1 0.1 1</rayStart>
+				<rayEnd>0.1 0.1 1</rayEnd>
+				<rayUp>0.000000 1 0.000000</rayUp>
+				<size>0.1</size>
+				<hideIfDamaged>true</hideIfDamaged>
+			</inscription>
+		</emblemSlots>
+	</hull>
+	<chassis>
+		<Chassis_J20_Ho_Ri_type3>
+			<userString>#japan_vehicles:Chassis_J20_Ho_Ri_type3</userString>
+			<shortUserString>#japan_vehicles:Chassis_J20_Ho_Ri_type3_short</shortUserString>
+			<description>#japan_vehicles:Chassis_J20_Ho_Ri_type3_descr</description>
+			<tags/>
+			<level>10</level>
+			<price>0</price>
+			<models>
+				<undamaged>vehicles/japan/J20_Ho_Ri_type3/normal/lod0/Chassis.model</undamaged>
+				<destroyed>vehicles/japan/J20_Ho_Ri_type3/crash/lod0/Chassis.model</destroyed>
+				<exploded>vehicles/japan/J20_Ho_Ri_type3/crash/lod0/Chassis.model</exploded>
+			</models>
+			<traces>
+				<lodDist/>
+				<bufferPrefs/>
+				<textureSet/>
+				<size>0.1 0.1</size>
+			</traces>
+			<tracks>
+				<lodDist>MEDIUM</lodDist>
+				<leftMaterial>track_mat_L_skinned</leftMaterial>
+				<rightMaterial>track_mat_R_skinned</rightMaterial>
+			</tracks>
+			<wheels>
+				<lodDist>MEDIUM</lodDist>
+				<wheel>
+					<isLeft>true</isLeft>
+					<isLeading>false</isLeading>
+					<name>WD_L0</name>
+					<radius>0.1</radius>
+				</wheel>
+				<wheel>
+					<isLeft>false</isLeft>
+					<isLeading>false</isLeading>
+					<name>WD_R0</name>
+					<radius>0.1</radius>
+				</wheel>
+				<group>
+					<isLeft>true</isLeft>
+					<template>W_L</template>
+					<radius>0.1</radius>
+					<startIndex>0</startIndex>
+					<count>1</count>
+				</group>
+				<group>
+					<isLeft>false</isLeft>
+					<template>W_R</template>
+					<radius>0.1</radius>
+					<startIndex>0</startIndex>
+					<count>1</count>
+				</group>
+			</wheels>
+			<drivingWheels>WD_L0 WD_R0</drivingWheels>
+			<effects>
+				<lodDist>MEDIUM</lodDist>
+				<dust>mediumTankDust</dust>
+				<mud>mediumTankMud</mud>
+			</effects>
+			<sound/>
+			<hullPosition>0.000000 0.000000 0.000000</hullPosition>
+			<hitTester>
+				<collisionModel>vehicles/japan/J20_Ho_Ri_type3/collision/Chassis.model</collisionModel>
+			</hitTester>
+			<armor>
+				<leftTrack>40</leftTrack>
+				<rightTrack>40</rightTrack>
+			</armor>
+			<topRightCarryingPoint>1.28086 2.36792</topRightCarryingPoint>
+			<maxClimbAngle>25</maxClimbAngle>
+			<navmeshGirth>6.0</navmeshGirth>
+			<weight>11000</weight>
+			<maxLoad>80000</maxLoad>
+			<terrainResistance>1 1.4 2</terrainResistance>
+			<brakeForce>50200</brakeForce>
+			<rotationIsAroundCenter>true</rotationIsAroundCenter>
+			<rotationSpeed>31</rotationSpeed>
+			<shotDispersionFactors>
+				<vehicleMovement>0.17</vehicleMovement>
+				<vehicleRotation>0.1</vehicleRotation>
+			</shotDispersionFactors>
+			<bulkHealthFactor>3.0</bulkHealthFactor>
+			<maxHealth>300</maxHealth>
+			<maxRegenHealth>225</maxRegenHealth>
+			<repairCost>0</repairCost>
+			</Chassis_J20_Ho_Ri_type3>
+	</chassis>
+	<turrets0>
+		<Turret_1_J20_Ho_Ri_type3>
+			<userString>#japan_vehicles:Turret_1_J20_Ho_Ri_type3</userString>
+			<description>#japan_vehicles:Turret_1_J20_Ho_Ri_type3_descr</description>
+			<tags/>
+			<level>10</level>
+			<price>0</price>
+			<hitTester>
+				<collisionModel>vehicles/japan/J20_Ho_Ri_type3/collision/Turret_01.model</collisionModel>
+			</hitTester>
+			<models>
+				<undamaged>vehicles/japan/J20_Ho_Ri_type3/normal/lod0/Turret_01.model</undamaged>
+				<destroyed>vehicles/japan/J20_Ho_Ri_type3/crash/lod0/Turret_01.model</destroyed>
+				<exploded>vehicles/japan/J20_Ho_Ri_type3/crash/lod0/Turret_01.model</exploded>
+			</models>
+			<yawLimits>-7 7</yawLimits>
+			<gunPosition>-0.000049 0.000015 -0.000038</gunPosition>
+			<armor>
+				<armor_1>0</armor_1>
+			</armor>
+			<primaryArmor>armor_1 armor_3 armor_4</primaryArmor>
+			<weight>50</weight>
+			<maxHealth>380</maxHealth>
+			<rotationSpeed>26</rotationSpeed>
+			<turretRotatorHealth>
+				<maxHealth>100</maxHealth>
+				<maxRegenHealth>50</maxRegenHealth>
+				<repairCost>0</repairCost>
+				</turretRotatorHealth>
+			<circularVisionRadius>240</circularVisionRadius>
+			<surveyingDeviceHealth>
+				<maxHealth>120</maxHealth>
+				<maxRegenHealth>60</maxRegenHealth>
+				<repairCost>0</repairCost>
+				</surveyingDeviceHealth>
+			<guns>
+				<_149mm_Gun_Type_96>shared<maxAmmo>50</maxAmmo>
+					<hitTester>
+						<collisionModel>vehicles/japan/J20_Ho_Ri_type3/collision/Gun_01.model</collisionModel>
+					</hitTester>
+					<models>
+						<undamaged>vehicles/japan/J20_Ho_Ri_type3/normal/lod0/Gun_01.model</undamaged>
+						<destroyed>vehicles/japan/J20_Ho_Ri_type3/crash/lod0/Gun_01.model</destroyed>
+						<exploded>vehicles/japan/J20_Ho_Ri_type3/crash/lod0/Gun_01.model</exploded>
+					</models>
+					<armor>
+						<armor_1>270<vehicleDamageFactor>0.0</vehicleDamageFactor>
+						</armor_1>
+						<armor_2>220<vehicleDamageFactor>0.0</vehicleDamageFactor>
+						</armor_2>
+						<armor_3>200<vehicleDamageFactor>0.0</vehicleDamageFactor>
+						</armor_3>
+						<gun>40</gun>
+					</armor>
+					<shotDispersionRadius>0.35</shotDispersionRadius>
+					<aimingTime>2.25</aimingTime>
+					<reloadTime>12</reloadTime>
+					<shotDispersionFactors>
+						<turretRotation>0.08</turretRotation>
+						<afterShot>4</afterShot>
+						<whileGunDamaged>2.0</whileGunDamaged>
+					</shotDispersionFactors>
+					<invisibilityFactorAtShot>0.225</invisibilityFactorAtShot>
+					<pitchLimits>-14 6</pitchLimits>
+					<turretYawLimits>-7 7</turretYawLimits>
+					<emblemSlots/>
+					<shots>
+						<_149mm_AP_type96>
+							<shell>shared<price>0</price>
+							</shell>
+						</_149mm_AP_type96>
+						<_149mm_AP_type02>
+							<shell>shared<price>13<gold/>
+								</price>
+							</shell>
+						</_149mm_AP_type02>
+						<_149mm_HE_type96>
+							<shell>shared<price>0</price>
+							</shell>
+						</_149mm_HE_type96>
+					</shots>
+				</_149mm_Gun_Type_96>
+			</guns>
+			<emblemSlots>
+				<player>
+					<rayStart>-1.14052 0.501314 -1.84861</rayStart>
+					<rayEnd>-0.947969 0.447255 -1.84803</rayEnd>
+					<rayUp>0.000000 1 0.000000</rayUp>
+					<size>0.8</size>
+					<hideIfDamaged>false</hideIfDamaged>
+				</player>
+				<inscription>
+					<rayStart>-1.11845 0.493689 -1.01991</rayStart>
+					<rayEnd>-0.930106 0.426732 -1.02643</rayEnd>
+					<rayUp>0.000000 1 0.000000</rayUp>
+					<size>0.1</size>
+					<hideIfDamaged>true</hideIfDamaged>
+				</inscription>
+			</emblemSlots>
+			<showEmblemsOnGun>false</showEmblemsOnGun>
+			<physicsShape>0.941 -0.118 1.000 0.000 0.426 0.294 0.000 0.100 0.265 0.588 0.228 0.500 0.132 0.779 0.000</physicsShape>
+			<turretRotatorSoundManual/>
+			<turretRotatorSoundGear/>
+		</Turret_1_J20_Ho_Ri_type3>
+	</turrets0>
+	<engines>
+		<_Type03_V12>shared</_Type03_V12>
+	</engines>
+	<fuelTanks>
+		<Large>shared</Large>
+	</fuelTanks>
+	<radios>
+		<_Hei>shared</_Hei>
+	</radios>
+</root>

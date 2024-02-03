@@ -1,0 +1,66 @@
+devastator:
+    id: 1
+    default_abilities: ['stealth', 'hunters_mark']
+close_support:
+    id: 2
+    default_abilities: ['ally_buff', 'dash']
+long_support:
+    id: 3
+    default_abilities: ['lifesteal_heal', 'afterburner_ability']
+dreadnought:
+    id: 4
+    default_abilities: ['sacrifice', 'shield']
+stormtrooper:
+    id: 5
+    default_abilities: ['moonwalk', 'ally_buff']
+close_assault:
+    id: 6
+    default_abilities: ['lifesteal_heal', 'sacrifice']
+cavalry:
+    id: 7
+    default_abilities: ['stealth', 'dash']
+halfheavy:
+    id: 8
+    default_abilities: ['afterburner_ability', 'ramming_damage']
+scout:
+    id: 9
+    default_abilities: ['lifesteal_heal', 'hunters_mark']
+sniper:
+    id: 10
+    default_abilities: ['moonwalk', 'ramming_damage']
+vampire:
+    id: 11
+    default_abilities: ['moonwalkHellgames']
+vampire_2:
+    id: 12
+    default_abilities: ['returnInTime']
+werewolf:
+    id: 13
+    default_abilities: ['pretendDead'] 
+werewolf_2:
+    id: 14
+    default_abilities: ['tornadoHellgames']
+hunter:
+    id: 15
+    default_abilities: ['huntersMarkHellgames']
+hunter_2:
+    id: 16
+    default_abilities: ['curse']
+hunter_test:
+    id: 17
+    default_abilities: ['returnInTime', 'ramming_damage']
+moon_rover:
+    id: 18
+    default_abilities: ['gravityJump']
+berserk:
+    id: 19
+    default_abilities: ['berserkHellgames']
+revenger:
+    id: 20
+    default_abilities: ['reflectionAbility', 'revengeAbility']
+gravitizing_hunter:
+    id: 21
+    default_abilities: ['gravitizing_curse']
+gravitizing_vampire:
+    id: 22
+    default_abilities: ['moonwalkGravitizing']

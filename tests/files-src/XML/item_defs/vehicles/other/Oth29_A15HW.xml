@@ -1,0 +1,324 @@
+<root>
+	<crew>
+		<commander>radioman</commander>
+		<gunner>loader</gunner>
+		<driver/>
+	</crew>
+	<isUnlocked>true</isUnlocked>
+	<speedLimits>
+		<forward>50</forward>
+		<backward>22</backward>
+	</speedLimits>
+	<invisibility>
+		<moving>0.294</moving>
+		<still>0.294</still>
+		<firePenalty>0.441</firePenalty>
+	</invisibility>
+	<repairCost>0</repairCost>
+	<crewXpFactor>1.0</crewXpFactor>
+	<optDevicePreset>HEdrumGunProtectionPreset</optDevicePreset>
+	<consumableSlots>3</consumableSlots>
+	<provisionSlots>2</provisionSlots>
+	<enrichmentBoost>0.0</enrichmentBoost>
+	<turretBlowEnabled>true</turretBlowEnabled>
+	<effects>
+		<destruction>mediumDestruction</destruction>
+		<explosion>mediumExplosion</explosion>
+		<flaming>mediumFlaming</flaming>
+		<collision/>
+		<damagedStateGroup>small</damagedStateGroup>
+	</effects>
+	<camouflage>
+		<priceFactor>1.0</priceFactor>
+		<tiling>1 1 0 0</tiling>
+		<exclusionMask/>
+	</camouflage>
+	<emblems>
+		<default>germany_cross</default>
+		<lodDist>MEDIUM</lodDist>
+		<alpha>0.1</alpha>
+	</emblems>
+	<horns>
+		<priceFactor>1</priceFactor>
+		<distanceFactor>1</distanceFactor>
+		<volumeFactor>1</volumeFactor>
+	</horns>
+	<hull>
+		<swinging>
+			<lodDist>FAR</lodDist>
+			<pitchParams>0.28 34.00 0.42 1.00 0.05 0.30</pitchParams>
+			<rollParams>1.00 0.28 34.00 0.42 1.00 0.05 0.30</rollParams>
+			<sensitivityToImpulse>0.59</sensitivityToImpulse>
+		</swinging>
+		<models>
+			<undamaged>vehicles/other/Oth29_A15HW/normal/lod0/Hull.model</undamaged>
+			<destroyed>vehicles/other/Oth29_A15HW/crash/lod0/Hull.model</destroyed>
+			<exploded>vehicles/other/Oth29_A15HW/crash/lod0/Hull.model</exploded>
+		</models>
+		<exhaust>
+			<pixie/>
+			<nodes/>
+			<rates>5.0 10.0 25.0</rates>
+		</exhaust>
+		<turretPositions>
+			<turret>0.003427 1.387575 0.461897</turret>
+		</turretPositions>
+		<hitTester>
+			<collisionModel>vehicles/other/Oth29_A15HW/collision/Hull.model</collisionModel>
+		</hitTester>
+		<armor>
+			<armor_1>50</armor_1>
+			<armor_2>40</armor_2>
+			<armor_3>35</armor_3>
+			<armor_4>35</armor_4>
+			<armor_5>20</armor_5>
+			<armor_6>30</armor_6>
+			<armor_7>10<vehicleDamageFactor>0.0</vehicleDamageFactor>
+			</armor_7>
+			<armor_8>5</armor_8>
+			<armor_9>15</armor_9>
+			<armor_10>35</armor_10>
+			<armor_11>55</armor_11>
+			<armor_13>50<vehicleDamageFactor>0.0</vehicleDamageFactor>
+			</armor_13>
+			<armor_16>65</armor_16>
+		</armor>
+		<primaryArmor>armor_1 armor_3 armor_4</primaryArmor>
+		<weight>11907</weight>
+		<maxHealth>540</maxHealth>
+		<ammoBayHealth>
+			<maxHealth>170</maxHealth>
+			<maxRegenHealth>120</maxRegenHealth>
+			<repairCost>0</repairCost>
+			</ammoBayHealth>
+		<emblemSlots>
+			<clan>
+				<rayStart>0.1 0.1 1.0</rayStart>
+				<rayEnd>0.1 0.1 1.0</rayEnd>
+				<rayUp>0.0 1.0 0.0</rayUp>
+				<size>0.1</size>
+				<hideIfDamaged>true</hideIfDamaged>
+			</clan>
+			<inscription>
+				<rayStart>0.1 0.1 1.0</rayStart>
+				<rayEnd>0.1 0.1 1.0</rayEnd>
+				<rayUp>0.0 1.0 0.0</rayUp>
+				<size>0.1</size>
+				<hideIfDamaged>true</hideIfDamaged>
+			</inscription>
+		</emblemSlots>
+	</hull>
+	<chassis>
+		<Chassis_Oth29_A15HW>
+			<userString>#other_vehicles:Chassis_Oth29_A15HW</userString>
+			<shortUserString>#other_vehicles:Chassis_Oth29_A15HW_short</shortUserString>
+			<description>#other_vehicles:Chassis_Oth29_A15HW_descr</description>
+			<tags/>
+			<level>5</level>
+			<price>0</price>
+			<models>
+				<undamaged>vehicles/other/Oth29_A15HW/normal/lod0/Chassis.model</undamaged>
+				<destroyed>vehicles/other/Oth29_A15HW/crash/lod0/Chassis.model</destroyed>
+				<exploded>vehicles/other/Oth29_A15HW/crash/lod0/Chassis.model</exploded>
+			</models>
+			<traces>
+				<lodDist/>
+				<bufferPrefs/>
+				<textureSet/>
+				<size>0.1 0.1</size>
+			</traces>
+			<tracks>
+				<lodDist>MEDIUM</lodDist>
+				<leftMaterial>track_mat_L_skinned</leftMaterial>
+				<rightMaterial>track_mat_R_skinned</rightMaterial>
+			</tracks>
+			<wheels>
+				<lodDist>MEDIUM</lodDist>
+				<wheel>
+					<isLeft>true</isLeft>
+					<name>WD_L0</name>
+					<radius>0.1</radius>
+				</wheel>
+				<wheel>
+					<isLeft>false</isLeft>
+					<name>WD_R0</name>
+					<radius>0.1</radius>
+				</wheel>
+				<group>
+					<isLeft>true</isLeft>
+					<template>W_L</template>
+					<radius>0.1</radius>
+					<startIndex>0</startIndex>
+					<count>1</count>
+				</group>
+				<group>
+					<isLeft>false</isLeft>
+					<template>W_R</template>
+					<radius>0.1</radius>
+					<startIndex>0</startIndex>
+					<count>1</count>
+				</group>
+			</wheels>
+			<drivingWheels>WD_L0 WD_R0</drivingWheels>
+			<effects>
+				<lodDist>MEDIUM</lodDist>
+				<dust>mediumTankDust</dust>
+				<mud>mediumTankMud</mud>
+			</effects>
+			<sound/>
+			<hullPosition>0.0 0.0 0.0</hullPosition>
+			<hitTester>
+				<collisionModel>vehicles/other/Oth29_A15HW/collision/Chassis.model</collisionModel>
+			</hitTester>
+			<armor>
+				<leftTrack>15</leftTrack>
+				<rightTrack>15</rightTrack>
+			</armor>
+			<topRightCarryingPoint>1.16381 1.70397</topRightCarryingPoint>
+			<maxClimbAngle>25</maxClimbAngle>
+			<navmeshGirth>6.0</navmeshGirth>
+			<weight>6200</weight>
+			<maxLoad>27000</maxLoad>
+			<terrainResistance>0.9 1 1.4</terrainResistance>
+			<brakeForce>20000</brakeForce>
+			<rotationIsAroundCenter>false</rotationIsAroundCenter>
+			<rotationSpeed>44</rotationSpeed>
+			<shotDispersionFactors>
+				<vehicleMovement>0.15</vehicleMovement>
+				<vehicleRotation>0.15</vehicleRotation>
+			</shotDispersionFactors>
+			<bulkHealthFactor>3.0</bulkHealthFactor>
+			<maxHealth>100</maxHealth>
+			<maxRegenHealth>75</maxRegenHealth>
+			<repairCost>0</repairCost>
+			</Chassis_Oth29_A15HW>
+	</chassis>
+	<turrets0>
+		<Turret_1_Oth29_A15HW>
+			<userString>#other_vehicles:Turret_1_Oth29_A15HW</userString>
+			<description>#other_vehicles:Turret_1_Oth29_A15HW_descr</description>
+			<tags/>
+			<level>5</level>
+			<price>0</price>
+			<hitTester>
+				<collisionModel>vehicles/other/Oth29_A15HW/collision/Turret_01.model</collisionModel>
+			</hitTester>
+			<models>
+				<undamaged>vehicles/other/Oth29_A15HW/normal/lod0/Turret_01.model</undamaged>
+				<destroyed>vehicles/other/Oth29_A15HW/crash/lod0/Turret_01.model</destroyed>
+				<exploded>vehicles/other/Oth29_A15HW/crash/lod0/Turret_01.model</exploded>
+			</models>
+			<yawLimits>-180 180</yawLimits>
+			<gunPosition>-0.007501 0.248659 0.682192</gunPosition>
+			<armor>
+				<armor_1>65</armor_1>
+				<armor_3>30</armor_3>
+				<armor_4>30</armor_4>
+				<armor_5>20</armor_5>
+				<armor_6>15</armor_6>
+				<armor_7>65</armor_7>
+				<armor_8>0</armor_8>
+				<armor_9>30</armor_9>
+				<armor_10>30</armor_10>
+				<armor_12>65</armor_12>
+				<armor_13>65<vehicleDamageFactor>0.0</vehicleDamageFactor>
+				</armor_13>
+				<armor_16>65</armor_16>
+			</armor>
+			<primaryArmor>armor_1 armor_3 armor_4</primaryArmor>
+			<weight>2953</weight>
+			<maxHealth>80</maxHealth>
+			<rotationSpeed>48</rotationSpeed>
+			<turretRotatorHealth>
+				<maxHealth>100</maxHealth>
+				<maxRegenHealth>50</maxRegenHealth>
+				<repairCost>0</repairCost>
+				</turretRotatorHealth>
+			<circularVisionRadius>240</circularVisionRadius>
+			<surveyingDeviceHealth>
+				<maxHealth>70</maxHealth>
+				<maxRegenHealth>35</maxRegenHealth>
+				<repairCost>0</repairCost>
+				</surveyingDeviceHealth>
+			<guns>
+				<QF_6_pounder_Mk_V_HW>shared<maxAmmo>180</maxAmmo>
+					<hitTester>
+						<collisionModel>vehicles/other/Oth29_A15HW/collision/Gun_01.model</collisionModel>
+					</hitTester>
+					<models>
+						<undamaged>vehicles/other/Oth29_A15HW/normal/lod0/Gun_01.model</undamaged>
+						<destroyed>vehicles/other/Oth29_A15HW/crash/lod0/Gun_01.model</destroyed>
+						<exploded>vehicles/other/Oth29_A15HW/crash/lod0/Gun_01.model</exploded>
+					</models>
+					<armor>
+						<gun>10</gun>
+					</armor>
+					<shotDispersionRadius>0.34</shotDispersionRadius>
+					<aimingTime>1.7</aimingTime>
+					<reloadTime>7.5</reloadTime>
+					<clip>
+						<count>2</count>
+						<rate>60</rate>
+					</clip>
+					<burst>
+						<count>1</count>
+						<rate>60</rate>
+					</burst>
+					<shotDispersionFactors>
+						<turretRotation>0.08</turretRotation>
+						<afterShot>4</afterShot>
+						<whileGunDamaged>2.0</whileGunDamaged>
+					</shotDispersionFactors>
+					<invisibilityFactorAtShot>0.266</invisibilityFactorAtShot>
+					<pitchLimits>-20 12</pitchLimits>
+					<extraPitchLimits>
+						<front>-20 7 40</front>
+						<back>-20 1 40</back>
+					</extraPitchLimits>
+					<shots>
+						<_6pdr_AP_HW>
+							<shell>shared<price>0</price>
+							</shell>
+						</_6pdr_AP_HW>
+						<_6pdr_APCR_HW>
+							<shell>shared<price>6<gold/>
+								</price>
+							</shell>
+						</_6pdr_APCR_HW>
+						<_6pdr_HE_HW>
+							<shell>shared<price>0</price>
+							</shell>
+						</_6pdr_HE_HW>
+					</shots>
+				</QF_6_pounder_Mk_V_HW>
+			</guns>
+			<emblemSlots>
+				<player>
+					<rayStart>-1.14052 0.501314 -1.84861</rayStart>
+					<rayEnd>-0.947969 0.447255 -1.84803</rayEnd>
+					<rayUp>0.000000 1 0.000000</rayUp>
+					<size>0.8</size>
+					<hideIfDamaged>false</hideIfDamaged>
+				</player>
+				<inscription>
+					<rayStart>-1.11845 0.493689 -1.01991</rayStart>
+					<rayEnd>-0.930106 0.426732 -1.02643</rayEnd>
+					<rayUp>0.000000 1 0.000000</rayUp>
+					<size>0.1</size>
+					<hideIfDamaged>true</hideIfDamaged>
+				</inscription>
+			</emblemSlots>
+			<showEmblemsOnGun>false</showEmblemsOnGun>
+			<physicsShape>0.941 -0.118 1.000 0.000 0.426 0.294 0.000 0.493 0.265 0.588 0.228 0.500 0.132 0.779 0.000</physicsShape>
+		</Turret_1_Oth29_A15HW>
+	</turrets0>
+	<engines>
+		<Nuffield_liberty_MKV_HW>shared</Nuffield_liberty_MKV_HW>
+	</engines>
+	<fuelTanks>
+		<Average>shared</Average>
+	</fuelTanks>
+	<radios>
+		<N9>shared</N9>
+	</radios>
+</root>

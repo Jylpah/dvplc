@@ -1,0 +1,11 @@
+keyedArchive: 
+    smallDestruction:
+        string: "~res:/3d/FX/explosion_rush_m.sc2" 
+    smallExplosion:
+        string: "~res:/3d/FX/explosion_tank_m.sc2" 
+    mediumDestruction:
+        string: "~res:/3d/FX/explosion_rush_1.sc2" 
+    mediumExplosion:
+        string: "~res:/3d/FX/explosion_tank_1.sc2" 
+    DraculaExplosion:
+        string: "~res:/3d/FX/explosion_AMX_Dracula.sc2" 

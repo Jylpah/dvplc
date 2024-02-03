@@ -1,0 +1,373 @@
+<root>
+	<crew>
+		<commander/>
+		<gunner/>
+		<driver/>
+		<radioman/>
+		<loader/>
+	</crew>
+	<isUnlocked>true</isUnlocked>
+	<speedLimits>
+		<forward>48</forward>
+		<backward>18</backward>
+	</speedLimits>
+	<invisibility>
+		<moving>0.226</moving>
+		<still>0.292</still>
+		<firePenalty>0.423</firePenalty>
+	</invisibility>
+	<repairCost>0</repairCost>
+	<crewXpFactor>1.0</crewXpFactor>
+	<consumableSlots>3</consumableSlots>
+	<provisionSlots>2</provisionSlots>
+	<optDevicePreset>HEprotectionPreset</optDevicePreset>
+	<enrichmentBoost>0.0000</enrichmentBoost>
+	<turretBlowEnabled>true</turretBlowEnabled>
+	<effects>
+		<collision/>
+		<damagedStateGroup>medium</damagedStateGroup>
+	</effects>
+	<camouflage>
+		<priceFactor>1.0</priceFactor>
+		<tiling>1 1 0 0</tiling>
+		<exclusionMask>vehicles/japan/G81_Pz_IV_AusfH/Pz_IV_AusfH_CM.dds</exclusionMask>
+	</camouflage>
+	<emblems>
+		<default>germany_cross</default>
+		<lodDist>MEDIUM</lodDist>
+		<alpha>0.92</alpha>
+	</emblems>
+	<horns>
+		<priceFactor>1</priceFactor>
+		<distanceFactor>1</distanceFactor>
+		<volumeFactor>1</volumeFactor>
+	</horns>
+	<hull>
+		<models>
+			<undamaged>vehicles/japan/G81_Pz_IV_AusfH/normal/lod0/Hull.model</undamaged>
+			<destroyed>vehicles/japan/G81_Pz_IV_AusfH/normal/lod0/Hull.model</destroyed>
+			<exploded>vehicles/japan/G81_Pz_IV_AusfH/normal/lod0/Hull.model</exploded>
+		</models>
+		<swinging>
+			<lodDist>FAR</lodDist>
+			<pitchParams>0.26 34.00 0.42 1.00 0.05 0.30</pitchParams>
+			<rollParams>1.00 0.26 34.00 0.42 1.00 0.05 0.30</rollParams>
+			<sensitivityToImpulse>0.48</sensitivityToImpulse>
+		</swinging>
+		<exhaust>
+			<pixie>gas_medium</pixie>
+			<nodes>HP_Track_Exhaus_1</nodes>
+		</exhaust>
+		<turretPositions>
+			<turret>-0.07 0.692804 -0.159861</turret>
+		</turretPositions>
+		<hitTester>
+			<collisionModel>vehicles/japan/G81_Pz_IV_AusfH/collision/Hull.model</collisionModel>
+		</hitTester>
+		<armor>
+			<armor_1>80</armor_1>
+			<armor_2>80</armor_2>
+			<armor_3>30</armor_3>
+			<armor_4>20</armor_4>
+			<armor_5>20</armor_5>
+			<armor_6>30</armor_6>
+			<armor_7>20</armor_7>
+			<armor_8>30</armor_8>
+			<armor_9>0</armor_9>
+			<armor_10>80</armor_10>
+			<armor_11>80</armor_11>
+			<armor_12>8</armor_12>
+			<armor_13>11</armor_13>
+			<armor_14>10</armor_14>
+			<armor_15>10</armor_15>
+			<armor_16>5<vehicleDamageFactor>0.0</vehicleDamageFactor>
+			</armor_16>
+		</armor>
+		<primaryArmor>armor_1 armor_3 armor_4</primaryArmor>
+		<weight>11270</weight>
+		<maxHealth>568</maxHealth>
+		<ammoBayHealth>
+			<maxHealth>150</maxHealth>
+			<maxRegenHealth>90</maxRegenHealth>
+			<repairCost>0</repairCost>
+			</ammoBayHealth>
+		<emblemSlots>
+			<clan>
+				<rayStart>0.242788 0.453824 2.0075</rayStart>
+				<rayEnd>0.244388 0.392139 1.61228</rayEnd>
+				<rayUp>0.000000 1 0.000000</rayUp>
+				<size>0.28</size>
+				<hideIfDamaged>true</hideIfDamaged>
+			</clan>
+			<inscription>
+				<rayStart>-1.82502 0.283714 0.924312</rayStart>
+				<rayEnd>-1.42861 0.23024 0.924312</rayEnd>
+				<rayUp>0.000000 1 0.000000</rayUp>
+				<size>0.88</size>
+				<hideIfDamaged>true</hideIfDamaged>
+			</inscription>
+			<inscription>
+				<rayStart>1.82502 0.283714 0.924312</rayStart>
+				<rayEnd>1.42861 0.23024 0.924312</rayEnd>
+				<rayUp>0.000000 1 0.000000</rayUp>
+				<size>0.88</size>
+				<hideIfDamaged>true</hideIfDamaged>
+			</inscription>
+		</emblemSlots>
+	</hull>
+	<chassis>
+		<Chassis_Pz_IV_AusfH>
+			<userString>#japan_vehicles:Chassis_Pz_IV_AusfH</userString>
+			<tags/>
+			<level>4</level>
+			<price>0</price>
+			<models>
+				<undamaged>vehicles/japan/G81_Pz_IV_AusfH/normal/lod0/Chassis.model</undamaged>
+				<destroyed>vehicles/japan/G81_Pz_IV_AusfH/normal/lod0/Chassis.model</destroyed>
+				<exploded>vehicles/japan/G81_Pz_IV_AusfH/normal/lod0/Chassis.model</exploded>
+			</models>
+			<traces>
+				<lodDist>FAR</lodDist>
+				<bufferPrefs>mediumTank</bufferPrefs>
+				<textureSet>germany_01</textureSet>
+				<size>0.44 0.4</size>
+			</traces>
+			<tracks>
+				<lodDist>MEDIUM</lodDist>
+				<leftMaterial>track_mat_L_skinned</leftMaterial>
+				<rightMaterial>track_mat_R_skinned</rightMaterial>
+			</tracks>
+			<wheels>
+				<lodDist>MEDIUM</lodDist>
+				<wheel>
+					<isLeft>false</isLeft>
+					<isLeading>true</isLeading>
+					<name>WD_R0</name>
+					<radius>0.394983</radius>
+				</wheel>
+				<group>
+					<isLeft>false</isLeft>
+					<template>WD_R</template>
+					<radius>0.127726</radius>
+					<startIndex>1</startIndex>
+					<count>4</count>
+				</group>
+				<wheel>
+					<isLeft>false</isLeft>
+					<isLeading>true</isLeading>
+					<name>WD_R5</name>
+					<radius>0.350317</radius>
+				</wheel>
+				<group>
+					<isLeft>false</isLeft>
+					<template>W_R</template>
+					<radius>0.246376</radius>
+					<startIndex>0</startIndex>
+					<count>8</count>
+				</group>
+				<wheel>
+					<isLeft>true</isLeft>
+					<isLeading>true</isLeading>
+					<name>WD_L0</name>
+					<radius>0.394983</radius>
+				</wheel>
+				<group>
+					<isLeft>true</isLeft>
+					<template>WD_L</template>
+					<radius>0.127726</radius>
+					<startIndex>1</startIndex>
+					<count>4</count>
+				</group>
+				<wheel>
+					<isLeft>true</isLeft>
+					<isLeading>true</isLeading>
+					<name>WD_L5</name>
+					<radius>0.350317</radius>
+				</wheel>
+				<group>
+					<isLeft>true</isLeft>
+					<template>W_L</template>
+					<radius>0.246376</radius>
+					<startIndex>0</startIndex>
+					<count>8</count>
+				</group>
+			</wheels>
+			<drivingWheels>WD_L0 WD_L5</drivingWheels>
+			<effects>
+				<lodDist>MEDIUM</lodDist>
+				<dust>mediumTankDust</dust>
+				<mud>mediumTankMud</mud>
+			</effects>
+			<soundPC>/vehicles/tanks_pc/treads/treads_2</soundPC>
+			<soundNPC>/vehicles/tanks_npc/treads/treads_2</soundNPC>
+			<hullPosition>0.000000 1.00951 0.000000</hullPosition>
+			<hitTester>
+				<collisionModel>vehicles/japan/G81_Pz_IV_AusfH/collision/Chassis.model</collisionModel>
+			</hitTester>
+			<armor>
+				<leftTrack>15</leftTrack>
+				<rightTrack>15</rightTrack>
+			</armor>
+			<topRightCarryingPoint>1.20774 1.78645</topRightCarryingPoint>
+			<maxClimbAngle>25</maxClimbAngle>
+			<navmeshGirth>6.0</navmeshGirth>
+			<weight>7800</weight>
+			<maxLoad>28000</maxLoad>
+			<terrainResistance>1 1.1 2.4</terrainResistance>
+			<brakeForce>26000</brakeForce>
+			<rotationIsAroundCenter>false</rotationIsAroundCenter>
+			<rotationSpeed>35</rotationSpeed>
+			<shotDispersionFactors>
+				<vehicleMovement>0.15</vehicleMovement>
+				<vehicleRotation>0.15</vehicleRotation>
+			</shotDispersionFactors>
+			<bulkHealthFactor>3.0</bulkHealthFactor>
+			<maxHealth>90</maxHealth>
+			<maxRegenHealth>70</maxRegenHealth>
+			<repairCost>0</repairCost>
+			</Chassis_Pz_IV_AusfH>
+	</chassis>
+	<turrets0>
+		<Turret_2_Pz_IV_AusfH>
+			<userString>#japan_vehicles:Turret_2_Pz_IV_AusfH</userString>
+			<tags/>
+			<level>6</level>
+			<price>0</price>
+			<models>
+				<undamaged>vehicles/japan/G81_Pz_IV_AusfH/normal/lod0/Turret_02.model</undamaged>
+				<destroyed>vehicles/japan/G81_Pz_IV_AusfH/normal/lod0/Turret_02.model</destroyed>
+				<exploded>vehicles/japan/G81_Pz_IV_AusfH/normal/lod0/Turret_02.model</exploded>
+			</models>
+			<hitTester>
+				<collisionModel>vehicles/japan/G81_Pz_IV_AusfH/collision/Turret_02.model</collisionModel>
+			</hitTester>
+			<yawLimits>-180 180</yawLimits>
+			<gunPosition>0.000667 0.311264 0.7177</gunPosition>
+			<armor>
+				<armor_1>50</armor_1>
+				<armor_2>50</armor_2>
+				<armor_3>30</armor_3>
+				<armor_4>30</armor_4>
+				<armor_5>30</armor_5>
+				<armor_6>16</armor_6>
+				<armor_7>25</armor_7>
+				<armor_8>0</armor_8>
+				<armor_9>8</armor_9>
+				<armor_10>30</armor_10>
+				<armor_11>50</armor_11>
+				<armor_12>10</armor_12>
+				<armor_13>8<vehicleDamageFactor>0.0</vehicleDamageFactor>
+				</armor_13>
+				<armor_14>16<vehicleDamageFactor>0.0</vehicleDamageFactor>
+				</armor_14>
+				<armor_15>30</armor_15>
+				<armor_16>95</armor_16>
+			</armor>
+			<primaryArmor>armor_1 armor_3 armor_4</primaryArmor>
+			<weight>3600</weight>
+			<maxHealth>142</maxHealth>
+			<rotationSpeed>48</rotationSpeed>
+			<turretRotatorHealth>
+				<maxHealth>100</maxHealth>
+				<maxRegenHealth>50</maxRegenHealth>
+				<repairCost>0</repairCost>
+				</turretRotatorHealth>
+			<circularVisionRadius>240</circularVisionRadius>
+			<surveyingDeviceHealth>
+				<maxHealth>70</maxHealth>
+				<maxRegenHealth>35</maxRegenHealth>
+				<repairCost>0</repairCost>
+				</surveyingDeviceHealth>
+			<emblemSlots>
+				<player>
+					<rayStart>-1.27591 0.318359 0.528508</rayStart>
+					<rayEnd>-1.04433 0.318359 0.465497</rayEnd>
+					<rayUp>0.000000 1 0.000000</rayUp>
+					<size>0.28</size>
+					<hideIfDamaged>true</hideIfDamaged>
+				</player>
+				<player>
+					<rayStart>1.27591 0.318359 0.528508</rayStart>
+					<rayEnd>1.04433 0.318359 0.465497</rayEnd>
+					<rayUp>0.000000 1 0.000000</rayUp>
+					<size>0.28</size>
+					<hideIfDamaged>false</hideIfDamaged>
+				</player>
+			</emblemSlots>
+			<guns>
+				<_75mm_KwK_40_L48>shared<reloadTime>8.04</reloadTime>
+					<shotDispersionFactors>
+						<turretRotation>0.1</turretRotation>
+						<afterShot>4.0</afterShot>
+						<whileGunDamaged>2.0</whileGunDamaged>
+					</shotDispersionFactors>
+					<models>
+						<undamaged>vehicles/japan/G81_Pz_IV_AusfH/normal/lod0/Gun_07.model</undamaged>
+						<destroyed>vehicles/japan/G81_Pz_IV_AusfH/normal/lod0/Gun_07.model</destroyed>
+						<exploded>vehicles/japan/G81_Pz_IV_AusfH/normal/lod0/Gun_07.model</exploded>
+					</models>
+					<hitTester>
+						<collisionModel>vehicles/japan/G81_Pz_IV_AusfH/collision/Gun_07.model</collisionModel>
+					</hitTester>
+					<armor>
+						<armor_1>50<vehicleDamageFactor>0.0</vehicleDamageFactor>
+						</armor_1>
+						<armor_2>50<vehicleDamageFactor>0.0</vehicleDamageFactor>
+						</armor_2>
+						<armor_3>20<vehicleDamageFactor>0.0</vehicleDamageFactor>
+						</armor_3>
+						<armor_4>0<vehicleDamageFactor>0.0</vehicleDamageFactor>
+						</armor_4>
+						<gun>20</gun>
+					</armor>
+					<aimingTime>1.9</aimingTime>
+					<pitchLimits>-20 8</pitchLimits>
+					<extraPitchLimits>
+						<front>-20 10 30</front>
+						<back>-20 9 24</back>
+						<transition>5</transition>
+					</extraPitchLimits>
+					<invisibilityFactorAtShot>0.247</invisibilityFactorAtShot>
+					<emblemSlots>
+						<insigniaOnGun>
+							<rayStart>-0.00220047 0.00165273 2.79</rayStart>
+							<rayEnd>-0.152093 -0.489771 2.78905</rayEnd>
+							<rayUp>0.058 0.055 1</rayUp>
+							<size>0.241</size>
+							<hideIfDamaged>false</hideIfDamaged>
+						</insigniaOnGun>
+					</emblemSlots>
+					<animateEmblemSlots>true</animateEmblemSlots>
+					<shots>
+						<_75mm_Pzgr39>
+							<shell>shared<price>0</price>
+							</shell>
+						</_75mm_Pzgr39>
+						<_75mm_Pzgr.40>
+							<shell>shared<price>6<gold/>
+								</price>
+							</shell>
+						</_75mm_Pzgr.40>
+						<_75mm_Sprg.18>
+							<shell>shared<price>0</price>
+							</shell>
+						</_75mm_Sprg.18>
+					</shots>
+				</_75mm_KwK_40_L48>
+			</guns>
+			<showEmblemsOnGun>false</showEmblemsOnGun>
+			<physicsShape>0.932 0.000 0.915 0.000 0.444 0.116 0.500 0.696 0.266 0.500 0.000 0.500 0.000 0.100 0.000</physicsShape>
+			<turretRotatorSoundManual>/turret/turret/turret_manual_traverse/turret_manual_traverse_2000-3999</turretRotatorSoundManual>
+			<turretRotatorSoundGear>/turret/turret/turret_electric_traverse/turret_electric_traverse_2000-3999</turretRotatorSoundGear>
+		</Turret_2_Pz_IV_AusfH>
+	</turrets0>
+	<engines>
+		<Maybach_HL_120_TRM>shared</Maybach_HL_120_TRM>
+	</engines>
+	<fuelTanks>
+		<Average>shared</Average>
+	</fuelTanks>
+	<radios>
+		<FuG5>shared</FuG5>
+	</radios>
+</root>

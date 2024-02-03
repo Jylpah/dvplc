@@ -1,0 +1,109 @@
+keyedArchive: 
+    smallTankDust:
+        keyedArchive:
+            ground:
+                string: "~res:/3d/FX/chassis_effects/dust_ground_s.sc2"
+            snow:
+                string: "~res:/3d/FX/chassis_effects/dust_snow_s.sc2"
+            sand:
+                string: "~res:/3d/FX/chassis_effects/dust_sand_s.sc2"
+            stone: 
+                string: "~res:/3d/FX/chassis_effects/dust_stone_s.sc2"
+            water:
+                string: "~res:/3d/FX/chassis_effects/dust_water_s.sc2"
+    smallTankMud:
+        keyedArchive:
+            ground:
+                string: "~res:/3d/FX/chassis_effects/dirt_ground_s.sc2"
+            snow:
+                string: "~res:/3d/FX/chassis_effects/dirt_snow_s.sc2"
+            sand:
+                string: "~res:/3d/FX/chassis_effects/dirt_sand_s.sc2"
+            stone:
+                string: "~res:/3d/FX/chassis_effects/dirt_stone_s.sc2"
+            water:
+                string: "~res:/3d/FX/chassis_effects/dirt_water_s.sc2"
+    smallTankWave:
+        keyedArchive:
+            ground:
+                string: "~res:/3d/FX/chassis_effects/wave_ground_s.sc2"
+            snow:
+                string: "~res:/3d/FX/chassis_effects/wave_snow_s.sc2"
+            sand:
+                string: "~res:/3d/FX/chassis_effects/wave_sand_s.sc2"
+            stone:
+                string: "~res:/3d/FX/chassis_effects/wave_stone_s.sc2"
+            water:
+                string: "~res:/3d/FX/chassis_effects/wave_water_s.sc2"
+    mediumTankDust:
+        keyedArchive:
+            ground:
+                string: "~res:/3d/FX/chassis_effects/dust_ground_m.sc2"
+            snow:
+                string: "~res:/3d/FX/chassis_effects/dust_snow_m.sc2"
+            sand:
+                string: "~res:/3d/FX/chassis_effects/dust_sand_m.sc2"
+            stone: 
+                string: "~res:/3d/FX/chassis_effects/dust_stone_m.sc2"
+            water:
+                string: "~res:/3d/FX/chassis_effects/dust_water_m.sc2"
+    mediumTankMud:
+        keyedArchive:
+            ground:
+                string: "~res:/3d/FX/chassis_effects/dirt_ground_m.sc2"
+            snow:
+                string: "~res:/3d/FX/chassis_effects/dirt_snow_m.sc2"
+            sand:
+                string: "~res:/3d/FX/chassis_effects/dirt_sand_m.sc2"
+            stone:
+                string: "~res:/3d/FX/chassis_effects/dirt_stone_m.sc2"
+            water:
+                string: "~res:/3d/FX/chassis_effects/dirt_water_m.sc2"
+    mediumTankWave:
+        keyedArchive:
+            ground:
+                string: "~res:/3d/FX/chassis_effects/wave_ground_m.sc2"
+            snow:
+                string: "~res:/3d/FX/chassis_effects/wave_snow_m.sc2"
+            sand:
+                string: "~res:/3d/FX/chassis_effects/wave_sand_m.sc2"
+            stone:
+                string: "~res:/3d/FX/chassis_effects/wave_stone_m.sc2"
+            water:
+                string: "~res:/3d/FX/chassis_effects/wave_water_m.sc2"
+    largeTankDust:
+        keyedArchive:
+            ground:
+                string: "~res:/3d/FX/chassis_effects/dust_ground_l.sc2"
+            snow:
+                string: "~res:/3d/FX/chassis_effects/dust_snow_l.sc2"
+            sand:
+                string: "~res:/3d/FX/chassis_effects/dust_sand_l.sc2"
+            stone: 
+                string: "~res:/3d/FX/chassis_effects/dust_stone_l.sc2"
+            water:
+                string: "~res:/3d/FX/chassis_effects/dust_water_l.sc2"
+    largeTankMud:
+        keyedArchive:
+            ground:
+                string: "~res:/3d/FX/chassis_effects/dirt_ground_l.sc2"
+            snow:
+                string: "~res:/3d/FX/chassis_effects/dirt_snow_l.sc2"
+            sand:
+                string: "~res:/3d/FX/chassis_effects/dirt_sand_l.sc2"
+            stone:
+                string: "~res:/3d/FX/chassis_effects/dirt_stone_l.sc2"
+            water:
+                string: "~res:/3d/FX/chassis_effects/dirt_water_l.sc2"
+    largeTankWave:
+        keyedArchive:
+            ground:
+                string: "~res:/3d/FX/chassis_effects/wave_ground_l.sc2"
+            snow:
+                string: "~res:/3d/FX/chassis_effects/wave_snow_l.sc2"
+            sand:
+                string: "~res:/3d/FX/chassis_effects/wave_sand_l.sc2"
+            stone:
+                string: "~res:/3d/FX/chassis_effects/wave_stone_l.sc2"
+            water:
+                string: "~res:/3d/FX/chassis_effects/wave_water_l.sc2"

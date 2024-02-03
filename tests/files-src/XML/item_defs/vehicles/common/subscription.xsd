@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+  <xs:element name="root">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="name" type="xs:string"/>
+        <xs:element ref="stages"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="stages">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="stage" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+    <xs:unique name="unique-id">
+      <xs:selector xpath="stage/id"/>
+      <xs:field xpath="."/>
+    </xs:unique>
+  </xs:element>
+
+  <xs:element name="stage">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="id" type="xs:nonNegativeInteger"/>
+        <xs:element name="duration" type="xs:nonNegativeInteger"/>
+        <xs:element ref="bonus"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="bonus">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="stuff" minOccurs="0" maxOccurs="1"/>
+        <xs:element name="premium" type="xs:nonNegativeInteger" minOccurs="0" maxOccurs="1"/>
+        <xs:element name="tokens" type="xs:string" minOccurs="0" maxOccurs="1"/>
+        <xs:element ref="vehicle" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element ref="unlock" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="stuff">
+    <xs:simpleType>
+      <xs:restriction base="xs:string">
+        <xs:pattern value="(\s*[^:\s]+:[0-9]+)+"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+
+  <xs:element name="vehicle">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="name" type="vehicle-name"/>
+        <xs:element name="compensation" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:simpleType name="vehicle-name">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="(ussr|germany|usa|china|france|uk|japan|other):[\c-]+"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="unlock">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="name" type="unlock-type"/>
+        <xs:element name="targets" type="vehicle-names-set"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:simpleType name="unlock-type">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="\c+:\c*:[\c-]+"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="vehicle-names-set">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="((ussr|germany|usa|china|france|uk|japan|other):[\c-]+\s*)+"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

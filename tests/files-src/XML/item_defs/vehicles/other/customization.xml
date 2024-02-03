@@ -1,0 +1,30 @@
+<root>
+	<armorColor>90 103 94 0</armorColor>
+	<inscriptionColors>
+		<c0>0 0 0 4</c0>
+		<c1>0 0 0 5</c1>
+		<c2>0 0 0 6</c2>
+		<c3>0 0 0 0</c3>
+		<c4>0 0 0 0</c4>
+		<c5>0 0 0 0</c5>
+		<c6>0 0 0 0</c6>
+		<c7>0 0 0 0</c7>
+		<c8>0 0 0 0</c8>
+		<c9>0 0 0 0</c9>
+		<c10>0 0 0 0</c10>
+		<c11>0 0 0 0</c11>
+		<c12>0 0 0 0</c12>
+		<c13>0 0 0 0</c13>
+		<c14>0 0 0 0</c14>
+		<c15>0 0 0 0</c15>
+	</inscriptionColors>
+	<inscriptions>
+		<other>
+			<userString>#vehicle_customization:inscription/historical</userString>
+			<priceFactor>1.0</priceFactor>
+			<inscriptions/>
+		</other>
+	</inscriptions>
+	<camouflageGroups>
+	</camouflageGroups>
+</root>

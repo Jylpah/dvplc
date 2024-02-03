@@ -1,0 +1,248 @@
+<root>
+	<levelsSettings>
+		<level>
+			<levelNum>1</levelNum>
+		</level>
+		<level>
+			<levelNum>2</levelNum>
+			<rolePoints>75</rolePoints>
+		</level>
+		<level>
+			<levelNum>3</levelNum>
+			<rolePoints>200</rolePoints>
+		</level>
+		<level>
+			<levelNum>4</levelNum>
+			<rolePoints>325</rolePoints>
+		</level>
+		<level>
+			<levelNum>5</levelNum>
+			<rolePoints>475</rolePoints>
+		</level>
+	</levelsSettings>
+	<bossRole>
+		<id>1</id>
+		<userString>#bossmode:boss_role/name</userString>
+		<description>#bossmode:boss_role/descr</description>
+		<icon>vampire</icon>
+		<boss/>
+		<levels>
+			<level>
+				<abilities>
+					<slot index="0">bigBoss</slot>
+					<slot index="1">gravityBurst</slot>
+					<slot index="2">railgunCharger</slot>
+				</abilities>
+				<script/>
+			</level>
+			<level>
+				<abilities>
+					<slot index="0">bigBoss</slot>
+					<slot index="1">gravityBurst</slot>
+					<slot index="2">railgunCharger</slot>
+				</abilities>
+				<script/>
+			</level>
+			<level>
+				<abilities>
+					<slot index="0">bigBoss</slot>
+					<slot index="1">gravityBurst</slot>
+					<slot index="2">railgunCharger</slot>
+				</abilities>
+				<script/>
+			</level>
+			<level>
+				<abilities>
+					<slot index="0">bigBoss</slot>
+					<slot index="1">gravityBurst</slot>
+					<slot index="2">railgunCharger</slot>
+				</abilities>
+				<script/>
+			</level>
+			<level>
+				<abilities>
+					<slot index="0">bigBoss</slot>
+					<slot index="1">gravityBurst</slot>
+					<slot index="2">railgunCharger</slot>
+				</abilities>
+				<script/>
+			</level>
+		</levels>
+	</bossRole>
+	<healerRole>
+		<id>2</id>
+		<userString>#bossmode:healer_role/name</userString>
+		<description>#bossmode:healer_role/descr</description>
+		<icon>vampire</icon>
+		<levels>
+			<level>
+				<abilities>
+					<slot index="0">healingAuraL1</slot>
+					<slot index="1">shieldGiverAbilityL1</slot>
+					<slot index="2">healingShotL1</slot>
+				</abilities>
+				<script/>
+			</level>
+			<level>
+				<abilities>
+					<slot index="0">healingAuraL2</slot>
+					<slot index="1">shieldGiverAbilityL2</slot>
+					<slot index="2">healingShotL2</slot>
+				</abilities>
+				<script/>
+			</level>
+			<level>
+				<abilities>
+					<slot index="0">healingAuraL3</slot>
+					<slot index="1">shieldGiverAbilityL3</slot>
+					<slot index="2">healingShotL3</slot>
+				</abilities>
+				<script/>
+			</level>
+			<level>
+				<abilities>
+					<slot index="0">healingAuraL4</slot>
+					<slot index="1">shieldGiverAbilityL4</slot>
+					<slot index="2">healingShotL4</slot>
+				</abilities>
+				<script/>
+			</level>
+			<level>
+				<abilities>
+					<slot index="0">healingAuraL5</slot>
+					<slot index="1">shieldGiverAbilityL5</slot>
+					<slot index="2">healingShotL5</slot>
+				</abilities>
+				<script/>
+			</level>
+		</levels>
+	</healerRole>
+	<killerRole>
+		<id>4</id>
+		<userString>#bossmode:killer_role/name</userString>
+		<description>#bossmode:killer_role/descr</description>
+		<icon>vampire</icon>
+		<levels>
+			<level>
+				<abilities>
+					<slot index="0">poisonedShellL1</slot>
+					<slot index="1">killerPassiveL1</slot>
+				</abilities>
+			</level>
+			<level>
+				<abilities>
+					<slot index="0">poisonedShellL2</slot>
+					<slot index="1">killerPassiveL2</slot>
+				</abilities>
+				<script/>
+			</level>
+			<level>
+				<abilities>
+					<slot index="0">poisonedShellL3</slot>
+					<slot index="1">killerPassiveL3</slot>
+				</abilities>
+				<script/>
+			</level>
+			<level>
+				<abilities>
+					<slot index="0">poisonedShellL4</slot>
+					<slot index="1">killerPassiveL4</slot>
+				</abilities>
+				<script/>
+			</level>
+			<level>
+				<abilities>
+					<slot index="0">poisonedShellL5</slot>
+					<slot index="1">killerPassiveL5</slot>
+				</abilities>
+				<script/>
+			</level>
+		</levels>
+	</killerRole>
+	<kamikazeRole>
+		<id>5</id>
+		<userString>#bossmode:kamikaze_role/name</userString>
+		<description>#bossmode:kamikaze_role/descr</description>
+		<icon>vampire</icon>
+		<levels>
+			<level>
+				<abilities>
+					<slot index="0">kamikazeAbilityL1</slot>
+					<slot index="1">kamikazePassiveL1</slot>
+				</abilities>
+				<script/>
+			</level>
+			<level>
+				<abilities>
+					<slot index="0">kamikazeAbilityL2</slot>
+					<slot index="1">kamikazePassiveL2</slot>
+				</abilities>
+				<script/>
+			</level>
+			<level>
+				<abilities>
+					<slot index="0">kamikazeAbilityL3</slot>
+					<slot index="1">kamikazePassiveL3</slot>
+				</abilities>
+				<script/>
+			</level>
+			<level>
+				<abilities>
+					<slot index="0">kamikazeAbilityL4</slot>
+					<slot index="1">kamikazePassiveL4</slot>
+				</abilities>
+				<script/>
+			</level>
+			<level>
+				<abilities>
+					<slot index="0">kamikazeAbilityL5</slot>
+					<slot index="1">kamikazePassiveL5</slot>
+				</abilities>
+				<script/>
+			</level>
+		</levels>
+	</kamikazeRole>
+	<gravitonRole>
+		<id>6</id>
+		<userString>#bossmode:graviton_role/name</userString>
+		<description>#bossmode:graviton_role/descr</description>
+		<icon>vampire</icon>
+		<levels>
+			<level>
+				<abilities>
+					<slot index="0">gravityShotL1</slot>
+					<slot index="1">permanentDamageShieldL1</slot>
+				</abilities>
+				<script/>
+			</level>
+			<level>
+				<abilities>
+					<slot index="0">gravityShotL2</slot>
+					<slot index="1">permanentDamageShieldL2</slot>
+				</abilities>
+				<script/>
+			</level>
+			<level>
+				<abilities>
+					<slot index="0">gravityShotL3</slot>
+					<slot index="1">permanentDamageShieldL3</slot>
+				</abilities>
+				<script/>
+			</level>
+			<level>
+				<abilities>
+					<slot index="0">gravityShotL4</slot>
+					<slot index="1">permanentDamageShieldL4</slot>
+				</abilities>
+				<script/>
+			</level>
+			<level>
+				<abilities>
+					<slot index="0">gravityShotL5</slot>
+					<slot index="1">permanentDamageShieldL5</slot>
+				</abilities>
+				<script/>
+			</level>
+		</levels>
+	</gravitonRole>
+</root>

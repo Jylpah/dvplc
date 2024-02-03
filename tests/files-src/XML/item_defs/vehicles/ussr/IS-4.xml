@@ -1,0 +1,354 @@
+<root>
+	<crew>
+		<commander>radioman</commander>
+		<gunner/>
+		<driver/>
+		<loader/>
+	</crew>
+	<speedLimits>
+		<forward>42</forward>
+		<backward>14</backward>
+	</speedLimits>
+	<invisibility>
+		<moving>0.059</moving>
+		<still>0.117</still>
+		<firePenalty>0.176</firePenalty>
+	</invisibility>
+	<repairCost>0</repairCost>
+	<crewXpFactor>1.0</crewXpFactor>
+	<consumableSlots>3</consumableSlots>
+	<provisionSlots>3</provisionSlots>
+	<optDevicePreset>defaultPreset</optDevicePreset>
+	<enrichmentBoost>1.6265</enrichmentBoost>
+	<turretBlowEnabled>true</turretBlowEnabled>
+	<effects>
+		<destruction>mediumDestruction</destruction>
+		<explosion>mediumExplosion</explosion>
+		<flaming>largeFlaming</flaming>
+		<collision/>
+	</effects>
+	<camouflage>
+		<priceFactor>2.0</priceFactor>
+		<tiling>1 1 0 0</tiling>
+		<exclusionMask>vehicles/russian/R90_IS_4M/IS_4M_CM.dds</exclusionMask>
+	</camouflage>
+	<emblems>
+		<default>ussr_star</default>
+		<lodDist>MEDIUM</lodDist>
+		<alpha>0.88</alpha>
+	</emblems>
+	<horns>
+		<priceFactor>1</priceFactor>
+		<distanceFactor>1</distanceFactor>
+		<volumeFactor>1</volumeFactor>
+	</horns>
+	<hull>
+		<models>
+			<undamaged>vehicles/russian/R90_IS_4M/normal/lod0/Hull.model</undamaged>
+			<destroyed>vehicles/russian/R90_IS_4M/normal/lod0/Hull.model</destroyed>
+			<exploded>vehicles/russian/R90_IS_4M/normal/lod0/Hull.model</exploded>
+		</models>
+		<swinging>
+			<lodDist>FAR</lodDist>
+			<pitchParams>0.20 36.00 0.36 1.00 0.04 0.26</pitchParams>
+			<rollParams>1.00 0.20 36.00 0.36 1.00 0.04 0.26</rollParams>
+			<sensitivityToImpulse>0.13</sensitivityToImpulse>
+		</swinging>
+		<exhaust>
+			<pixie>particles/Tank/engine_exit_diesel.xml</pixie>
+			<nodes>HP_Track_Exhaus_1 HP_Track_Exhaus_2</nodes>
+			<rates>6.0 16.0 34.0</rates>
+		</exhaust>
+		<turretPositions>
+			<turret>0.000000 1.555313 0.658600</turret>
+		</turretPositions>
+		<hitTester>
+			<collisionModel>vehicles/russian/R90_IS_4M/collision/Hull.model</collisionModel>
+		</hitTester>
+		<armor>
+			<armor_1>227</armor_1>
+			<armor_2>140</armor_2>
+			<armor_3>126</armor_3>
+			<armor_4>100</armor_4>
+			<armor_5>130</armor_5>
+			<armor_6>124</armor_6>
+			<armor_7>120</armor_7>
+			<armor_8>30</armor_8>
+			<armor_9>80</armor_9>
+			<armor_10>30</armor_10>
+			<armor_11>0</armor_11>
+			<armor_12>100</armor_12>
+			<armor_13>260</armor_13>
+			<armor_16>60</armor_16>
+		</armor>
+		<primaryArmor>armor_2 armor_3 armor_4</primaryArmor>
+		<weight>30750</weight>
+		<maxHealth>1920</maxHealth>
+		<ammoBayHealth>
+			<maxHealth>240</maxHealth>
+			<maxRegenHealth>160</maxRegenHealth>
+			<repairCost>0</repairCost>
+			</ammoBayHealth>
+		<emblemSlots>
+			<clan>
+				<rayStart>0.529301 0.568139 2.48714</rayStart>
+				<rayEnd>0.529301 0.221838 2.28696</rayEnd>
+				<rayUp>0.000000 0.000000 -1</rayUp>
+				<size>0.28</size>
+				<hideIfDamaged>false</hideIfDamaged>
+			</clan>
+		</emblemSlots>
+	</hull>
+	<chassis>
+		<IS-4>
+			<userString>#ussr_vehicles:IS-4</userString>
+			<description>#ussr_vehicles:IS-4_descr</description>
+			<tags/>
+			<level>10</level>
+			<price>0</price>
+			<notInShop>true</notInShop>
+			<models>
+				<undamaged>vehicles/russian/R90_IS_4M/normal/lod0/Chassis.model</undamaged>
+				<destroyed>vehicles/russian/R90_IS_4M/normal/lod0/Chassis.model</destroyed>
+				<exploded>vehicles/russian/R90_IS_4M/normal/lod0/Chassis.model</exploded>
+			</models>
+			<traces>
+				<lodDist>FAR</lodDist>
+				<bufferPrefs>largeTank</bufferPrefs>
+				<textureSet>ussr_01</textureSet>
+				<size>0.52 0.72</size>
+			</traces>
+			<tracks>
+				<lodDist>MEDIUM</lodDist>
+				<leftMaterial>track_mat_L_skinned</leftMaterial>
+				<rightMaterial>track_mat_R_skinned</rightMaterial>
+			</tracks>
+			<wheels>
+				<lodDist>MEDIUM</lodDist>
+				<group>
+					<isLeft>true</isLeft>
+					<template>W_L</template>
+					<radius>0.286757</radius>
+					<startIndex>0</startIndex>
+					<count>7</count>
+				</group>
+				<group>
+					<isLeft>false</isLeft>
+					<template>W_R</template>
+					<radius>0.286757</radius>
+					<startIndex>0</startIndex>
+					<count>7</count>
+				</group>
+				<wheel>
+					<isLeft>true</isLeft>
+					<name>WD_L0</name>
+					<radius>0.296257</radius>
+				</wheel>
+				<group>
+					<isLeft>true</isLeft>
+					<template>WD_L</template>
+					<radius>0.153734</radius>
+					<startIndex>1</startIndex>
+					<count>3</count>
+				</group>
+				<wheel>
+					<isLeft>true</isLeft>
+					<name>WD_L4</name>
+					<radius>0.417466</radius>
+				</wheel>
+				<wheel>
+					<isLeft>false</isLeft>
+					<name>WD_R0</name>
+					<radius>0.296257</radius>
+				</wheel>
+				<group>
+					<isLeft>false</isLeft>
+					<template>WD_R</template>
+					<radius>0.153734</radius>
+					<startIndex>1</startIndex>
+					<count>3</count>
+				</group>
+				<wheel>
+					<isLeft>false</isLeft>
+					<name>WD_R4</name>
+					<radius>0.417466</radius>
+				</wheel>
+			</wheels>
+			<drivingWheels>WD_L0 WD_L4</drivingWheels>
+			<effects>
+				<lodDist>MEDIUM</lodDist>
+				<dust>largeTankDust</dust>
+				<mud>largeTankMud</mud>
+			</effects>
+			<sound>/vehicles/tanks/treads/treads_3</sound>
+			<hullPosition>0.000000 0.00000 0.000000</hullPosition>
+			<hitTester>
+				<collisionModel>vehicles/russian/R90_IS_4M/collision/Chassis.model</collisionModel>
+			</hitTester>
+			<armor>
+				<leftTrack>20</leftTrack>
+				<rightTrack>20</rightTrack>
+			</armor>
+			<topRightCarryingPoint>1.2304 2.25374</topRightCarryingPoint>
+			<maxClimbAngle>25</maxClimbAngle>
+			<navmeshGirth>6.0</navmeshGirth>
+			<weight>11000</weight>
+			<maxLoad>66300</maxLoad>
+			<terrainResistance>1 1.4 1.7</terrainResistance>
+			<brakeForce>39500</brakeForce>
+			<rotationIsAroundCenter>false</rotationIsAroundCenter>
+			<rotationSpeed>27</rotationSpeed>
+			<shotDispersionFactors>
+				<vehicleMovement>0.2</vehicleMovement>
+				<vehicleRotation>0.2</vehicleRotation>
+			</shotDispersionFactors>
+			<bulkHealthFactor>3.0</bulkHealthFactor>
+			<maxHealth>250</maxHealth>
+			<maxRegenHealth>190</maxRegenHealth>
+			<repairCost>0</repairCost>
+			</IS-4>
+	</chassis>
+	<turrets0>
+		<Turret_710_mod_5>
+			<userString>#ussr_vehicles:Turret_710_mod_5</userString>
+			<description>#ussr_vehicles:Turret_710_mod_5_descr</description>
+			<tags/>
+			<level>10</level>
+			<price>0</price>
+			<notInShop>true</notInShop>
+			<models>
+				<undamaged>vehicles/russian/R90_IS_4M/normal/lod0/Turret_01.model</undamaged>
+				<destroyed>vehicles/russian/R90_IS_4M/normal/lod0/Turret_01.model</destroyed>
+				<exploded>vehicles/russian/R90_IS_4M/normal/lod0/Turret_01.model</exploded>
+			</models>
+			<hitTester>
+				<collisionModel>vehicles/russian/R90_IS_4M/collision/Turret_01.model</collisionModel>
+			</hitTester>
+			<yawLimits>-180 180</yawLimits>
+			<gunPosition>0.000000 0.346605 1.288700</gunPosition>
+			<armor>
+				<armor_1>238</armor_1>
+				<armor_2>219</armor_2>
+				<armor_3>170</armor_3>
+				<armor_4>162</armor_4>
+				<armor_5>219</armor_5>
+				<armor_6>133</armor_6>
+				<armor_7>71</armor_7>
+				<armor_8>29</armor_8>
+				<armor_9>95</armor_9>
+				<armor_10>219</armor_10>
+				<armor_11>71</armor_11>
+				<armor_12>29</armor_12>
+				<armor_14>238</armor_14>
+				<armor_15>238</armor_15>
+				<armor_16>57</armor_16>
+			</armor>
+			<primaryArmor>armor_1 armor_3 armor_4</primaryArmor>
+			<weight>14200</weight>
+			<maxHealth>480</maxHealth>
+			<rotationSpeed>14</rotationSpeed>
+			<turretRotatorHealth>
+				<maxHealth>170</maxHealth>
+				<maxRegenHealth>85</maxRegenHealth>
+				<repairCost>0</repairCost>
+				</turretRotatorHealth>
+			<circularVisionRadius>250</circularVisionRadius>
+			<surveyingDeviceHealth>
+				<maxHealth>120</maxHealth>
+				<maxRegenHealth>60</maxRegenHealth>
+				<repairCost>0</repairCost>
+				</surveyingDeviceHealth>
+			<guns>
+				<_122mm_M62_IS4>shared<maxAmmo>40</maxAmmo>
+					<pitchLimits>-16 6</pitchLimits>
+					<models>
+						<undamaged>vehicles/russian/R90_IS_4M/normal/lod0/Gun_02.model</undamaged>
+						<destroyed>vehicles/russian/R90_IS_4M/normal/lod0/Gun_02.model</destroyed>
+						<exploded>vehicles/russian/R90_IS_4M/normal/lod0/Gun_02.model</exploded>
+					</models>
+					<hitTester>
+						<collisionModel>vehicles/russian/R90_IS_4M/collision/Gun_02.model</collisionModel>
+					</hitTester>
+					<armor>
+						<armor_1>238<vehicleDamageFactor>0.0</vehicleDamageFactor>
+						</armor_1>
+						<armor_2>152<vehicleDamageFactor>0.0</vehicleDamageFactor>
+						</armor_2>
+						<armor_3>133<vehicleDamageFactor>0.0</vehicleDamageFactor>
+						</armor_3>
+						<gun>60</gun>
+					</armor>
+					<shotDispersionRadius>0.36</shotDispersionRadius>
+					<reloadTime>10.8</reloadTime>
+					<aimingTime>2.5</aimingTime>
+					<shotDispersionFactors>
+						<turretRotation>0.1</turretRotation>
+						<afterShot>3.5</afterShot>
+						<whileGunDamaged>2.0</whileGunDamaged>
+					</shotDispersionFactors>
+					<extraPitchLimits>
+						<back>-16 4 30</back>
+					</extraPitchLimits>
+					<invisibilityFactorAtShot>0.18</invisibilityFactorAtShot>
+					<turretYawLimits>-180 180</turretYawLimits>
+					<shots>
+						<_122mm_BR_IS4_471D>
+							<shell>shared<price>0</price>
+							</shell>
+						</_122mm_BR_IS4_471D>
+						<_122mm_BM11_IS4>
+							<shell>shared<price>11<gold/>
+								</price>
+							</shell>
+						</_122mm_BM11_IS4>
+						<_122mm_UOF_IS4_472>
+							<shell>shared<price>0</price>
+							</shell>
+						</_122mm_UOF_IS4_472>
+					</shots>
+				</_122mm_M62_IS4>
+			</guns>
+			<emblemSlots>
+				<player>
+					<rayStart>1.03364 0.510622 0.674963</rayStart>
+					<rayEnd>0.718444 0.295306 0.555445</rayEnd>
+					<rayUp>0.000000 1 0.000000</rayUp>
+					<size>0.28</size>
+					<hideIfDamaged>false</hideIfDamaged>
+				</player>
+				<player>
+					<rayStart>-1.03364 0.510622 0.674963</rayStart>
+					<rayEnd>-0.718444 0.295306 0.555445</rayEnd>
+					<rayUp>0.000000 1 0.000000</rayUp>
+					<size>0.28</size>
+					<hideIfDamaged>true</hideIfDamaged>
+				</player>
+				<inscription>
+					<rayStart>1.20211 0.57462 -0.441257</rayStart>
+					<rayEnd>0.873431 0.346675 -0.443367</rayEnd>
+					<rayUp>0.00201366 0.996301 0.0859095</rayUp>
+					<size>0.68</size>
+					<hideIfDamaged>true</hideIfDamaged>
+				</inscription>
+				<inscription>
+					<rayStart>-1.20211 0.57462 -0.441257</rayStart>
+					<rayEnd>-0.873431 0.346675 -0.443367</rayEnd>
+					<rayUp>-0.000772589 0.998355 0.0573274</rayUp>
+					<size>0.68</size>
+					<hideIfDamaged>true</hideIfDamaged>
+				</inscription>
+			</emblemSlots>
+			<showEmblemsOnGun>false</showEmblemsOnGun>
+			<physicsShape>1.000 0.000 1.000 0.000 1.000 0.000 0.500 0.100 0.500 0.500 0.500 0.500 0.600 0.100 0.500</physicsShape>
+		</Turret_710_mod_5>
+	</turrets0>
+	<engines>
+		<V12_IS4>shared</V12_IS4>
+	</engines>
+	<fuelTanks>
+		<Large>shared</Large>
+	</fuelTanks>
+	<radios>
+		<_10RK-26>shared</_10RK-26>
+	</radios>
+</root>

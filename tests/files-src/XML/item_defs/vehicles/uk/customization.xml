@@ -1,0 +1,191 @@
+<root>
+	<armorColor>82 72 51 0</armorColor>
+	<inscriptionColors>
+		<c0>0 0 0 4</c0>
+		<c1>0 0 0 5</c1>
+		<c2>0 0 0 6</c2>
+		<c3>0 0 0 0</c3>
+		<c4>0 0 0 0</c4>
+		<c5>0 0 0 0</c5>
+		<c6>0 0 0 0</c6>
+		<c7>0 0 0 0</c7>
+		<c8>0 0 0 0</c8>
+		<c9>0 0 0 0</c9>
+		<c10>0 0 0 0</c10>
+		<c11>0 0 0 0</c11>
+		<c12>0 0 0 0</c12>
+		<c13>0 0 0 0</c13>
+		<c14>0 0 0 0</c14>
+		<c15>0 0 0 0</c15>
+	</inscriptionColors>
+	<inscriptions>
+		<uk>
+			<userString>#vehicle_customization:inscription/historical</userString>
+			<priceFactor>1.0</priceFactor>
+			<inscriptions>
+				<inscription>
+					<id>1</id>
+					<texName>gui/maps/vehicles/decals/inscriptions/uk/inscription_01.dds</texName>
+					<userString>#vehicle_customization:inscription/uk/demon</userString>
+				</inscription>
+				<inscription>
+					<id>2</id>
+					<texName>gui/maps/vehicles/decals/inscriptions/uk/inscription_02.dds</texName>
+					<userString>#vehicle_customization:inscription/uk/hunter</userString>
+				</inscription>
+				<inscription>
+					<id>3</id>
+					<texName>gui/maps/vehicles/decals/inscriptions/uk/inscription_03.dds</texName>
+					<userString>#vehicle_customization:inscription/uk/harbinger</userString>
+				</inscription>
+				<inscription>
+					<id>4</id>
+					<texName>gui/maps/vehicles/decals/inscriptions/uk/inscription_04.dds</texName>
+					<userString>#vehicle_customization:inscription/uk/warrior</userString>
+				</inscription>
+				<inscription>
+					<id>5</id>
+					<texName>gui/maps/vehicles/decals/inscriptions/uk/inscription_05.dds</texName>
+					<userString>#vehicle_customization:inscription/uk/thunderbolt</userString>
+				</inscription>
+				<inscription>
+					<id>6</id>
+					<texName>gui/maps/vehicles/decals/inscriptions/uk/inscription_06.dds</texName>
+					<userString>#vehicle_customization:inscription/uk/dreadnought</userString>
+				</inscription>
+				<inscription>
+					<id>7</id>
+					<texName>gui/maps/vehicles/decals/inscriptions/uk/inscription_07.dds</texName>
+					<userString>#vehicle_customization:inscription/uk/dogs</userString>
+				</inscription>
+				<inscription>
+					<id>8</id>
+					<texName>gui/maps/vehicles/decals/inscriptions/uk/inscription_08.dds</texName>
+					<userString>#vehicle_customization:inscription/uk/bullpup</userString>
+				</inscription>
+				<inscription>
+					<id>9</id>
+					<texName>gui/maps/vehicles/decals/inscriptions/uk/inscription_09.dds</texName>
+					<userString>#vehicle_customization:inscription/uk/fireball</userString>
+				</inscription>
+				<inscription>
+					<id>10</id>
+					<texName>gui/maps/vehicles/decals/inscriptions/uk/inscription_10.dds</texName>
+					<userString>#vehicle_customization:inscription/uk/hit_run</userString>
+				</inscription>
+				<inscription>
+					<id>11</id>
+					<texName>gui/maps/vehicles/decals/inscriptions/uk/inscription_11.dds</texName>
+					<userString>#vehicle_customization:inscription/uk/face</userString>
+				</inscription>
+				<inscription>
+					<id>12</id>
+					<texName>gui/maps/vehicles/decals/inscriptions/uk/inscription_12.dds</texName>
+					<userString>#vehicle_customization:inscription/uk/impertinent</userString>
+				</inscription>
+				<inscription>
+					<id>13</id>
+					<texName>gui/maps/vehicles/decals/inscriptions/uk/inscription_13.dds</texName>
+					<userString>#vehicle_customization:inscription/uk/daredevil</userString>
+				</inscription>
+				<inscription>
+					<id>14</id>
+					<texName>gui/maps/vehicles/decals/inscriptions/uk/inscription_14.dds</texName>
+					<userString>#vehicle_customization:inscription/uk/brother</userString>
+				</inscription>
+				<inscription>
+					<id>15</id>
+					<texName>gui/maps/vehicles/decals/inscriptions/uk/inscription_15.dds</texName>
+					<userString>#vehicle_customization:inscription/uk/manowar</userString>
+				</inscription>
+				<inscription>
+					<id>16</id>
+					<texName>gui/maps/vehicles/decals/inscriptions/uk/inscription_16.dds</texName>
+					<userString>#vehicle_customization:inscription/uk/agility</userString>
+				</inscription>
+				<inscription>
+					<id>17</id>
+					<texName>gui/maps/vehicles/decals/inscriptions/uk/inscription_17.dds</texName>
+					<userString>#vehicle_customization:inscription/uk/fist</userString>
+				</inscription>
+				<inscription>
+					<id>18</id>
+					<texName>gui/maps/vehicles/decals/inscriptions/uk/inscription_18.dds</texName>
+					<userString>#vehicle_customization:inscription/uk/destroyer</userString>
+				</inscription>
+				<inscription>
+					<id>19</id>
+					<texName>gui/maps/vehicles/decals/inscriptions/uk/inscription_19.dds</texName>
+					<userString>#vehicle_customization:inscription/uk/miller</userString>
+				</inscription>
+				<inscription>
+					<id>20</id>
+					<texName>gui/maps/vehicles/decals/inscriptions/uk/inscription_20.dds</texName>
+					<userString>#vehicle_customization:inscription/uk/god_queen</userString>
+				</inscription>
+				<inscription>
+					<id>21</id>
+					<texName>gui/maps/vehicles/decals/inscriptions/uk/inscription_21.dds</texName>
+					<userString>#vehicle_customization:inscription/uk/wrath</userString>
+				</inscription>
+				<inscription>
+					<id>22</id>
+					<texName>gui/maps/vehicles/decals/inscriptions/uk/inscription_22.dds</texName>
+					<userString>#vehicle_customization:inscription/uk/invulnerable</userString>
+				</inscription>
+				<inscription>
+					<id>23</id>
+					<texName>gui/maps/vehicles/decals/inscriptions/uk/inscription_23.dds</texName>
+					<userString>#vehicle_customization:inscription/uk/dust</userString>
+				</inscription>
+				<inscription>
+					<id>24</id>
+					<texName>gui/maps/vehicles/decals/inscriptions/uk/inscription_24.dds</texName>
+					<userString>#vehicle_customization:inscription/uk/god_king</userString>
+				</inscription>
+				<inscription>
+					<id>25</id>
+					<texName>gui/maps/vehicles/decals/inscriptions/uk/inscription_25.dds</texName>
+					<userString>#vehicle_customization:inscription/uk/avenger</userString>
+				</inscription>
+				<inscription>
+					<id>26</id>
+					<texName>gui/maps/vehicles/decals/inscriptions/uk/inscription_26.dds</texName>
+					<userString>#vehicle_customization:inscription/uk/devastator</userString>
+				</inscription>
+				<inscription>
+					<id>27</id>
+					<texName>gui/maps/vehicles/decals/inscriptions/uk/inscription_27.dds</texName>
+					<userString>#vehicle_customization:inscription/uk/blockbuster</userString>
+				</inscription>
+				<inscription>
+					<id>28</id>
+					<texName>gui/maps/vehicles/decals/inscriptions/uk/inscription_28.dds</texName>
+					<userString>#vehicle_customization:inscription/uk/ussr</userString>
+				</inscription>
+				<inscription>
+					<id>29</id>
+					<texName>gui/maps/vehicles/decals/inscriptions/uk/inscription_29.dds</texName>
+					<userString>#vehicle_customization:inscription/uk/phantom</userString>
+				</inscription>
+				<inscription>
+					<id>30</id>
+					<texName>gui/maps/vehicles/decals/inscriptions/uk/inscription_30.dds</texName>
+					<userString>#vehicle_customization:inscription/uk/clang</userString>
+				</inscription>
+				<inscription>
+					<id>31</id>
+					<texName>gui/maps/vehicles/decals/inscriptions/uk/inscription_31.dds</texName>
+					<userString>#vehicle_customization:inscription/uk/bert</userString>
+				</inscription>
+				<inscription>
+					<id>32</id>
+					<texName>gui/maps/vehicles/decals/inscriptions/uk/inscription_32.dds</texName>
+					<userString>#vehicle_customization:inscription/uk/for_king</userString>
+				</inscription>
+			</inscriptions>
+		</uk>
+	</inscriptions>
+	<camouflageGroups>
+	</camouflageGroups>
+</root>
