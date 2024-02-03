@@ -390,7 +390,7 @@ async def process_files(
 
                 match mode:
                     case "encode":
-                        dst_file = dst_file.with_suffix(".dvpl")
+                        dst_file = add_suffix(dst_file, ".dvpl")
                         verbose(f"encoding file: {dst_file}")
                         result = await encode_dvpl_file(
                             src_file,
@@ -534,10 +534,13 @@ async def open_dvpl_or_file(filename: Path) -> Result[bytes, str]:
             pass
         else:
             raise FileNotFoundError(f"could not find file: {filename}")
+        debug("opening %s", str(filename))
         async with aiofiles.open(filename, "br") as file:
             if filename.suffix.lower() == ".dvpl":
+                debug("opening DVPL file: %s", str(filename))
                 return decode_dvpl(await file.read())
             else:
+                debug("opening file: %s", str(filename))
                 return Ok(await file.read())
     except Exception as err:
         return Err(f"could not open file: {filename}: {err}")
