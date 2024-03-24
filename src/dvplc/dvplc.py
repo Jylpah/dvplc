@@ -15,8 +15,12 @@ from typer import Context, Option, Argument, Exit
 from result import Ok, Err, Result, UnwrapError
 from enum import StrEnum
 
-from pyutils import FileQueue, EventCounter, AsyncTyper
+from queutils import FileQueue
+
+# TODO: remove pyutils deps
+from pyutils import EventCounter, AsyncTyper
 from pyutils.multilevelformatter import MultilevelFormatter
+
 
 logging.getLogger("asyncio").setLevel(logging.WARNING)
 logger = logging.getLogger(__name__)
