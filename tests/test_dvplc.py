@@ -12,7 +12,7 @@ from hashlib import sha256
 
 import logging
 
-from pyutils import FileQueue
+from queutils import FileQueue
 
 from dvplc import (
     Compression,
