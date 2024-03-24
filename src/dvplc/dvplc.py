@@ -17,7 +17,6 @@ from enum import StrEnum
 
 from pyutils import FileQueue, EventCounter, AsyncTyper
 from pyutils.multilevelformatter import MultilevelFormatter
-from pyutils.utils import add_suffix
 
 logging.getLogger("asyncio").setLevel(logging.WARNING)
 logger = logging.getLogger(__name__)
@@ -50,6 +49,17 @@ DVPL_FOOTER_LEN = 20
 CONVERSIONS = ["keep", "replace", "mirror"]
 QUEUE_LEN = 1000
 THREADS = 5
+
+
+# Helper funcs
+
+
+def add_suffix(path: Path, suffix: str) -> Path:
+    """add suffix if it does not exists. Does not replace the suffix"""
+    if path.suffix == suffix:
+        return path
+    else:
+        return path.parent / (path.name + suffix)
 
 
 # main() -------------------------------------------------------------
