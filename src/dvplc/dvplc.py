@@ -16,17 +16,19 @@ from result import Ok, Err, Result, UnwrapError
 from enum import StrEnum
 
 from queutils import FileQueue
+from multilevelformatter import MultilevelFormatter
+
 
 # TODO: remove pyutils deps
 from pyutils import EventCounter, AsyncTyper
-from pyutils.multilevelformatter import MultilevelFormatter
 
 
-logging.getLogger("asyncio").setLevel(logging.WARNING)
+# logging.getLogger("asyncio").setLevel(logging.WARNING)
 logger = logging.getLogger(__name__)
 error = logger.error
-message = logger.warning
+warning = logger.warning
 verbose = logger.info
+message = logger.message  # type: ignore
 debug = logger.debug
 
 # Constants & defaults
@@ -116,15 +118,14 @@ def cli(
     global logger
 
     try:
-        LOG_LEVEL: int = logging.WARNING
+        LOG_LEVEL: int = logging.MESSAGE  # type: ignore
         if print_verbose:
             LOG_LEVEL = logging.INFO
         elif print_debug:
             LOG_LEVEL = logging.DEBUG
         elif print_silent:
             LOG_LEVEL = logging.ERROR
-        MultilevelFormatter.setDefaults(logger, log_file=log)
-        logger.setLevel(LOG_LEVEL)
+        MultilevelFormatter.setDefaults(logger, log_file=log, level=LOG_LEVEL)
 
         ctx.ensure_object(dict)
         ctx.obj["force"] = force
@@ -494,7 +495,7 @@ def decode_dvpl(input: bytes) -> Result[bytes, str]:
 
         d_size = footer["d_size"]  # decoded (output) size
         t_type = footer["e_type"]  # encoding type
-        e_crc = footer["e_crc"]  # CRC32 of endocoded (input) data
+        e_crc = footer["e_crc"]  # CRC32 of encoded (input) data
         e_length = footer["e_size"]  # encoded (input) size
 
         if e_length != len(input):
@@ -702,7 +703,7 @@ def make_dvpl_footer(encoded: bytes, d_size: int, compression: str) -> Optional[
         ), "Making DVPL footer failed"
         footer += f_d_size  # input size as UInt32LE
         footer += f_e_size  # output size as UInt32LE
-        footer += f_crc32  # outout crc32 as UInt32LE
+        footer += f_crc32  # output crc32 as UInt32LE
         footer += f_compression  # output type as UInt32LE
         footer += DVPL_MARKER.encode(encoding="utf-8", errors="strict")
 

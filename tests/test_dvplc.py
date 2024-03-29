@@ -107,7 +107,7 @@ def pytest_configure(config: Config):
 @pytest.fixture
 def test_source_data_0() -> bytes:
     return bytes(
-        b"1234567890testsquence1234567890testsquence1234567890testsquence1234567890testsquence1234567890testsquence"
+        b"1234567890testsequence1234567890testsequence1234567890testsequence1234567890testsequence1234567890testsequence"
     )
 
 
