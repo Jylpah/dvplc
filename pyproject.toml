@@ -73,3 +73,4 @@ pythonpath = "src" # avoid import path append in test files
 filterwarnings = [
 	'ignore:Inheritance class ThrottledClientSession from ClientSession is discouraged:DeprecationWarning',
 ]
+asyncio_default_fixture_loop_scope = "function"
