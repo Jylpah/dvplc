@@ -16,19 +16,17 @@ from result import Ok, Err, Result, UnwrapError
 from enum import StrEnum
 
 from queutils import FileQueue
-from multilevelformatter import MultilevelFormatter
-
+from multilevellogger import MultiLevelLogger, getMultiLevelLogger, VERBOSE, MESSAGE
 
 # TODO: remove pyutils deps
 from pyutils import EventCounter, AsyncTyper
 
 
 # logging.getLogger("asyncio").setLevel(logging.WARNING)
-logger = logging.getLogger(__name__)
+logger: MultiLevelLogger = getMultiLevelLogger(__name__)
 error = logger.error
-warning = logger.warning
-verbose = logger.info
-message = logger.message  # type: ignore
+message = logger.message
+verbose = logger.verbose
 debug = logger.debug
 
 # Constants & defaults
@@ -118,14 +116,16 @@ def cli(
     global logger
 
     try:
-        LOG_LEVEL: int = logging.MESSAGE  # type: ignore
+        LOG_LEVEL: int = MESSAGE  # type: ignore
         if print_verbose:
-            LOG_LEVEL = logging.INFO
+            LOG_LEVEL = VERBOSE
         elif print_debug:
             LOG_LEVEL = logging.DEBUG
         elif print_silent:
             LOG_LEVEL = logging.ERROR
-        MultilevelFormatter.setDefaults(logger, log_file=log, level=LOG_LEVEL)
+        logger.setLevel(LOG_LEVEL)
+        if log is not None:
+            logger.addLogFile(log_file=log, level=LOG_LEVEL)
 
         ctx.ensure_object(dict)
         ctx.obj["force"] = force
@@ -215,7 +215,8 @@ async def decode(
         await fq.join()
         stats, ret_val = await _gather_results(workers, stats, ret_val)
 
-        message(stats.print(do_print=False))
+        if (stats_str := stats.print(do_print=False)) is not None:
+            message(stats_str)
 
     except Exception as err:
         error(str(err))
@@ -291,7 +292,8 @@ async def encode(
         debug("Processing files")
         await fq.join()
         stats, ret_val = await _gather_results(workers, stats, ret_val)
-        message(stats.print(do_print=False))
+        if (stats_str := stats.print(do_print=False)) is not None:
+            message(stats_str)
 
     except Exception as err:
         error(str(err))
@@ -339,7 +341,9 @@ async def verify(
         debug("Processing files")
         await fq.join()
         stats, ret_val = await _gather_results(workers, stats, ret_val)
-        message(stats.print(do_print=False))
+        if (stats_str := stats.print(do_print=False)) is not None:
+            message(stats_str)
+
         # print(f"exit value={ret_val}")
     except Exception as err:
         error(str(err))
@@ -744,9 +748,9 @@ def read_dvpl_footer(data: bytes) -> tuple[dict, bytes]:
     result["d_size"] = f_d_size
     result["e_size"] = f_e_size
     result["e_crc"] = f_crc32
-    assert f_compression >= 0 and f_compression < len(
-        Compression
-    ), "unknown compression in DVPL footer"
+    assert f_compression >= 0 and f_compression < len(Compression), (
+        "unknown compression in DVPL footer"
+    )
     result["e_type"] = list(Compression)[f_compression]
 
     if logger.getEffectiveLevel() == logging.DEBUG:
