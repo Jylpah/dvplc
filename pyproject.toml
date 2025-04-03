@@ -2,7 +2,7 @@
 name = "dvplc"
 description = "CLI app to convert Dava SmartDLC .dvpl files used in Wargaming.net's World of Tanks Bliz MMO game"
 readme = "README.md"
-version = "0.4.0a1"
+version = "0.4.0"
 authors = [{ name = "Jylpah", email = "jylpah@gmail.com" }]
 license = { text = "MIT License" }
 requires-python = ">=3.10"
@@ -19,8 +19,8 @@ dependencies = [
     "result>=0.15.0", 
     "typer>=0.9.0",
     "queutils",
+    "multilevellogger",
 	"pyutils @ git+https://github.com/Jylpah/pyutils.git",
-    "multilevellogger @ git+https://github.com/Jylpah/multilevellogger.git",
 ]
 
 [project.optional-dependencies]
