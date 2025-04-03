@@ -19,7 +19,7 @@ Tested on Linux, Mac and Windows OK
 
 # Installation 
 
-*Python 3.11 is required*
+*Python 3.11 or later is required*
 
 ```
 pip install git+https://github.com/Jylpah/dvplc.git
