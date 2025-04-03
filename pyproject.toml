@@ -16,12 +16,11 @@ dependencies = [
 	"lz4>=4.3.2",
 	"aiofiles>=23.1.0",
 	"aioconsole>=0.6.1",
-	"pyutils @ git+https://github.com/Jylpah/pyutils.git",
-    "pyutils @ git+https://github.com/Jylpah/multilevellogger.git",
     "result>=0.15.0", 
     "typer>=0.9.0",
     "queutils",
-    "multilevellogger",
+	"pyutils @ git+https://github.com/Jylpah/pyutils.git",
+    "multilevellogger @ git+https://github.com/Jylpah/multilevellogger.git",
 ]
 
 [project.optional-dependencies]
