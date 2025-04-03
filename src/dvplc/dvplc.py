@@ -15,15 +15,18 @@ from typer import Context, Option, Argument, Exit
 from result import Ok, Err, Result, UnwrapError
 from enum import StrEnum
 
-from pyutils import FileQueue, EventCounter, AsyncTyper
-from pyutils.multilevelformatter import MultilevelFormatter
-from pyutils.utils import add_suffix
+from queutils import FileQueue
+from multilevellogger import MultiLevelLogger, getMultiLevelLogger, VERBOSE, MESSAGE
 
-logging.getLogger("asyncio").setLevel(logging.WARNING)
-logger = logging.getLogger(__name__)
+# TODO: remove pyutils deps
+from pyutils import EventCounter, AsyncTyper
+
+
+# logging.getLogger("asyncio").setLevel(logging.WARNING)
+logger: MultiLevelLogger = getMultiLevelLogger(__name__)
 error = logger.error
-message = logger.warning
-verbose = logger.info
+message = logger.message
+verbose = logger.verbose
 debug = logger.debug
 
 # Constants & defaults
@@ -50,6 +53,17 @@ DVPL_FOOTER_LEN = 20
 CONVERSIONS = ["keep", "replace", "mirror"]
 QUEUE_LEN = 1000
 THREADS = 5
+
+
+# Helper funcs
+
+
+def add_suffix(path: Path, suffix: str) -> Path:
+    """add suffix if it does not exists. Does not replace the suffix"""
+    if path.suffix == suffix:
+        return path
+    else:
+        return path.parent / (path.name + suffix)
 
 
 # main() -------------------------------------------------------------
@@ -102,15 +116,16 @@ def cli(
     global logger
 
     try:
-        LOG_LEVEL: int = logging.WARNING
+        LOG_LEVEL: int = MESSAGE  # type: ignore
         if print_verbose:
-            LOG_LEVEL = logging.INFO
+            LOG_LEVEL = VERBOSE
         elif print_debug:
             LOG_LEVEL = logging.DEBUG
         elif print_silent:
             LOG_LEVEL = logging.ERROR
-        MultilevelFormatter.setDefaults(logger, log_file=log)
         logger.setLevel(LOG_LEVEL)
+        if log is not None:
+            logger.addLogFile(log_file=log, level=LOG_LEVEL)
 
         ctx.ensure_object(dict)
         ctx.obj["force"] = force
@@ -200,7 +215,8 @@ async def decode(
         await fq.join()
         stats, ret_val = await _gather_results(workers, stats, ret_val)
 
-        message(stats.print(do_print=False))
+        if (stats_str := stats.print(do_print=False)) is not None:
+            message(stats_str)
 
     except Exception as err:
         error(str(err))
@@ -276,7 +292,8 @@ async def encode(
         debug("Processing files")
         await fq.join()
         stats, ret_val = await _gather_results(workers, stats, ret_val)
-        message(stats.print(do_print=False))
+        if (stats_str := stats.print(do_print=False)) is not None:
+            message(stats_str)
 
     except Exception as err:
         error(str(err))
@@ -324,7 +341,9 @@ async def verify(
         debug("Processing files")
         await fq.join()
         stats, ret_val = await _gather_results(workers, stats, ret_val)
-        message(stats.print(do_print=False))
+        if (stats_str := stats.print(do_print=False)) is not None:
+            message(stats_str)
+
         # print(f"exit value={ret_val}")
     except Exception as err:
         error(str(err))
@@ -480,7 +499,7 @@ def decode_dvpl(input: bytes) -> Result[bytes, str]:
 
         d_size = footer["d_size"]  # decoded (output) size
         t_type = footer["e_type"]  # encoding type
-        e_crc = footer["e_crc"]  # CRC32 of endocoded (input) data
+        e_crc = footer["e_crc"]  # CRC32 of encoded (input) data
         e_length = footer["e_size"]  # encoded (input) size
 
         if e_length != len(input):
@@ -688,7 +707,7 @@ def make_dvpl_footer(encoded: bytes, d_size: int, compression: str) -> Optional[
         ), "Making DVPL footer failed"
         footer += f_d_size  # input size as UInt32LE
         footer += f_e_size  # output size as UInt32LE
-        footer += f_crc32  # outout crc32 as UInt32LE
+        footer += f_crc32  # output crc32 as UInt32LE
         footer += f_compression  # output type as UInt32LE
         footer += DVPL_MARKER.encode(encoding="utf-8", errors="strict")
 
@@ -729,9 +748,9 @@ def read_dvpl_footer(data: bytes) -> tuple[dict, bytes]:
     result["d_size"] = f_d_size
     result["e_size"] = f_e_size
     result["e_crc"] = f_crc32
-    assert f_compression >= 0 and f_compression < len(
-        Compression
-    ), "unknown compression in DVPL footer"
+    assert f_compression >= 0 and f_compression < len(Compression), (
+        "unknown compression in DVPL footer"
+    )
     result["e_type"] = list(Compression)[f_compression]
 
     if logger.getEffectiveLevel() == logging.DEBUG:

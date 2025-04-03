@@ -9,10 +9,9 @@ from typer.testing import CliRunner
 from click.testing import Result as ClickResult
 from typing import List, Dict
 from hashlib import sha256
+from multilevellogger import getMultiLevelLogger
 
-import logging
-
-from pyutils import FileQueue
+from queutils import FileQueue
 
 from dvplc import (
     Compression,
@@ -22,10 +21,10 @@ from dvplc import (
 )
 from dvplc.dvplc import app
 
-logger = logging.getLogger()
+logger = getMultiLevelLogger(__name__)
 error = logger.error
-message = logger.warning
-verbose = logger.info
+message = logger.message
+verbose = logger.verbose
 debug = logger.debug
 
 
@@ -101,13 +100,13 @@ async def files_sha256(base: Path) -> dict[Path, str]:
 def pytest_configure(config: Config):
     plugin = config.pluginmanager.getplugin("mypy")
     if plugin is not None:
-        plugin.mypy_argv.append("--check-untyped-defs")
+        plugin.mypy_argv.append("--check-untyped-defs")  # type: ignore
 
 
 @pytest.fixture
 def test_source_data_0() -> bytes:
     return bytes(
-        b"1234567890testsquence1234567890testsquence1234567890testsquence1234567890testsquence1234567890testsquence"
+        b"1234567890testsequence1234567890testsequence1234567890testsequence1234567890testsequence1234567890testsequence"
     )
 
 
@@ -141,16 +140,16 @@ async def test_1_dvpl_encode_decode_compressions(
     res: Result[bytes, str]
     res = encode_dvpl(input=test_source_data_0, compression=Compression(compression))
 
-    assert (
-        res.is_ok() == working
-    ), f"unexpected encoding result, compression={compression}"
+    assert res.is_ok() == working, (
+        f"unexpected encoding result, compression={compression}"
+    )
 
     if isinstance(res, Ok):
         res = decode_dvpl(res.ok_value)
         assert isinstance(res, Ok), "decoding failed"
-        assert (
-            res.ok_value == test_source_data_0
-        ), f"decoding encoded data did not return the original data, compression={compression}"
+        assert res.ok_value == test_source_data_0, (
+            f"decoding encoded data did not return the original data, compression={compression}"
+        )
 
 
 @pytest.mark.parametrize(
@@ -216,9 +215,9 @@ def test_4_verify_file_fails(datafiles: Path) -> None:
         input_files.append(str(input.resolve()))
 
     result: ClickResult = CliRunner().invoke(app, ["verify"] + input_files)
-    assert (
-        result.exit_code != 0
-    ), f"dvpl verification failed (false positive): {' '.join([ Path(file).name for file in input_files]) }"
+    assert result.exit_code != 0, (
+        f"dvpl verification failed (false positive): {' '.join([Path(file).name for file in input_files])}"
+    )
 
 
 @pytest.mark.parametrize(
@@ -273,15 +272,15 @@ def test_6_encode_mirror(tmp_path: Path, datafiles: Path) -> None:
 
     chk_sums_res: Dict[Path, str] = run(files_sha256(DST_DIR))
 
-    assert set(chk_sums_org.keys()) == set(
-        chk_sums_res.keys()
-    ), f"all files were not processed: {len(chk_sums_org)} != {len(chk_sums_res)}"
+    assert set(chk_sums_org.keys()) == set(chk_sums_res.keys()), (
+        f"all files were not processed: {len(chk_sums_org)} != {len(chk_sums_res)}"
+    )
 
     for fn, chksum in chk_sums_res.items():
         debug("%s: %s", fn, chksum)
-        assert (
-            chk_sums_org[fn] == chksum
-        ), f"encode-decode checksum does not match: {fn}: {chksum}"
+        assert chk_sums_org[fn] == chksum, (
+            f"encode-decode checksum does not match: {fn}: {chksum}"
+        )
 
     rmtree(DST_DIR)  # Dangerous
 
@@ -326,11 +325,11 @@ def test_7_decode_mirror(tmp_path: Path, datafiles: Path) -> None:
 async def test_8_open_dvpl_or_file(datafiles: Path) -> None:
     for filename in datafiles.iterdir():
         debug(f"opening '{filename}'")
-        assert (
-            _ := await open_dvpl_or_file(filename)
-        ).is_ok, f"could not open file: {filename}"
+        assert (_ := await open_dvpl_or_file(filename)).is_ok, (
+            f"could not open file: {filename}"
+        )
         if filename.suffix == ".dvpl":
             debug(f"opening  '{filename}' without suffix")
-            assert (
-                _ := await open_dvpl_or_file(filename.with_suffix(""))
-            ).is_ok, f"could not open file: {filename} without .dvpl suffix"
+            assert (_ := await open_dvpl_or_file(filename.with_suffix(""))).is_ok, (
+                f"could not open file: {filename} without .dvpl suffix"
+            )
