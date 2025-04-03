@@ -2,7 +2,7 @@
 name = "dvplc"
 description = "CLI app to convert Dava SmartDLC .dvpl files used in Wargaming.net's World of Tanks Bliz MMO game"
 readme = "README.md"
-version = "0.3.5"
+version = "0.4.0a1"
 authors = [{ name = "Jylpah", email = "jylpah@gmail.com" }]
 license = { text = "MIT License" }
 requires-python = ">=3.10"
@@ -57,23 +57,32 @@ allow-direct-references = true
 packages = ["src/dvplc"]
 
 [tool.mypy]
-mypy_path = ['src']
+exclude = ['tmp']
+mypy_path = ['src', 'demos', 'tests']
+
 
 [tool.pyright]
 reportGeneralTypeIssues = false
-
-[tool.black]
-# line-length = 120
-include = '\.pyi?$'
+reportInvalidStringEscapeSequence = false
+typeCheckingMode = "off"
+include = ["src", "tests"]
+extraPaths = ["src"]
 
 [tool.coverage.run]
 omit= ['tests/*']
 
+
+
 [tool.pytest.ini_options]
 minversion = "7.4"
-addopts = "-v --cov=src"
-pythonpath = "src" # avoid import path append in test files
-filterwarnings = [
-	'ignore:Inheritance class ThrottledClientSession from ClientSession is discouraged:DeprecationWarning',
-]
+addopts = ["-v", "--cov=src"]
+testpaths = ["tests", "demos"]
+pythonpath = "src"                              # avoid import path append in test files
 asyncio_default_fixture_loop_scope = "function"
+
+[tool.ruff]
+include = ["pyproject.toml", "src/**/*.py", "tests/**/*.py", "demos/**/*.py"]
+indent-width = 4
+extend-include = ["*.ipynb"]
+extend-exclude = [".venv", ".vscode"]
+lint.fixable = ["ALL"]
