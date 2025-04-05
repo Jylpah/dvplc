@@ -17,10 +17,12 @@ from enum import StrEnum
 
 from queutils import FileQueue
 from multilevellogger import MultiLevelLogger, getMultiLevelLogger, VERBOSE, MESSAGE
+from eventcounter import EventCounter
 
 # TODO: remove pyutils deps
-from pyutils import EventCounter, AsyncTyper
+from pyutils import AsyncTyper
 
+# TODO: replace Typer with Cyclopts
 
 # logging.getLogger("asyncio").setLevel(logging.WARNING)
 logger: MultiLevelLogger = getMultiLevelLogger(__name__)
@@ -189,7 +191,7 @@ async def decode(
             base=mirror_from,
             maxsize=QUEUE_LEN,
         )
-        stats = EventCounter("Files processed:")
+        stats = EventCounter("Files processed:", print_func=message)
         force: bool = ctx.obj["force"]
         workers: list[Task] = list()
         debug(f"file queue is {fq.qsize()} long")
@@ -266,7 +268,7 @@ async def encode(
             maxsize=QUEUE_LEN,
         )
 
-        stats = EventCounter("Files processed:")
+        stats = EventCounter("Files processed:", print_func=message)
         force: bool = ctx.obj["force"]
         workers: list[Task] = list()
         debug(f"file queue is {fq.qsize()} long")
@@ -321,7 +323,7 @@ async def verify(
             maxsize=QUEUE_LEN,
         )
 
-        stats = EventCounter("Files processed:")
+        stats = EventCounter("Files processed:", print_func=message)
         workers: list[Task] = list()
         debug(f"file queue is {fq.qsize()} long")
         scanner = create_task(fq.mk_queue(files))
