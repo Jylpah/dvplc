@@ -18,11 +18,7 @@ from enum import StrEnum
 from queutils import FileQueue
 from multilevellogger import MultiLevelLogger, getMultiLevelLogger, VERBOSE, MESSAGE
 from eventcounter import EventCounter
-
-# TODO: remove pyutils deps
-from pyutils import AsyncTyper
-
-# TODO: replace Typer with Cyclopts
+from .asynctyper import AsyncTyper
 
 # logging.getLogger("asyncio").setLevel(logging.WARNING)
 logger: MultiLevelLogger = getMultiLevelLogger(__name__)
