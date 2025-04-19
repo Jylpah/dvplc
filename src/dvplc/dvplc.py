@@ -11,7 +11,11 @@ import aiofiles
 from lz4.block import compress, decompress, LZ4BlockError  # type:ignore
 import zlib
 from pathlib import Path
-from typer import Context, Option, Argument, Exit
+
+from cyclopts import App, Parameter, Group, validators
+from cyclopts.types import NonNegativeInt
+
+# from typer import Context, Option, Argument, Exit
 from result import Ok, Err, Result, UnwrapError
 from enum import StrEnum
 
@@ -20,7 +24,7 @@ from multilevellogger import MultiLevelLogger, getMultiLevelLogger, VERBOSE, MES
 from eventcounter import EventCounter
 
 # TODO: remove pyutils deps
-from pyutils import AsyncTyper
+# from pyutils import AsyncTyper
 
 # TODO: replace Typer with Cyclopts
 
@@ -70,51 +74,60 @@ def add_suffix(path: Path, suffix: str) -> Path:
 
 # main() -------------------------------------------------------------
 
-app = AsyncTyper()
+# app = AsyncTyper()
+app = App(default_parameter=Parameter(negative=()))
+
+verbosity_group = Group(
+    "Verbosity",
+    default_parameter=Parameter(negative=""),  # Disable "--no-" flags
+    validator=validators.MutuallyExclusive(),  # Only one option is allowed to be selected.
+)
+
+VerbosityParam = Annotated[bool, Parameter(group=verbosity_group)]
 
 
-@app.callback()
+@app.default
 def cli(
-    ctx: Context,
+    # ctx: Context,
     print_verbose: Annotated[
-        bool,
-        Option(
-            "--verbose",
-            "-v",
-            show_default=False,
-            # metavar="",
-            help="verbose logging",
-        ),
+        VerbosityParam,
+        Parameter(name=["--verbose", "-v"]),
     ] = False,
     print_debug: Annotated[
-        bool,
-        Option(
-            "--debug",
-            show_default=False,
-            metavar="",
-            help="debug logging",
-        ),
+        VerbosityParam,
+        Parameter(name=["--debug", "-d"]),
     ] = False,
     print_silent: Annotated[
-        bool,
-        Option(
-            "--silent",
-            show_default=False,
-            metavar="",
-            help="silent logging",
-        ),
+        VerbosityParam,
+        Parameter(name=["--silent", "-s"]),
     ] = False,
     force: Annotated[
         bool,
-        Option(show_default=False, help="Overwrite existing files"),
+        Parameter(show_default=False),
     ] = False,
-    threads: Annotated[
-        int,
-        Option(help="Set number of asynchronous threads"),
-    ] = THREADS,
-    log: Annotated[Optional[Path], Option(help="log to FILE", metavar="FILE")] = None,
+    threads: NonNegativeInt = THREADS,
+    log: Annotated[
+        Optional[Path], Parameter(help="log to FILE", metavar="FILE")
+    ] = None,
 ) -> None:
-    """Encoder/decoder for SmartDLC DVPL files used e.g. in Wargaming's games"""
+    """
+    Encoder/decoder for SmartDLC DVPL files used e.g. in Wargaming's games
+
+    Parameters
+    ----------
+    verbose : bool
+        Verbose output
+    debug : bool
+        Output debugging information
+    silent : bool
+        Silence output
+    force : bool
+        Overwrite existing files
+    threads : int
+        Set number of threads. Default is auto(0)
+    log : Path
+        Log to FILE
+    """
     global logger
 
     try:
