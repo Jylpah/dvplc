@@ -78,9 +78,6 @@ addopts = ["-v", "--cov=src"]
 testpaths = ["tests", "demos"]
 pythonpath = "src"                              # avoid import path append in test files
 asyncio_default_fixture_loop_scope = "function"
-filterwarnings = [
-	'ignore:Inheritance class ThrottledClientSession from ClientSession is discouraged:DeprecationWarning',
-]  # related to pyutils import
 
 [tool.ruff]
 include = ["pyproject.toml", "src/**/*.py", "tests/**/*.py", "demos/**/*.py"]
